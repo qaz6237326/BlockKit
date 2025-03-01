@@ -3,7 +3,7 @@
  * @param {string} value
  * @returns {T | null}
  */
-export const decodeJSON = <T = unknown>(value: string): T | null => {
+export const decode = <T = unknown>(value: string): T | null => {
   try {
     return JSON.parse(value) as T;
   } catch (error) {
@@ -17,7 +17,7 @@ export const decodeJSON = <T = unknown>(value: string): T | null => {
  * @param {unknown} value
  * @returns {string | null}
  */
-export const encodeJSON = (value: unknown): string | null => {
+export const encode = (value: unknown): string | null => {
   try {
     return JSON.stringify(value);
   } catch (error) {
@@ -32,23 +32,23 @@ export const TSON = {
    * @param {string} value
    * @returns {T | null}
    */
-  decode: decodeJSON,
+  decode: decode,
   /**
    * Encode JSON Object To String
    * @param {unknown} value
    * @returns {string | null}
    */
-  encode: encodeJSON,
+  encode: encode,
   /**
    * Parse JSON String To Object
    * @param {string} value
    * @returns {T | null}
    */
-  parse: decodeJSON,
+  parse: decode,
   /**
    * Stringify JSON Object To String
    * @param {unknown} value
    * @returns {string | null}
    */
-  stringify: encodeJSON,
+  stringify: encode,
 };

@@ -1,6 +1,6 @@
 export type { ClipboardTransfer } from "./clipboard";
 export { Clipboard, TEXT_HTML, TEXT_PLAIN } from "./clipboard";
-export { Collection } from "./collection";
+export { Collection, Collection as List } from "./collection";
 export {
   CTRL_KEY,
   DEFAULT_PRIORITY,
@@ -51,7 +51,7 @@ export { Intl } from "./intl";
 export {
   isArray,
   isBoolean,
-  isEmptyValue,
+  isEmpty,
   isFalsy,
   isFunction,
   isNil,
@@ -65,7 +65,7 @@ export {
   isTruly,
   isUndefined,
 } from "./is";
-export { decodeJSON, encodeJSON, TSON } from "./json";
+export { TSON } from "./json";
 export { sleep, to } from "./native";
 export { RegExec } from "./regexp";
 export type { Rect, ResizeCallback } from "./resize";

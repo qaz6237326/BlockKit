@@ -51,4 +51,17 @@ describe("history undo-redo", () => {
     expect(editor.history.isUndoAble()).toBe(true);
     expect(editor.history.isRedoAble()).toBe(false);
   });
+
+  it("auto compose", async () => {
+    const editor = new Editor();
+    const { id: id0 } = editor.state.apply(new Delta().insert("1"));
+    await sleep(20);
+    const { id: id1 } = editor.state.apply(new Delta().retain(1).insert("2"));
+    await sleep(20);
+    const { id: id2 } = editor.state.apply(new Delta().retain(1).insert("3"));
+    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("132").insertEOL());
+    // @ts-expect-error protected property
+    const undoStack = editor.history.undoStack;
+    expect(undoStack[0].id).toEqual(new Set([id0, id1, id2]));
+  });
 });

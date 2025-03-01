@@ -1,6 +1,6 @@
 import { DateTime } from "./date-time";
 import { isArray } from "./is";
-import type { Func } from "./types";
+import type { Func, O } from "./types";
 
 export class Format {
   /**
@@ -11,7 +11,7 @@ export class Format {
    * @example ("1{{0}}1", [1]) => "111"
    * @example ("1{{id}}1", { id: 1 }) => "111"
    */
-  public static string(str: string, data: Record<string, string> | string[]): string {
+  public static string(str: string, data: O.Map<string> | string[]): string {
     if (isArray(data)) {
       return str.replace(/{{(\d+)}}/g, (match, $1) => data[$1] || match);
     }
@@ -20,14 +20,14 @@ export class Format {
 
   /**
    * 格式化数字
-   * @param {number} num
-   * @param {number} fixed
+   * @param {number} number
+   * @param {string} locale
    * @returns {string}
    * @example 1123 => "1,123"
    */
   public static number(
     number: number,
-    locale = "en-US",
+    locale: string = "en-US",
     options?: Func.Constructor<typeof Intl.NumberFormat>["1"]
   ): string {
     return new Intl.NumberFormat(locale, options).format(number);
@@ -50,6 +50,7 @@ export class Format {
   /**
    * 格式化经过的时间
    * @param {number} ms
+   * @param {number} relative
    * @returns {string}
    * @example (2000, 1000) => "1 second ago"
    */

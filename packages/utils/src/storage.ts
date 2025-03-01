@@ -1,4 +1,4 @@
-import { decodeJSON, encodeJSON } from "./json";
+import { decode, encode } from "./json";
 
 interface Storage<T> {
   /** 原始值 */
@@ -32,7 +32,7 @@ const serialize = <T = string>(origin: T, ttl?: number | null): string | null =>
       const now = Date.now();
       data.expire = ttl + now;
     }
-    return encodeJSON(data);
+    return encode(data);
   } catch (error) {
     console.log("Serialize Storage Error:", error);
     return null;
@@ -46,7 +46,7 @@ const serialize = <T = string>(origin: T, ttl?: number | null): string | null =>
  * */
 const deserialize = <T>(str: string): null | T => {
   try {
-    const data = decodeJSON<Storage<T>>(str);
+    const data = decode<Storage<T>>(str);
     if (!data) return null;
     if (Number.isNaN(data.expire)) return null;
     if (data.expire && Date.now() > data.expire) return null;

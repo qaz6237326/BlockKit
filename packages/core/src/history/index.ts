@@ -231,7 +231,7 @@ export class History {
       if (item) {
         inverted = inverted.compose(item.delta);
         undoRange = item.range;
-        idSet = new Set([id, ...item.id]);
+        idSet = item.id.add(id);
       }
     } else {
       this.lastRecord = timestamp;

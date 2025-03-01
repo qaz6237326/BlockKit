@@ -33,18 +33,9 @@ export const isNull = (value: unknown): value is undefined => {
  * @param {unknown} value
  * @returns {boolean}
  */
-export const isEmptyValue = (value: unknown): value is undefined | null => {
+export const isNil = (value: unknown): value is undefined | null => {
   return value === null || value === void 0;
 };
-
-/**
- * 检查 nil = undefined | null
- * - null => true
- * - undefined => true
- * @param {unknown} value
- * @returns {boolean}
- */
-export const isNil = isEmptyValue;
 
 /**
  * 检查 object
@@ -59,7 +50,7 @@ export const isObject = <T = Record<string, unknown>>(value: unknown): value is 
 };
 
 /**
- * 检查 Array
+ * 检查 array
  * - [] => true
  * - {} => false
  * @param {unknown} value
@@ -184,4 +175,25 @@ export const isTruly = (value: unknown): boolean => {
  */
 export const isFalsy = (value: unknown): boolean => {
   return !value || value === "false";
+};
+
+/**
+ * 检查 empty value
+ * - "" => true
+ * - [] => true
+ * - {} => true
+ * - null => true
+ * - undefined => true
+ * @param {unknown} value
+ * @returns {boolean}
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const isEmpty = (value: unknown): value is undefined | null | "" | [] | {} => {
+  return (
+    value === "" ||
+    value === null ||
+    value === void 0 ||
+    (isArray(value) && value.length === 0) ||
+    (isObject(value) && Object.keys(value).length === 0)
+  );
 };

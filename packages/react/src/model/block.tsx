@@ -1,6 +1,6 @@
 import type { BlockState, Editor } from "block-kit-core";
 import type { LineState } from "block-kit-core";
-import { BLOCK_KEY, EDITOR_EVENT, EDITOR_STATE } from "block-kit-core";
+import { BLOCK_ID_KEY, BLOCK_KEY, EDITOR_EVENT, EDITOR_STATE } from "block-kit-core";
 import { useMemoFn } from "block-kit-utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -18,6 +18,7 @@ import { LineModel } from "./line";
 const BlockView: FC<{
   editor: Editor;
   state: BlockState;
+  placeholder?: string;
 }> = props => {
   const { editor, state } = props;
   const flushing = useRef(false);
@@ -70,7 +71,7 @@ const BlockView: FC<{
     ) {
       // 更新浏览器选区
       editor.logger.debug("UpdateDOMSelection");
-      editor.selection.updateDOMSelection();
+      editor.selection.updateDOMSelection(true);
     }
   });
 
@@ -148,7 +149,7 @@ const BlockView: FC<{
   }, [editor, elements]);
 
   return (
-    <div className="notranslate" {...{ [BLOCK_KEY]: true }} ref={setModel}>
+    <div {...{ [BLOCK_KEY]: true, [BLOCK_ID_KEY]: state.key }} ref={setModel}>
       {children}
     </div>
   );

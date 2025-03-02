@@ -76,12 +76,12 @@ export class NativeEvent {
 
   protected onMouseDownGlobal = (e: MouseEvent) => {
     this.editor.state.set(EDITOR_STATE.MOUSE_DOWN, true);
-    this.event.emit(NATIVE_EVENTS.MOUSE_DOWN, e);
+    this.event.emit(NATIVE_EVENTS.MOUSE_DOWN_GLOBAL, e);
   };
 
   protected onMouseUpGlobal = (e: MouseEvent) => {
     this.editor.state.set(EDITOR_STATE.MOUSE_DOWN, false);
-    this.event.emit(NATIVE_EVENTS.MOUSE_UP, e);
+    this.event.emit(NATIVE_EVENTS.MOUSE_UP_GLOBAL, e);
   };
 
   public bind() {

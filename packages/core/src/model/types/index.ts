@@ -8,6 +8,7 @@ export const NODE_KEY = "data-node";
 export const LEAF_KEY = "data-leaf";
 export const LEAF_STRING = "data-string";
 export const BLOCK_KEY = "data-block";
+export const BLOCK_ID_KEY = "data-block-id";
 export const VOID_KEY = "data-void";
 export const VOID_LEN_KEY = "data-void-len";
 

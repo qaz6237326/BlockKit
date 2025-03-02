@@ -57,7 +57,7 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => 
   return (
     <div
       ref={ref}
-      style={{ top: props.top, left: props.left }}
+      style={props.styles}
       className={cs("block-kit-menu-toolbar", props.className)}
       onMouseDown={e => {
         const target = e.target;

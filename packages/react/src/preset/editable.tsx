@@ -1,4 +1,5 @@
 import { EDITOR_KEY, Point, Range } from "block-kit-core";
+import { cs } from "block-kit-utils";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 
 import { useEditorStatic } from "../hooks/use-editor";
@@ -12,6 +13,7 @@ import { BlockModel } from "../model/block";
 export const Editable: React.FC<{
   className?: string;
   autoFocus?: boolean;
+  placeholder?: string;
 }> = props => {
   const { className, autoFocus } = props;
   const { editor } = useEditorStatic();
@@ -41,7 +43,7 @@ export const Editable: React.FC<{
   return (
     <div
       ref={ref}
-      className={className}
+      className={cs(className, "notranslate")}
       {...{ [EDITOR_KEY]: true }}
       contentEditable={!readonly}
       suppressContentEditableWarning
@@ -53,7 +55,11 @@ export const Editable: React.FC<{
         overflowWrap: "break-word",
       }}
     >
-      <BlockModel editor={editor} state={editor.state.block}></BlockModel>
+      <BlockModel
+        editor={editor}
+        state={editor.state.block}
+        placeholder={props.placeholder}
+      ></BlockModel>
     </div>
   );
 };

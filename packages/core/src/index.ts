@@ -27,6 +27,7 @@ export {
 } from "./input/utils/hot-key";
 export { LOG_LEVEL } from "./log";
 export {
+  BLOCK_ID_KEY,
   BLOCK_KEY,
   CLIENT_KEY,
   EDITOR_KEY,

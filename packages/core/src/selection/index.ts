@@ -29,6 +29,7 @@ export class Selection {
   constructor(protected editor: Editor) {
     this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onArrowKeyDown);
     this.editor.event.on(EDITOR_EVENT.SELECTION_CHANGE_NATIVE, this.onNativeSelectionChange);
+    this.editor.event.on(EDITOR_EVENT.MOUSE_UP_GLOBAL, this.onForceUpdateDOMSelection);
   }
 
   /**
@@ -37,6 +38,7 @@ export class Selection {
   public destroy() {
     this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onArrowKeyDown);
     this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE_NATIVE, this.onNativeSelectionChange);
+    this.editor.event.off(EDITOR_EVENT.MOUSE_UP_GLOBAL, this.onForceUpdateDOMSelection);
   }
 
   /**
@@ -100,13 +102,13 @@ export class Selection {
 
   /**
    * 更新选区模型
-   * @param range
-   * @param force [?false]
+   * @param range 选区
+   * @param force [?=false] 强制更新浏览器选区
    */
   public set(range: Range | null, force = false): void {
     if (Range.isEqual(this.current, range)) {
       this.current = range;
-      // FIX: [cursor]\n 状态按右键 Model 校准, 但是 DOM 没有校准
+      // FIX: [cursor]\n 状态按右箭头 Model 校准, 但是 DOM 没有校准
       // 因此即使选区没有变化, 在 force 模式下也需要更新 DOM 选区
       force && this.updateDOMSelection();
       return void 0;
@@ -125,10 +127,17 @@ export class Selection {
 
   /**
    * 更新浏览器选区
+   * @param force [?=false] force 会忽略 MouseDown 状态检查
    */
-  public updateDOMSelection() {
+  public updateDOMSelection(force = false) {
     const range = this.current;
     if (!range || this.editor.state.get(EDITOR_STATE.COMPOSING)) {
+      return false;
+    }
+    // 按下鼠标的情况下不更新选区, 而 force 的情况则例外
+    // 若总是更新选区, 则会导致独行的 Embed 节点无法选中, 需要非受控
+    // 若是没有 force 的调度控制, 则在按下鼠标且输入时会导致选区 DOM 滞留
+    if (!force && this.editor.state.get(EDITOR_STATE.MOUSE_DOWN)) {
       return false;
     }
     const root = this.editor.getContainer();
@@ -164,7 +173,18 @@ export class Selection {
       return void 0;
     }
     this.editor.getContainer().focus();
-    this.current && this.updateDOMSelection();
+    this.current && this.updateDOMSelection(true);
+  }
+
+  /**
+   * 强制刷新浏览器选区
+   */
+  @Bind
+  protected onForceUpdateDOMSelection() {
+    if (!this.editor.state.get(EDITOR_STATE.FOCUS)) {
+      return void 0;
+    }
+    this.updateDOMSelection(true);
   }
 
   /**

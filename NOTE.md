@@ -726,7 +726,7 @@ export const getTextNode = (node: Node | null): Text | null => {
 <span data-zero-enter> </span>
 ```
 
-那么这里依然会有问题，我们点击行末尾时，此时的选区则会被调度到左光标的位置上，这里的效果显然是不合适的，因为这样的话我们无法聚焦到行末，因此这里我们需要为`toDOMPoint`设置额外的处理逻辑，即取消了默认的`offset`优先逻辑，而是采用`node`优先逻辑，在`data-zero-embed`节点且`offset`为`1`时，优先聚焦到后续的`data-zero-enter`节点`offset -> 0`上。
+那么这里依然会有问题，我们点击行末尾时，此时的选区则会被浏览器转移到节点光标左侧的位置上，这里的效果显然是不合适的，因为这样的话我们无法聚焦到行末，因此这里我们需要为`toDOMPoint`设置额外的处理逻辑，即取消了默认的`offset`优先逻辑，而是采用`node`优先逻辑，在`data-zero-embed`节点且`offset`为`1`时，优先聚焦到后续的`data-zero-enter`节点`offset -> 0`上。
 
 ```js
 const nodeOffset = Math.max(offset - start, 0);
@@ -769,6 +769,19 @@ if (rightArrow && sel && isEmbedZeroNode(sel.startContainer)) {
   const newAnchor = event.shiftKey ? anchor : newFocus.clone();
   this.set(new Range(newAnchor, newFocus, isBackward), true);
   return void 0;
+}
+```
+
+虽然看起来问题都解决了，但是`DOM`的`normalize`频繁操作却带来了一个隐晦的问题，当行中仅存在`Embed`节点时，我们无法用鼠标拖拽选区来选中该节点，甚至这个操作会触发我们预设的选区`limit`错误，而且在控制台的选区变换打印非常频繁。
+
+这个问题应该算是受控的选区和非受控的拖选造成的问题，我们无法控制浏览器的拖选，那么就只能尽可能减少受控的行为。因此这里我们需要避免在用户拖拽的时候主动设置选区，以避免打断拖选的行为，同时还需要注意输入的情况下即使按下鼠标但仍然需要更新`DOM`选区，且在鼠标松开时再校准一次。
+
+```js
+// 按下鼠标的情况下不更新选区, 而 force 的情况则例外
+// 若总是更新选区, 则会导致独行的 Embed 节点无法选中, 需要非受控
+// 若是没有 force 的调度控制, 则在按下鼠标且输入时会导致选区 DOM 滞留
+if (!force && this.editor.state.get(EDITOR_STATE.MOUSE_DOWN)) {
+  return false;
 }
 ```
 

@@ -44,4 +44,8 @@ body[arco-theme='dark'] {
     line-height: 1.8;
     margin: 8px 0;
   }
+
+  div[data-placeholder] {
+    line-height: 1.8;
+  }
 }

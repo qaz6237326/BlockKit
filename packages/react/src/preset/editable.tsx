@@ -11,9 +11,15 @@ import { BlockModel } from "../model/block";
  * @param props
  */
 export const Editable: React.FC<{
+  /** 节点类名 */
   className?: string;
+  /** 自动聚焦 */
   autoFocus?: boolean;
-  placeholder?: string;
+  /**
+   * 占位节点
+   * - 节点会脱离文档流, 需要注意 CSS 布局
+   */
+  placeholder?: React.ReactNode;
 }> = props => {
   const { className, autoFocus } = props;
   const { editor } = useEditorStatic();

@@ -15,7 +15,7 @@ export type ZeroSpaceProps = {
   hide?: boolean;
   /** void-block 空节点 */
   void?: boolean;
-  /** inline-block embed 嵌入节点 */
+  /** embed(inline-block) 嵌入节点 */
   embed?: boolean;
   /** 行末尾占位 */
   enter?: boolean;

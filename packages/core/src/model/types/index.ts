@@ -11,6 +11,7 @@ export const BLOCK_KEY = "data-block";
 export const BLOCK_ID_KEY = "data-block-id";
 export const VOID_KEY = "data-void";
 export const VOID_LEN_KEY = "data-void-len";
+export const PLACEHOLDER_KEY = "data-placeholder";
 
 // Space
 export const ZERO_ENTER_KEY = "data-zero-enter";

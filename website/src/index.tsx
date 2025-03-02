@@ -120,7 +120,11 @@ const App: FC = () => {
         </FloatToolbar>
         <div className="block-kit-editable-container">
           <div className="block-kit-mount-dom" ref={onMountRef}></div>
-          <Editable autoFocus className="block-kit-editable"></Editable>
+          <Editable
+            placeholder="Please Enter..."
+            autoFocus
+            className="block-kit-editable"
+          ></Editable>
         </div>
       </div>
     </BlockKit>

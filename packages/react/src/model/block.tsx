@@ -1,12 +1,19 @@
 import type { BlockState, Editor } from "block-kit-core";
 import type { LineState } from "block-kit-core";
-import { BLOCK_ID_KEY, BLOCK_KEY, EDITOR_EVENT, EDITOR_STATE } from "block-kit-core";
+import {
+  BLOCK_ID_KEY,
+  BLOCK_KEY,
+  EDITOR_EVENT,
+  EDITOR_STATE,
+  PLACEHOLDER_KEY,
+} from "block-kit-core";
 import { useMemoFn } from "block-kit-utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 import { EDITOR_TO_WRAP_LINE_KEYS, EDITOR_TO_WRAP_LINE_PLUGINS } from "../plugin/modules/wrap";
 import type { ReactWrapLineContext } from "../plugin/types";
+import { isStrictEmptyLine } from "../utils/is";
 import { JSX_TO_STATE } from "../utils/weak-map";
 import { getWrapSymbol } from "../utils/wrapper";
 import { LineModel } from "./line";
@@ -18,7 +25,7 @@ import { LineModel } from "./line";
 const BlockView: FC<{
   editor: Editor;
   state: BlockState;
-  placeholder?: string;
+  placeholder?: React.ReactNode;
 }> = props => {
   const { editor, state } = props;
   const flushing = useRef(false);
@@ -150,6 +157,19 @@ const BlockView: FC<{
 
   return (
     <div {...{ [BLOCK_KEY]: true, [BLOCK_ID_KEY]: state.key }} ref={setModel}>
+      {props.placeholder && lines.length === 1 && isStrictEmptyLine(lines[0]) && (
+        <div
+          {...{ [PLACEHOLDER_KEY]: true }}
+          style={{
+            position: "absolute",
+            opacity: "0.3",
+            userSelect: "none",
+            pointerEvents: "none",
+          }}
+        >
+          {props.placeholder}
+        </div>
+      )}
       {children}
     </div>
   );

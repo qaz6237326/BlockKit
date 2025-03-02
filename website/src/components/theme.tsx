@@ -10,8 +10,11 @@ const darkThemeMatch = window.matchMedia("(prefers-color-scheme: dark)");
 const list = [MagicIcon, <IconSun />, <IconMoon />];
 
 const handler = (e: MediaQueryListEvent) => {
-  if (e.matches) document.body.setAttribute("arco-theme", "dark");
-  else document.body.removeAttribute("arco-theme");
+  if (e.matches) {
+    document.body.setAttribute("arco-theme", "dark");
+  } else {
+    document.body.removeAttribute("arco-theme");
+  }
 };
 
 export const ThemeMode: FC = () => {
@@ -20,8 +23,11 @@ export const ThemeMode: FC = () => {
   useEffect(() => {
     switch (index) {
       case 0: {
-        if (darkThemeMatch.matches) document.body.setAttribute("arco-theme", "dark");
-        else document.body.removeAttribute("arco-theme");
+        if (darkThemeMatch.matches) {
+          document.body.setAttribute("arco-theme", "dark");
+        } else {
+          document.body.removeAttribute("arco-theme");
+        }
         darkThemeMatch.onchange = handler;
         break;
       }

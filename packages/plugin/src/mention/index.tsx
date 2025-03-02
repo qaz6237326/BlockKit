@@ -23,7 +23,8 @@ export class MentionPlugin extends EditorPlugin {
 
   public renderLeaf(context: ReactLeafContext): ReactNode {
     const attrs = context.attributes || {};
-    const name = attrs[MENTION_NAME] || "";
+    const name = attrs[MENTION_NAME];
+    if (!name) return context.children;
     return (
       <Embed className="block-kit-mention-embed" context={context}>
         <span className="mention-name">@{name}</span>

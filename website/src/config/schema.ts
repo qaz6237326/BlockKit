@@ -3,6 +3,7 @@ import {
   BACKGROUND_KEY,
   BOLD_KEY,
   DIVIDER_KEY,
+  EMOJI_KEY,
   FONT_COLOR_KEY,
   FONT_SIZE_KEY,
   ITALIC_KEY,
@@ -27,4 +28,5 @@ export const schema: EditorSchema = {
   [IMAGE_KEY]: { block: true, void: true },
   [MENTION_KEY]: { void: true, inline: true },
   [DIVIDER_KEY]: { block: true, void: true },
+  [EMOJI_KEY]: { void: true, inline: true },
 };

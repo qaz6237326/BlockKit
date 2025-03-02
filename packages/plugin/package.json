@@ -26,10 +26,13 @@
   },
   "dependencies": {
     "@arco-design/web-react": "^2.64.0",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "block-kit-core": "workspace: *",
     "block-kit-delta": "workspace: *",
     "block-kit-react": "workspace: *",
-    "block-kit-utils": "workspace: *"
+    "block-kit-utils": "workspace: *",
+    "emoji-mart": "^5.6.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "22.0.1",

@@ -8,6 +8,8 @@ export { BulletListPlugin } from "./bullet-list";
 export { BULLET_LIST_KEY, BULLET_LIST_TYPE, LIST_TYPE_KEY } from "./bullet-list/types";
 export { DividerPlugin } from "./divider";
 export { DIVIDER_KEY } from "./divider/types";
+export { EmojiPlugin } from "./emoji";
+export { EMOJI_KEY } from "./emoji/types";
 export { FontColorPlugin } from "./font-color";
 export { FONT_COLOR_KEY } from "./font-color/types";
 export { FontSizePlugin } from "./font-size";

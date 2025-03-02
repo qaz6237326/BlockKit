@@ -8,6 +8,7 @@ import {
   BackgroundPlugin,
   BoldPlugin,
   DividerPlugin,
+  EmojiPlugin,
   FloatToolbar,
   FontSizePlugin,
   HeadingPlugin,
@@ -17,7 +18,6 @@ import {
   ItalicPlugin,
   LineHeightPlugin,
   LinkPlugin,
-  MentionPlugin,
   Mixin,
   QuotePlugin,
   setMountDOM,
@@ -48,7 +48,6 @@ const App: FC = () => {
       new UnderlinePlugin(instance),
       new StrikePlugin(instance),
       new ImagePlugin(instance),
-      new MentionPlugin(),
       new InlineCodePlugin(instance),
       new HeadingPlugin(instance),
       new AlignPlugin(instance),
@@ -61,7 +60,8 @@ const App: FC = () => {
       new OrderListPlugin(instance),
       new IndentPlugin(instance),
       new LinkPlugin(instance),
-      new QuotePlugin(instance)
+      new QuotePlugin(instance),
+      new EmojiPlugin(instance)
     );
     return instance;
   }, []);
@@ -101,6 +101,7 @@ const App: FC = () => {
           <Mixin.Cut></Mixin.Cut>
           <Mixin.Image></Mixin.Image>
           <Mixin.Divider></Mixin.Divider>
+          <Mixin.Emoji></Mixin.Emoji>
           <Mixin.Cut></Mixin.Cut>
           <Mixin.History></Mixin.History>
           <Mixin.Cut></Mixin.Cut>

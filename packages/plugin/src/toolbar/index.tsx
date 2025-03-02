@@ -3,6 +3,7 @@ import { Bold } from "./modules/bold";
 import { BulletList } from "./modules/bullet-list";
 import { Cut } from "./modules/cut";
 import { Divider } from "./modules/divider";
+import { Emoji } from "./modules/emoji";
 import { FontColor } from "./modules/font-color";
 import { FontSize } from "./modules/font-size";
 import { Heading } from "./modules/heading";
@@ -27,6 +28,7 @@ export const Mixin = {
   Quote,
   Image,
   Align,
+  Emoji,
   Italic,
   Strike,
   History,

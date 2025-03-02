@@ -59,8 +59,10 @@ export const normalizeDelta = (editor: Editor, delta: Delta) => {
       const nextOp = ops[index + 1];
       // 当前处理的长度需要规整为 1
       collect({ ...op, insert: op.insert.slice(0, 1) });
-      // 若下个节点不是 EOL, 则需要补充 EOL
-      if (!startsWithEOL(nextOp)) collect(cloneOp(EOL_OP));
+      // 若此节点为 Void 节点且下个节点不是 EOL, 则需要补充 EOL
+      if (editor.schema.isVoid(op) && !startsWithEOL(nextOp)) {
+        collect(cloneOp(EOL_OP));
+      }
       return void 0;
     }
     const part = op.insert.split(EOL);

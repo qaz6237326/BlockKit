@@ -52,6 +52,7 @@ export const toModelPoint = (editor: Editor, domPoint: DOMPoint) => {
   // Case 4: 光标位于 data-zero-embed 节点后时, 需要将其修正为节点前
   // 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
   // [embed[caret]]\n => [[caret]embed]\n
+  // 但这里会存在个问题, 非折叠选区时会在减少 1 的偏移
   const isEmbedZero = isEmbedZeroNode(node);
   if (isEmbedZero && offset) {
     return new Point(lineIndex, leafOffset - 1);
@@ -68,27 +69,27 @@ export const toModelPoint = (editor: Editor, domPoint: DOMPoint) => {
  */
 export const toModelRange = (editor: Editor, staticSel: StaticRange, isBackward: boolean) => {
   const { startContainer, endContainer, collapsed, startOffset, endOffset } = staticSel;
-  let anchorRangePoint: Point;
-  let focusRangePoint: Point;
+  let startRangePoint: Point;
+  let endRangePoint: Point;
   if (!collapsed) {
-    // FIX: ModelRange 必然是 start -> end, 无需根据 Backward 修正
-    const anchorDOMPoint = normalizeDOMPoint({
+    // ModelRange 必然是 start -> end, 无需根据 Backward 修正
+    const startDOMPoint = normalizeDOMPoint({
       node: startContainer,
       offset: startOffset,
     });
-    const focusDOMPoint = normalizeDOMPoint({
+    const endDOMPoint = normalizeDOMPoint({
       node: endContainer,
       offset: endOffset,
     });
-    anchorRangePoint = toModelPoint(editor, anchorDOMPoint);
-    focusRangePoint = toModelPoint(editor, focusDOMPoint);
+    startRangePoint = toModelPoint(editor, startDOMPoint);
+    endRangePoint = toModelPoint(editor, endDOMPoint);
   } else {
     const anchorDOMPoint = normalizeDOMPoint({
       node: startContainer,
       offset: startOffset,
     });
-    anchorRangePoint = toModelPoint(editor, anchorDOMPoint);
-    focusRangePoint = anchorRangePoint.clone();
+    startRangePoint = toModelPoint(editor, anchorDOMPoint);
+    endRangePoint = startRangePoint.clone();
   }
-  return new Range(anchorRangePoint, focusRangePoint, isBackward, collapsed);
+  return new Range(startRangePoint, endRangePoint, isBackward, collapsed);
 };

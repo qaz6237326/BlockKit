@@ -12,7 +12,7 @@ import type { Point } from "../modules/point";
 import type { Range } from "../modules/range";
 import type { DOMPoint, DOMRange, DOMStaticRange } from "../types";
 import { DIRECTION } from "../types";
-import { getEditableChild, getEditableChildAndIndex, getTextNode } from "./dom";
+import { getEditableChildAndIndex, getTextNode } from "./dom";
 
 /**
  * 规范化 DOMPoint
@@ -36,14 +36,15 @@ export const normalizeDOMPoint = (domPoint: DOMPoint): DOMPoint => {
 
     // If the editable child found is in front of input offset,
     // we instead seek to its end
-    // 将焦点转移到 Text 后, 新节点的 offset 为 Text 节点的首尾
+    // 若是新的 index 小于选区的 offset, 则应该认为需要从新节点末尾开始查找
+    // 注意此时的 offset 和查找的 index 都是 node 节点的子节点, 因此可以比较
     isLast = index < offset;
 
     // If the node has children, traverse until we have a leaf node.
     // Leaf nodes can be either text nodes, or other void DOM nodes.
     while (isDOMElement(node) && node.childNodes.length) {
       const i = isLast ? node.childNodes.length - 1 : 0;
-      node = getEditableChild(node, i, isLast ? DIRECTION.BACKWARD : DIRECTION.FORWARD);
+      [node] = getEditableChildAndIndex(node, i, isLast ? DIRECTION.BACKWARD : DIRECTION.FORWARD);
     }
 
     // Determine the new offset inside the text node.
@@ -114,7 +115,8 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
       // CASE1: 对同个光标位置, 且存在两个节点相邻时, 实际上是存在两种表达
       // 即 <s>1|</s><s>1</s> / <s>1</s><s>|1</s>
       // 当前计算方法的默认行为是 1, 而 Embed 节点在末尾时则需要额外的零宽字符放置光标
-      // 如果当前节点是 Embed 节点, 并且 offset 为 1, 并且存在下一个节点时
+      // 且在 Embed 选区表现会存在特殊问题, 即使光标在节点右侧, 视觉上仍会保持节点左侧
+      // 因此如果当前节点是 Embed 节点, 并且 offset 为 1, 并且存在下一个节点时
       // 需要将焦点转移到下一个节点, 并且 offset 为 0
       if (leaf.hasAttribute(ZERO_EMBED_KEY) && nodeOffset && nextLeaf) {
         return { node: nextLeaf, offset: 0 };

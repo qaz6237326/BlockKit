@@ -103,21 +103,6 @@ export const getEditableChildAndIndex = (
 };
 
 /**
- * 获取 parent 中 index 处附近的可编辑节点
- * @param parent
- * @param index
- * @param direction 优先 direction 方向的查找
- */
-export const getEditableChild = (
-  parent: DOMElement,
-  index: number,
-  direction: Direction
-): DOMNode => {
-  const [child] = getEditableChildAndIndex(parent, index, direction);
-  return child;
-};
-
-/**
  * 兼容性地获取 Text/Span 的 Text Node
  * @param node
  */

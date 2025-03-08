@@ -21,6 +21,7 @@ export const FontSize: FC = () => {
       ref={triggerRef}
       popupAlign={{ bottom: 10 }}
       trigger="click"
+      getPopupContainer={e => e.parentElement || document.body}
       popup={() => (
         <div className="block-kit-toolbar-dropdown" onClick={refreshMarks}>
           <div

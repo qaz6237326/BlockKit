@@ -38,6 +38,7 @@ export { LINE_HEIGHT_KEY } from "./line-height/types";
 export { LinkPlugin } from "./link";
 export { LINK_BLANK_KEY, LINK_KEY, LINK_TEMP_KEY } from "./link/types";
 export { MentionPlugin } from "./mention";
+export { SuggestModule } from "./mention/modules/suggest";
 export { MENTION_KEY, MENTION_NAME } from "./mention/types";
 export { OrderListPlugin } from "./order-list";
 export {

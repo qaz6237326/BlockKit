@@ -109,6 +109,7 @@ export const Link: FC<{
       onVisibleChange={setVisible}
       trigger="click"
       popupAlign={{ bottom: 10 }}
+      getPopupContainer={e => e.parentElement || document.body}
       popup={() => {
         return (
           <div className="block-kit-link-popup">

@@ -1,11 +1,13 @@
 .block-kit-mention-embed {
   display: inline-block;
+  line-height: 1.5;
 
-  .mention-name {
-    background-color: var(--color-fill-2);
-    border-radius: 3px;
+  .block-kit-mention-name {
+    background-color: rgba(var(--arcoblue-6), 0.9);
+    border-radius: 8px;
     box-sizing: border-box;
+    color: var(--color-bg-5);
     display: inline-block;
-    padding: 0 3px;
+    padding: 0 4px;
   }
 }

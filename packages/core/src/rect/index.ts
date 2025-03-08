@@ -15,7 +15,7 @@ export class Rect {
 
   /**
    * 获取光标的 Rect
-   * - 相对页面 (0, 0) 的位置
+   * - 相对屏幕 (0, 0) 的位置
    */
   public getRawCaretRect(): RectType | null {
     const selection = this.editor.selection.get();
@@ -25,7 +25,7 @@ export class Rect {
 
   /**
    * 获取指定 Point 的 Rect
-   * - 相对页面 (0, 0) 的位置
+   * - 相对屏幕 (0, 0) 的位置
    * @param point
    */
   public getRawPointRect(point: Point): RectType | null {
@@ -37,7 +37,7 @@ export class Rect {
 
   /**
    * 获取指定 Range 的 Rect
-   * - 相对页面 (0, 0) 的位置
+   * - 相对屏幕 (0, 0) 的位置
    * @param range
    */
   public getRawRangeRect(range: Range): RectType | null {
@@ -93,7 +93,7 @@ export class Rect {
 
   /**
    * 获取原始选区的 Rect
-   * - 相对页面 (0, 0) 的位置
+   * - 相对屏幕 (0, 0) 的位置
    */
   public getRawSelectionRect(): RectType | null {
     const selection = window.getSelection();

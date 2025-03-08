@@ -20,6 +20,7 @@ export const LineHeight: FC = () => {
     <Trigger
       trigger="click"
       popupAlign={{ bottom: 10 }}
+      getPopupContainer={e => e.parentElement || document.body}
       popup={() => (
         <div className="block-kit-toolbar-dropdown" onClick={refreshMarks}>
           <div

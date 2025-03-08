@@ -28,6 +28,7 @@ import {
 import { FontColorPlugin } from "block-kit-plugin";
 import { BulletListPlugin } from "block-kit-plugin";
 import { OrderListPlugin } from "block-kit-plugin";
+import { MentionPlugin } from "block-kit-plugin";
 import { BlockKit, Editable } from "block-kit-react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
@@ -61,7 +62,8 @@ const App: FC = () => {
       new IndentPlugin(instance),
       new LinkPlugin(instance),
       new QuotePlugin(instance),
-      new EmojiPlugin(instance)
+      new EmojiPlugin(instance),
+      new MentionPlugin(instance)
     );
     return instance;
   }, []);

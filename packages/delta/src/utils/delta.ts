@@ -68,6 +68,7 @@ export const formatEOL = (text: string) => {
 
 /**
  * 判断是否为 EOL Op
+ * @param op
  */
 export const isEOLOp = (op: Op | null) => {
   return op && isInsertOp(op) && op.insert === EOL;
@@ -75,7 +76,16 @@ export const isEOLOp = (op: Op | null) => {
 
 /**
  * 判断是否以 EOL 起始
+ * @param op
  */
 export const startsWithEOL = (op: Op | null) => {
   return op && isInsertOp(op) && op.insert.startsWith(EOL);
+};
+
+/**
+ * 从 Delta 中提取文本
+ * @param delta
+ */
+export const deltaToText = (delta: Delta) => {
+  return delta.ops.map(op => op.insert || "").join("");
 };

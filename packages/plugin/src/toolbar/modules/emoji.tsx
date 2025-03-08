@@ -15,6 +15,8 @@ export const Emoji: FC = () => {
   return (
     <Trigger
       className="menu-toolbar-emoji-trigger"
+      popupAlign={{ bottom: 10 }}
+      getPopupContainer={e => e.parentElement || document.body}
       popup={() => (
         <Picker
           theme={document.body.getAttribute("arco-theme") === "dark" ? "dark" : "light"}

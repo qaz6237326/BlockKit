@@ -47,6 +47,7 @@ export const FontColor: FC = () => {
     <Trigger
       trigger="click"
       popupAlign={{ bottom: 10 }}
+      getPopupContainer={e => e.parentElement || document.body}
       popup={() => (
         <div className="block-kit-toolbar-dropdown block-kit-color-picker" onClick={refreshMarks}>
           <div className="kit-color-picker-label">字体颜色</div>

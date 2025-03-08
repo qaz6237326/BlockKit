@@ -32,6 +32,7 @@ export const KEY_CODE = {
   I: 73,
   K: 75,
   U: 85,
+  D2: 50,
 };
 
 /** Truly */

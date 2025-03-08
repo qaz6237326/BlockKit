@@ -71,7 +71,9 @@ export class EventBus {
     once: boolean
   ) {
     const handler: Handler<T>[] = this.listeners[key] || [];
-    !handler.some(item => item.listener === listener) && handler.push({ listener, priority, once });
+    if (!handler.some(item => item.listener === listener)) {
+      handler.push({ listener, priority, once });
+    }
     handler.sort((a, b) => a.priority - b.priority);
     this.listeners[key] = <Listeners[T]>handler;
   }

@@ -25,7 +25,7 @@ export const Void: FC<VoidProps> = props => {
   const leaf = context.leafState;
 
   const onMouseDown = () => {
-    // Fix: 修复选区偏移量, leaf 的长度可能 > 1, 而 DOM 节点的长度仅为 1
+    // FIX: 修复选区偏移量, leaf 的长度可能 > 1, 而 DOM 节点的长度仅为 1
     const point = new Point(leaf.parent.index, leaf.offset + 1);
     const range = new Range(point, point.clone());
     editor.selection.set(range, true);

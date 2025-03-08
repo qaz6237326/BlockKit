@@ -57,8 +57,7 @@ export class Clipboard {
       fragment && delta.ops.push(...fragment);
     }
     if (!delta.ops.length) return void 0;
-    this.copyModule.copy(delta);
-    this.editor.selection.focus();
+    this.copyModule.copy(delta, event);
   }
 
   /**

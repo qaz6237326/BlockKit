@@ -85,4 +85,18 @@ export class Clipboard {
     Clipboard.execCopyCommand({ [TEXT_PLAIN]: text });
     return true;
   }
+
+  /**
+   * 以剪贴板事件写入数据
+   * @param data
+   * @param event
+   */
+  public static writeDataTransfer(data: ClipboardTransfer, event: ClipboardEvent): boolean {
+    for (const [key, value] of Object.entries(data)) {
+      event.clipboardData && event.clipboardData.setData(key, value);
+    }
+    event.stopPropagation();
+    event.preventDefault();
+    return true;
+  }
 }

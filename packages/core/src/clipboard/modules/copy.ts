@@ -18,7 +18,7 @@ export class Copy {
    * 复制 Delta 到剪贴板
    * @param delta
    */
-  public copy(delta: Delta) {
+  public copy(delta: Delta, event?: ClipboardEvent) {
     const rootNode = this.serialize(delta);
     const context: CopyContext = { delta: delta, html: rootNode };
     this.editor.plugin.call(CALLER_TYPE.WILL_SET_CLIPBOARD, context);
@@ -31,7 +31,12 @@ export class Copy {
       [TEXT_DOC]: editorText,
     };
     this.editor.logger.info("Set Clipboard Data:", dataTransfer);
-    Clipboard.execCopyCommand(dataTransfer);
+    if (event) {
+      Clipboard.writeDataTransfer(dataTransfer, event);
+    } else {
+      Clipboard.execCopyCommand(dataTransfer);
+      this.editor.selection.focus();
+    }
   }
 
   /**

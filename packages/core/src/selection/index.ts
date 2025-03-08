@@ -172,7 +172,9 @@ export class Selection {
     if (this.editor.state.isFocused()) {
       return void 0;
     }
-    this.editor.getContainer().focus();
+    // FIX: preventScroll 避免聚焦时自动滚动
+    // https://caniuse.com/?search=preventScroll
+    this.editor.getContainer().focus({ preventScroll: true });
     this.current && this.updateDOMSelection(true);
   }
 

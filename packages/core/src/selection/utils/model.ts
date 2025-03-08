@@ -52,7 +52,7 @@ export const toModelPoint = (editor: Editor, domPoint: DOMPoint) => {
   // Case 4: 光标位于 data-zero-embed 节点后时, 需要将其修正为节点前
   // 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
   // [embed[caret]]\n => [[caret]embed]\n
-  // 但这里会存在个问题, 非折叠选区时会在减少 1 的偏移
+  // 但这里会存在个问题, 非折叠选区时会在减少 1 的偏移, 需要判断折叠与末尾节点
   const isEmbedZero = isEmbedZeroNode(node);
   if (isEmbedZero && offset) {
     return new Point(lineIndex, leafOffset - 1);

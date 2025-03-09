@@ -12,19 +12,39 @@ import type { Point } from "../modules/point";
 import type { Range } from "../modules/range";
 import type { DOMPoint, DOMRange, DOMStaticRange } from "../types";
 import { DIRECTION } from "../types";
-import { getEditableChildAndIndex, getTextNode } from "./dom";
+import { getEditableChildAndIndex, getTextNode, isEmbedZeroNode, isNotEditableNode } from "./dom";
 
 /**
  * 规范化 DOMPoint
  * @param domPoint DOM 节点
+ * @param isCollapsed 是否折叠
+ * @param isEndNode 是否是末尾节点
  */
-export const normalizeDOMPoint = (domPoint: DOMPoint): DOMPoint => {
+export const normalizeDOMPoint = (
+  domPoint: DOMPoint,
+  isCollapsed?: boolean,
+  isEndNode?: boolean
+): DOMPoint => {
   let { node, offset } = domPoint;
 
   // If it's an element node, its offset refers to the index of its children
   // 此处说明节点非 Text 节点, 需要将选区转移到 Text 节点
-  // 例如 行节点、Void 节点
+  // 例如 行节点、Void、Leaf 节点
   if (isDOMElement(node) && node.childNodes.length) {
+    // COMPAT: 特殊判断选区节点在 ContentEditable 上的情况
+    // 在 Embed 情况下可以直接取得前向节点, 减少后续的查找消耗
+    if (
+      isNotEditableNode(node) &&
+      node.previousElementSibling &&
+      isEmbedZeroNode(node.previousElementSibling.firstChild)
+    ) {
+      // 当拖蓝选区在 Embed 节点上时, 需要确定是否将内容节点完全覆盖
+      // 强制选择存在两种情况, 正向拖选其为末尾时, 以及反向拖选其为起始时
+      const turning = !isCollapsed && isEndNode ? 1 : 0;
+      return { node: node.previousElementSibling.firstChild, offset: turning };
+    }
+
+    // 选区节点的偏移可以是最右侧的插值位置, offset 则为其之前的节点总数
     let isLast = offset === node.childNodes.length;
     let index = isLast ? offset - 1 : offset;
     // including comment nodes, so try to find the right text child node.

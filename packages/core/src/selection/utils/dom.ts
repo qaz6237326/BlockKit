@@ -187,3 +187,16 @@ export const isEmbedZeroNode = (node: Node | null) => {
     ? node.hasAttribute(ZERO_EMBED_KEY)
     : node.parentElement.hasAttribute(ZERO_EMBED_KEY);
 };
+
+/**
+ * 节点是否是不可编辑节点
+ * @param node
+ */
+export const isNotEditableNode = (node: Node | null) => {
+  if (!node || !node.parentElement) {
+    return false;
+  }
+  return node instanceof HTMLElement
+    ? node.getAttribute(EDITABLE) === "false"
+    : node.parentElement.getAttribute(EDITABLE) === "false";
+};

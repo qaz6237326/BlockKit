@@ -11,7 +11,12 @@ import { normalizeDOMPoint } from "./native";
  * @param editor
  * @param domPoint
  */
-export const toModelPoint = (editor: Editor, domPoint: DOMPoint) => {
+export const toModelPoint = (
+  editor: Editor,
+  domPoint: DOMPoint,
+  isCollapsed?: boolean,
+  isEndNode?: boolean
+) => {
   const { offset, node } = domPoint;
 
   const leafNode = getLeafNode(node);
@@ -52,12 +57,21 @@ export const toModelPoint = (editor: Editor, domPoint: DOMPoint) => {
   // Case 4: 光标位于 data-zero-embed 节点后时, 需要将其修正为节点前
   // 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
   // [embed[caret]]\n => [[caret]embed]\n
-  // 但这里会存在个问题, 非折叠选区时会在减少 1 的偏移, 需要判断折叠与末尾节点
   const isEmbedZero = isEmbedZeroNode(node);
   if (isEmbedZero && offset) {
+    // 非折叠选区时会在减少 1 的偏移的问题, 需要判断折叠与末尾节点
+    // 这里必须在 offset 存在值再判断, 否则会导致连续的 Embed 选区向后扩展
+    if (!isCollapsed && isEndNode) {
+      return new Point(lineIndex, leafOffset);
+    }
     return new Point(lineIndex, leafOffset - 1);
   }
-
+  // Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上
+  // 若不校正会导致选区越界, 会导致拖拽选区时出现偏移问题
+  // [embed[caret > 1]] => [embed[caret = 1]]
+  if (leafModel && leafModel.embed && offset > 1) {
+    return new Point(lineIndex, leafOffset - offset);
+  }
   return new Point(lineIndex, leafOffset);
 };
 
@@ -71,18 +85,14 @@ export const toModelRange = (editor: Editor, staticSel: StaticRange, isBackward:
   const { startContainer, endContainer, collapsed, startOffset, endOffset } = staticSel;
   let startRangePoint: Point;
   let endRangePoint: Point;
+  // ModelRange 必然是 Start -> End, 无需根据 Backward 修正
   if (!collapsed) {
-    // ModelRange 必然是 start -> end, 无需根据 Backward 修正
-    const startDOMPoint = normalizeDOMPoint({
-      node: startContainer,
-      offset: startOffset,
-    });
-    const endDOMPoint = normalizeDOMPoint({
-      node: endContainer,
-      offset: endOffset,
-    });
+    const startPoint = { node: startContainer, offset: startOffset };
+    const endPoint = { node: endContainer, offset: endOffset };
+    const startDOMPoint = normalizeDOMPoint(startPoint);
+    const endDOMPoint = normalizeDOMPoint(endPoint, false, true);
     startRangePoint = toModelPoint(editor, startDOMPoint);
-    endRangePoint = toModelPoint(editor, endDOMPoint);
+    endRangePoint = toModelPoint(editor, endDOMPoint, false, true);
   } else {
     const anchorDOMPoint = normalizeDOMPoint({
       node: startContainer,
@@ -91,5 +101,6 @@ export const toModelRange = (editor: Editor, staticSel: StaticRange, isBackward:
     startRangePoint = toModelPoint(editor, anchorDOMPoint);
     endRangePoint = startRangePoint.clone();
   }
-  return new Range(startRangePoint, endRangePoint, isBackward, collapsed);
+  // FIX: 修正选区折叠状态, 以 Range 的值计算为准
+  return new Range(startRangePoint, endRangePoint, isBackward);
 };

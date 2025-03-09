@@ -1627,5 +1627,27 @@ for (const leaf of leaves) {
 - <https://github.com/ianstormtaylor/slate/blob/9a21251/packages/slate-dom/src/utils/dom.ts#L105>
 
 
-对于`Void`节点来说这里更加复杂，具体来说则是评论节点、非编辑节点、空子节点等。因此主要差异在于`getEditableChildAndIndex`的方法中，这里就是在查找子节点时，分别尝试正向和反向查找，以此来尝试找到可编辑节点。
+对于`Embed`节点来说这里更加复杂，具体来说则是注释节点、非编辑节点、空子节点等。因此主要差异在于`getEditableChildAndIndex`的方法中，这里就是在查找子节点时，分别尝试正向和反向查找，以此来尝试找到可编辑节点。
+
+在`slate`中的`inline`节点是在空节点内放置`zero-width`字符，以此来实现节点本身的选中状态。而如果独占一行的时候，前后都会生成零宽字符来放置光标。我们本身的节点是不会存在零宽字符来选中本身节点的，内部自然不会存在零宽字符，外部的零宽字符则是用来放置光标，这都是符合各自的语义设计的。
+
+```js
+// slate
+<div data-leaf="true">
+  <div contenteditable="false">
+    <ZeroSpace></ZeroSpace>
+    <span>Mention</span>
+  </div>
+</div>
+
+// block-kit
+<div data-leaf="true">
+  <ZeroSpace></ZeroSpace>
+  <div contenteditable="false">
+    <span>Mention</span>
+  </div>
+</div>
+```
+
+当拖拽选区的时候，此时如果没有拖过`Embed`节点，那么浏览器选区的放置则是`contenteditable="false"`的节点。那么从上述就能够看出来，在`slate`中查找节点的时候，是应该正常向内部查找，而我们实际上应该查找平级的节点，因此这里的实现是有差异的。当然如果选区落点在`data-leaf`节点上的话，向内查找自然是没有问题的。
 

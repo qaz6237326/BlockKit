@@ -134,7 +134,7 @@ export const INIT = new Delta({
     { insert: "唤醒" },
     { insert: "Mention", attributes: { "inline-code": "true" } },
     { insert: "结构: " },
-    { insert: " ", attributes: { mention: "true", name: "Czy" } },
+    { insert: " ", attributes: { mention: "true", name: "Alice" } },
     { insert: "\n" },
   ],
 });

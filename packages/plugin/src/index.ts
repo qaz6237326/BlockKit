@@ -51,7 +51,7 @@ export { QuotePlugin } from "./quote";
 export { QUOTE_KEY } from "./quote/types";
 export { SelectionHOC } from "./shared/components/selection";
 export { SelectionPlugin } from "./shared/modules/selection";
-export { getMountDOM, setMountDOM } from "./shared/utils/dom";
+export { getMountDOM, preventContextEvent, scrollIfNeeded, setMountDOM } from "./shared/utils/dom";
 export { isEmptyLine, isKeyCode } from "./shared/utils/is";
 export { StrikePlugin } from "./strike/index";
 export { STRIKE_KEY } from "./strike/types";

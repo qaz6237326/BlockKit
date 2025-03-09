@@ -1,20 +1,21 @@
-import type { Editor, Rect, SelectionChangeEvent } from "block-kit-core";
-import { EDITOR_EVENT, Point, Range } from "block-kit-core";
+import type { Editor, SelectionChangeEvent } from "block-kit-core";
+import { EDITOR_EVENT, Point, Range, relativeTo } from "block-kit-core";
 import { Delta, deltaToText } from "block-kit-delta";
 import { Bind, KEY_CODE } from "block-kit-utils";
 import ReactDOM from "react-dom";
 
 import { getMountDOM } from "../../shared/utils/dom";
 import { isKeyCode } from "../../shared/utils/is";
+import { SUGGEST_OFFSET } from "../utils/constant";
 import { Suggest } from "../view/suggest";
 
 export class SuggestModule {
-  protected point: Point;
-  protected rect: Rect | null;
-  protected isMountSuggest: boolean;
-  protected mountSuggestNode: HTMLElement | null;
+  public point: Point;
+  public isMountSuggest: boolean;
+  public mountSuggestNode: HTMLElement | null;
+  public rect: { top: number; left: number } | null;
 
-  constructor(protected editor: Editor) {
+  constructor(public editor: Editor) {
     this.rect = null;
     this.isMountSuggest = false;
     this.mountSuggestNode = null;
@@ -23,25 +24,38 @@ export class SuggestModule {
   }
 
   public destroy(): void {
-    this.mountSuggestNode && this.mountSuggestNode.remove();
-    this.mountSuggestNode = null;
+    this.unmountSuggestPanel();
     this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onKeydown);
     this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
   }
 
   @Bind
-  protected onKeydown(event: KeyboardEvent): void {
-    if (!isKeyCode(event, KEY_CODE.D2) || !event.shiftKey) return void 0;
-    const sel = this.editor.selection.get();
-    const rect = sel && this.editor.rect.getCaretRect();
-    if (!rect || !sel) return void 0;
-    this.rect = rect;
-    this.point = sel.start.clone();
-    this.editor.event.on(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
+  public onKeydown(event: KeyboardEvent): void {
+    if (isKeyCode(event, KEY_CODE.D2) && event.shiftKey) {
+      const sel = this.editor.selection.get();
+      const caretRect = this.editor.rect.getRawCaretRect();
+      if (!caretRect || !sel) return void 0;
+      const editorRect = this.editor.rect.getEditorRect();
+      const rect = relativeTo(caretRect, editorRect);
+      // 130 是 CSS 预设的面板高度
+      if (caretRect.bottom + 150 <= window.innerHeight) {
+        // 放置于下方
+        rect.top = rect.bottom + SUGGEST_OFFSET;
+      } else {
+        // 放置于上方
+        rect.top = rect.top - 130 - SUGGEST_OFFSET;
+      }
+      this.rect = { top: rect.top, left: rect.left };
+      this.point = sel.start.clone();
+      this.editor.event.on(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
+    }
+    if (this.isMountSuggest && isKeyCode(event, KEY_CODE.ESC)) {
+      this.unmountSuggestPanel();
+    }
   }
 
   @Bind
-  protected onSelectionChange(event: SelectionChangeEvent): void {
+  public onSelectionChange(event: SelectionChangeEvent): void {
     const { current } = event;
     if (
       !current ||
@@ -50,16 +64,15 @@ export class SuggestModule {
       current.start.offset <= this.point.offset
     ) {
       this.unmountSuggestPanel();
-      this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
       return void 0;
     }
-    const ops = this.editor.collect.getFragment(new Range(this.point, current.start));
+    const ops = this.editor.collect.getFragment(new Range(this.point, current.end));
     if (!ops) return void 0;
     const text = deltaToText(new Delta(ops));
     this.mountSuggestPanel(text.slice(1));
   }
 
-  protected mountSuggestPanel(text: string = "") {
+  public mountSuggestPanel(text: string = "") {
     if (!this.rect) return void 0;
     if (!this.mountSuggestNode) {
       this.mountSuggestNode = document.createElement("div");
@@ -70,14 +83,15 @@ export class SuggestModule {
     const left = this.rect.left;
     const dom = this.mountSuggestNode!;
     this.isMountSuggest = true;
-    ReactDOM.render(<Suggest top={top} left={left} text={text} editor={this.editor} />, dom);
+    ReactDOM.render(<Suggest controller={this} top={top} left={left} text={text} />, dom);
   }
 
-  protected unmountSuggestPanel() {
+  public unmountSuggestPanel() {
     if (this.isMountSuggest && this.mountSuggestNode) {
       ReactDOM.unmountComponentAtNode(this.mountSuggestNode);
     }
     this.mountSuggestNode && this.mountSuggestNode.remove();
+    this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
     this.mountSuggestNode = null;
     this.isMountSuggest = false;
   }

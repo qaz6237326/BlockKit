@@ -1651,3 +1651,88 @@ for (const leaf of leaves) {
 
 当拖拽选区的时候，此时如果没有拖过`Embed`节点，那么浏览器选区的放置则是`contenteditable="false"`的节点。那么从上述就能够看出来，在`slate`中查找节点的时候，是应该正常向内部查找，而我们实际上应该查找平级的节点，因此这里的实现是有差异的。当然如果选区落点在`data-leaf`节点上的话，向内查找自然是没有问题的。
 
+## 表格双侧光标表现
+在实现表格节点时，`HTML`中`Table`元素选区存在怪异的表现，无论是在`slate`、`lexical`、`prosemirror`都存在类似的问题。如下所示，当实现`fixed`表格之后，点击表格右侧空白区域，光标会落在表格最右列后，若是点击光标上方，光标则会落在最左侧前。
+
+```html
+<style>table td { border: 1px solid #eee; }</style>
+<div contenteditable style="outline: none; padding: 20px;">
+  <table style="border-collapse: collapse; border-spacing: 0; table-layout: fixed">
+    <colgroup>
+      <col width="100" />
+      <col width="100" />
+    </colgroup>
+    <tbody>
+      <tr><td>1</td><td>2</td></tr>
+      <tr><td>3</td><td>4</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+其实这个表现只在`Chrome`和`Safari`中存在，`Firefox`中是不存在这个表现的，猜测是`Webkit`内核的实现问题。先来研究最右列的光标问题，在`plate`中，额外多定义了一个`100%`的`col`元素，这样就可以将表现跟`Firefox`对齐，点击空白处能够自动对齐焦点到平行的单元格内。
+
+```html
+<style>table td { border: 1px solid #eee; }</style>
+<div contenteditable style="outline: none; padding: 20px;" on>
+  <table style="border-collapse: collapse; border-spacing: 0; table-layout: fixed;">
+    <colgroup>
+      <col width="100" />
+      <col width="100" />
+    </colgroup>
+    <tbody>
+      <tr><td>1</td><td>2</td></tr>
+      <tr><td>3</td><td>4</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+其实我们可以很轻易地发现，这是由于选区变换导致的问题。那么我们也可以通过避免触发选区变换来解决问题，例如下面的例子中的`MouseDown`事件处理，通过`preventDefault`来阻止默认行为即可，但是需要注意只能阻止当前节点的选区变换，单元格的事件需要正常处理。
+
+最理想情况的下，点击都落在该节点的时候，两种选区问题都可以解决。然而在编辑器的复杂`DOM`结构下很容易出现问题，例如在下面的例子中如果额外嵌套了一层`div`节点的话，在这个节点阻止默认行为就只能解决在表格右侧点击的问题了。
+
+```html
+<style>table td { border: 1px solid #eee; }</style>
+<div contenteditable style="outline: none; padding: 20px;" id="$1">
+  <table style="border-collapse: collapse; border-spacing: 0; table-layout: fixed">
+    <colgroup>
+      <col width="100" />
+      <col width="100" />
+    </colgroup>
+    <tbody>
+      <tr><td>1</td><td>2</td></tr>
+      <tr><td>3</td><td>4</td></tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  $1.addEventListener("mousedown", (e) => {
+    if (e.currentTarget === e.target) {
+      e.preventDefault();
+    }
+  });
+</script>
+```
+
+在偶然的条件下，我发现如果在`table`元素上设置`position: relative`的话，就可以避免表格节点两侧的光标展现。需要注意的是这里仅仅是避免了表现，实际选区还是存在的，因此这种额外的`case`应该需要在编辑器的选区变换时处理。
+
+例如在`slate(1022682)`中，最外层的节点是`table`元素，此时点击后会导致选区穿透。表现是`Selection`对象的目标节点是整个编辑器元素，因此最好是将其套一层额外的`div`，此时选区变换处理就可以特判到该节点，且此时在编辑器的`normalize`时就可以正常查找到目标节点。
+
+```html
+<style>table td { border: 1px solid #eee; }</style>
+<div contenteditable style="outline: none; padding: 20px;">
+  <table style="border-collapse: collapse; border-spacing: 0; table-layout: fixed; position: relative;">
+    <colgroup>
+      <col width="100" />
+      <col width="100" />
+    </colgroup>
+    <tbody>
+      <tr><td>1</td><td>2</td></tr>
+      <tr><td>3</td><td>4</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+

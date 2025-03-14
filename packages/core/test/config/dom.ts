@@ -6,6 +6,7 @@ import {
   LEAF_KEY,
   LEAF_STRING,
   NODE_KEY,
+  ZERO_EMBED_KEY,
   ZERO_ENTER_KEY,
   ZERO_SPACE_KEY,
   ZERO_SYMBOL,
@@ -37,7 +38,7 @@ export const createLineDOM = (children: HTMLElement[]) => {
   return dom;
 };
 
-export const createLeafDOM = (child: HTMLElement) => {
+export const createLeafDOM = (child: HTMLElement | DocumentFragment) => {
   const dom = document.createElement("span");
   dom.className = "block-kit-leaf";
   dom.setAttribute(LEAF_KEY, "true");
@@ -102,4 +103,18 @@ export const xmlToString = (xml: Node | null): string | null => {
     console.log("XmlToString Error: ", error);
     return null;
   }
+};
+
+export const createEmbedDOM = (element: HTMLElement) => {
+  const zero = createZeroSpaceDOM();
+  zero.setAttribute(ZERO_EMBED_KEY, "true");
+  const fragment = document.createDocumentFragment();
+  fragment.appendChild(zero);
+  const notEditable = document.createElement("span");
+  notEditable.setAttribute("contenteditable", "false");
+  notEditable.setAttribute("data-void", "true");
+  notEditable.appendChild(element);
+  notEditable.style.display = "inline-block";
+  fragment.appendChild(notEditable);
+  return fragment;
 };

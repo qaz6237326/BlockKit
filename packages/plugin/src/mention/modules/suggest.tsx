@@ -37,13 +37,14 @@ export class SuggestModule {
       if (!caretRect || !sel) return void 0;
       const editorRect = this.editor.rect.getEditorRect();
       const rect = relativeTo(caretRect, editorRect);
-      // 130 是 CSS 预设的面板高度
-      if (caretRect.bottom + 150 <= window.innerHeight) {
+      // 这里是 CSS 预设的面板高度
+      const PANEL_HEIGHT = 150;
+      if (caretRect.bottom + PANEL_HEIGHT <= window.innerHeight) {
         // 放置于下方
         rect.top = rect.bottom + SUGGEST_OFFSET;
       } else {
         // 放置于上方
-        rect.top = rect.top - 130 - SUGGEST_OFFSET;
+        rect.top = rect.top - PANEL_HEIGHT - SUGGEST_OFFSET;
       }
       this.rect = { top: rect.top, left: rect.left };
       this.point = sel.start.clone();

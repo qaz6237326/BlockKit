@@ -10,6 +10,10 @@ export class OpIterator {
   /** Op 偏移 */
   protected offset: number;
 
+  /**
+   * 构造函数
+   * @param ops
+   */
   constructor(ops: Op[]) {
     this.ops = ops;
     this.index = 0;

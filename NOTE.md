@@ -1160,7 +1160,7 @@ editor.history.stack[index1] = { id: id1, delta };
 editor.history.stack.splice(index2, 1);
 ```
 
-在这里需要先看看`transform`的具体含义，如果是在协同中的话，`b'=a.t(b)`的意思是`a`和`b`都是从相同的`draft`分支出来的，而那么`b'`就是假设`a`已经应用了，此时`b`需要在`a`的基础上变换出`b'`才能直接应用，我们可以简单理解为`tf`解决了`a`操作对`b`操作造成的影响。
+在这里需要先看看`transform`的具体含义，如果是在协同中的话，`b'=a.t(b)`的意思是`a`和`b`都是从相同的`draft`分支出来的。而那么`b'`就是假设`a`已经应用了，此时`b`需要在`a`的基础上变换出`b'`才能直接应用，我们可以简单理解为`tf`解决了`a`操作对`b`操作造成的影响。
 
 那么先前的`undoable`实现，需要将历史所有的`undo`栈处理一遍，这里的假设是`undoable op`是早已存在`draft`中。也就是说此时即使`undo`栈内的所有`op`都以执行，那么此时的`draft`中还是存在`undoable op`。那么由于这个假设存在，就会将所有历史数据影响到，由此需要做变换。
 
@@ -1679,6 +1679,7 @@ for (const leaf of leaves) {
     <colgroup>
       <col width="100" />
       <col width="100" />
+      <col style="100%" />
     </colgroup>
     <tbody>
       <tr><td>1</td><td>2</td></tr>
@@ -1717,7 +1718,7 @@ for (const leaf of leaves) {
 
 在偶然的条件下，我发现如果在`table`元素上设置`position: relative`的话，就可以避免表格节点两侧的光标展现。需要注意的是这里仅仅是避免了表现，实际选区还是存在的，因此这种额外的`case`应该需要在编辑器的选区变换时处理。
 
-例如在`slate(1022682)`中，最外层的节点是`table`元素，此时点击后会导致选区穿透。表现是`Selection`对象的目标节点是整个编辑器元素，因此最好是将其套一层额外的`div`，此时选区变换处理就可以特判到该节点，且此时在编辑器的`normalize`时就可以正常查找到目标节点。
+例如在`slate(1022682)`中，最外层的节点是`table`元素，此时点击后会导致选区穿透。表现是`Selection`对象的目标节点是整个编辑器元素，因此最好是将其套一层额外的`div`，此时选区变换就可以直接特判到该节点，而不必需要在`normalize`时进行额外的查找。
 
 ```html
 <style>table td { border: 1px solid #eee; }</style>

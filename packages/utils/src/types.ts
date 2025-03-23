@@ -187,6 +187,15 @@ export namespace Object {
       ? `${Key}.${Flatten<T[Key]>}`
       : `${Key}`
     : never;
+  /**
+   * NonNullable
+   * @example NonNullable<{ a?: 1 }> => { a: 1 }
+   * @example NonNullable<{ a: 1 | undefined }> => { a: 1 }
+   * @example NonNullable<{ a: 1 | undefined }> => { a: 1 }
+   */
+  export type NonNullable<T extends O.Unknown> = {
+    [K in keyof T]-?: P.NonNullable<T[K]>;
+  };
 }
 
 /**

@@ -57,7 +57,7 @@ export class Editor {
    * 构造函数
    * @param options
    */
-  constructor(options: EditorOptions = {}) {
+  public constructor(options: EditorOptions = {}) {
     const { delta = new Delta(BLOCK_LIKE), logLevel = LOG_LEVEL.ERROR, schema = {} } = options;
     this.container = null;
     this.logger = new Logger(logLevel);

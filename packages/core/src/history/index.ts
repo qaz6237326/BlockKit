@@ -192,6 +192,7 @@ export class History {
    */
   @Bind
   protected onKeyDown(event: KeyboardEvent) {
+    // 事件由容器 DOM 分发, 无需处理焦点
     if (isUndo(event)) {
       this.undo();
       event.preventDefault();

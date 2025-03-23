@@ -7,7 +7,7 @@ import type { FC } from "react";
 
 import { EMOJI_KEY } from "../../emoji/types";
 import { EmojiIcon } from "../../shared/icons/emoji";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 export const Emoji: FC = () => {
   const { editor } = useToolbarContext();

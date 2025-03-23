@@ -18,8 +18,8 @@ import { Quote } from "./modules/quote";
 import { Strike } from "./modules/strike";
 import { Underline } from "./modules/underline";
 
+export { Toolbar } from "./context/basic";
 export { FloatToolbar } from "./context/float";
-export { Toolbar } from "./context/provider";
 
 export const Mixin = {
   Cut,

@@ -6,7 +6,7 @@ import type { FC } from "react";
 
 import { HEADING_KEY } from "../../heading/types";
 import { TextIcon } from "../../shared/icons/text";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 const MAP: O.Map<JSX.Element> = {
   h1: <IconH1 />,

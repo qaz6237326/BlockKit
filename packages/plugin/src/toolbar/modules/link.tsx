@@ -9,7 +9,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 
 import { LINK_BLANK_KEY, LINK_KEY, LINK_TEMP_KEY } from "../../link/types";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 export const Link: FC<{
   filterXSS?: (v: string) => string;

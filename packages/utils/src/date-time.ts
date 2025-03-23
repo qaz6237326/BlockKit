@@ -5,11 +5,11 @@ export class DateTime extends Date {
   /**
    * 构造函数
    */
-  constructor();
-  constructor(date: Date);
-  constructor(timestamp: number);
-  constructor(dateTimeStr: string);
-  constructor(
+  public constructor();
+  public constructor(date: Date);
+  public constructor(timestamp: number);
+  public constructor(dateTimeStr: string);
+  public constructor(
     year: number,
     month: number,
     date?: number,
@@ -18,7 +18,7 @@ export class DateTime extends Date {
     seconds?: number,
     ms?: number
   );
-  constructor(
+  public constructor(
     p1?: Date | number | string,
     p2?: number,
     p3?: number,

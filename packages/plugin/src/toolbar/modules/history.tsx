@@ -5,7 +5,7 @@ import { useMemoFn } from "block-kit-utils/dist/es/hooks";
 import type { FC } from "react";
 import { Fragment, useEffect, useState } from "react";
 
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 export const History: FC = () => {
   const { editor, refreshMarks } = useToolbarContext();

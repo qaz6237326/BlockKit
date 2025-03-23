@@ -6,7 +6,7 @@ export const LOG_LEVEL = {
 } as const;
 
 export class Logger {
-  constructor(protected level: number) {}
+  public constructor(protected level: number) {}
 
   set(level: number) {
     this.level = level;

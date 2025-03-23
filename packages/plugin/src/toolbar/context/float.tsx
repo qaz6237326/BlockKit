@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { getMountDOM } from "../../shared/utils/dom";
-import { Toolbar } from "./provider";
+import { Toolbar } from "./basic";
 
 export const FloatToolbar: FC<{
   className?: string;

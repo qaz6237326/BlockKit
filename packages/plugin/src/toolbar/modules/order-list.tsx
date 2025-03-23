@@ -4,7 +4,7 @@ import type { FC } from "react";
 
 import { ORDER_LIST_KEY } from "../../order-list/types";
 import { isOrderList } from "../../order-list/utils/is";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 export const OrderList: FC = () => {
   const { keys, refreshMarks, editor } = useToolbarContext();

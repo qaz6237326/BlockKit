@@ -6,7 +6,7 @@ import { useRef } from "react";
 
 import { FONT_SIZE_KEY } from "../../font-size/types";
 import { FontSizeIcon } from "../../shared/icons/font-size";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 const STEP = Array(10)
   .fill(null)

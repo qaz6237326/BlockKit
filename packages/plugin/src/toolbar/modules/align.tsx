@@ -11,7 +11,7 @@ import type { FC } from "react";
 
 import { ALIGN_KEY } from "../../align/types";
 import { JustifyIcon } from "../../shared/icons/justify";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 const MAP: O.Map<JSX.Element> = {
   left: <IconAlignLeft />,

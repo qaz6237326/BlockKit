@@ -3,7 +3,7 @@ import { cs, TRULY } from "block-kit-utils";
 import type { FC } from "react";
 
 import { QUOTE_KEY } from "../../quote/types";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 export const Quote: FC = () => {
   const { keys, refreshMarks, editor } = useToolbarContext();

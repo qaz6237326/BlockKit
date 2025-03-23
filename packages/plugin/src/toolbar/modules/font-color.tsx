@@ -8,7 +8,7 @@ import type { FC } from "react";
 import { BACKGROUND_KEY } from "../../background/types";
 import { FONT_COLOR_KEY } from "../../font-color/types";
 import { FontColorIcon } from "../../shared/icons/font-color";
-import { useToolbarContext } from "../context/store";
+import { useToolbarContext } from "../context/provider";
 
 const COLOR = [
   "",

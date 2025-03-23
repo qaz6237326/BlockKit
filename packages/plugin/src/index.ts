@@ -53,6 +53,8 @@ export { SelectionHOC } from "./shared/components/selection";
 export { SelectionPlugin } from "./shared/modules/selection";
 export { getMountDOM, preventContextEvent, scrollIfNeeded, setMountDOM } from "./shared/utils/dom";
 export { isEmptyLine, isKeyCode } from "./shared/utils/is";
+export { Shortcut } from "./shortcut";
+export type { ShortcutFunc, ShortcutFuncMap } from "./shortcut/types";
 export { StrikePlugin } from "./strike/index";
 export { STRIKE_KEY } from "./strike/types";
 export { FloatToolbar, Mixin, Toolbar } from "./toolbar";

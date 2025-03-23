@@ -173,7 +173,7 @@ export class Collect {
   }
 
   /**
-   * 选区变化
+   * 选区变化事件
    * @param event
    */
   @Bind

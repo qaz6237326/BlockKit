@@ -7,6 +7,7 @@ import { cs } from "block-kit-utils";
 import { useMemoFn } from "block-kit-utils/dist/es/hooks";
 import { forwardRef, useEffect, useState } from "react";
 
+import { PLUGIN_EVENTS } from "../../shared/utils/event";
 import type { ToolbarProps } from "../types";
 import { filterLineMarkMap, filterMarkMap } from "../utils/marks";
 import { ToolbarContext } from "./provider";
@@ -44,8 +45,10 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => 
 
   useEffect(() => {
     editor.event.on(EDITOR_EVENT.SELECTION_CHANGE, refreshMarks);
+    editor.event.on(PLUGIN_EVENTS.SHORTCUT_MARKS_CHANGE, refreshMarks);
     return () => {
       editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, refreshMarks);
+      editor.event.off(PLUGIN_EVENTS.SHORTCUT_MARKS_CHANGE, refreshMarks);
     };
   }, [editor.event, refreshMarks]);
 

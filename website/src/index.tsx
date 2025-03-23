@@ -21,6 +21,7 @@ import {
   Mixin,
   QuotePlugin,
   setMountDOM,
+  Shortcut,
   StrikePlugin,
   Toolbar,
   UnderlinePlugin,
@@ -63,7 +64,8 @@ const App: FC = () => {
       new LinkPlugin(instance),
       new QuotePlugin(instance),
       new EmojiPlugin(instance),
-      new MentionPlugin(instance)
+      new MentionPlugin(instance),
+      new Shortcut(instance)
     );
     return instance;
   }, []);

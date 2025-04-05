@@ -2,8 +2,8 @@ import DOMNodeType = globalThis.Node;
 import DOMTextType = globalThis.Text;
 import DOMElementType = globalThis.Element;
 
-const global = typeof globalThis !== "undefined" ? globalThis : window;
-const DOMNode = global.Node;
+const _global = typeof globalThis !== "undefined" ? globalThis : window;
+const DOMNode = _global.Node;
 
 /**
  * 检查 DOM 节点

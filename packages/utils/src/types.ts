@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-namespace */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const global = typeof globalThis !== "undefined" ? globalThis : window;
-export const Array = global.Array;
-export const Object = global.Object;
-export const String = global.String;
+const _global = typeof globalThis !== "undefined" ? globalThis : window;
+export const Array = _global.Array;
+export const Object = _global.Object;
+export const String = _global.String;
 
 /**
  * Primitive

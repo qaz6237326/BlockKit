@@ -59,13 +59,13 @@ export class Shortcut extends CorePlugin {
     const payload: F.Args<ShortcutFunc>["1"] = {
       keys,
       editor: this.editor,
+      sel: this.editor.selection.get(),
     };
     for (const func of this.config) {
       const result = func(event, payload);
-      if (result) {
-        this.editor.event.trigger(PLUGIN_EVENTS.SHORTCUT_MARKS_CHANGE, null);
-        break;
-      }
+      if (!result) continue;
+      this.editor.event.trigger(PLUGIN_EVENTS.SHORTCUT_MARKS_CHANGE, null);
+      break;
     }
   }
 }

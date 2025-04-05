@@ -44,14 +44,14 @@ export const ThemeMode: FC = () => {
     }
   }, [index]);
 
-  const onClick = () => {
+  const onChangeTheme = () => {
     const nextIndex = (index + 1) % list.length;
     setIndex(nextIndex);
     Storage.local.set(STORAGE_KEY, nextIndex);
   };
 
   return (
-    <div className="menu-toolbar-item" onClick={onClick}>
+    <div className="menu-toolbar-item" onClick={onChangeTheme}>
       {list[index]}
     </div>
   );

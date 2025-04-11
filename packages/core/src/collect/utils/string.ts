@@ -5,7 +5,7 @@
 // https://eev.ee/blog/2015/09/12/dark-corners-of-unicode
 // https://www.zhihu.com/question/563376088/answer/2736182091
 
-import type { P } from "block-kit-utils/dist/es/types";
+import type { P } from "@block-kit/utils/dist/es/types";
 
 /**
  * 获取首个 Unicode 字符长度

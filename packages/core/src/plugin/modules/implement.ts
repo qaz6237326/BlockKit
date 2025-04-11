@@ -1,5 +1,5 @@
-import type { AttributeMap, Op } from "block-kit-delta";
-import type { P } from "block-kit-utils/dist/es/types";
+import type { AttributeMap, Op } from "@block-kit/delta";
+import type { P } from "@block-kit/utils/dist/es/types";
 
 import type {
   CopyContext,

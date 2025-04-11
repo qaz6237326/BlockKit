@@ -1,7 +1,7 @@
-import type { Range } from "block-kit-core";
-import type { Editor } from "block-kit-core";
-import { Delta } from "block-kit-delta";
-import type { O } from "block-kit-utils/dist/es/types";
+import type { Range } from "@block-kit/core";
+import type { Editor } from "@block-kit/core";
+import { Delta } from "@block-kit/delta";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 import { INDENT_LEVEL_KEY } from "../../indent/types";
 import { LIST_RESTART_KEY, LIST_START_KEY } from "../types";

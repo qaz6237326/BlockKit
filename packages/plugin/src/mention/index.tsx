@@ -1,10 +1,10 @@
 import "./styles/index.scss";
 
-import type { Editor } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { Embed } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
+import type { Editor } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { Embed } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
 import type { ReactNode } from "react";
 
 import { SuggestModule } from "./modules/suggest";

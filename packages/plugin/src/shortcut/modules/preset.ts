@@ -1,4 +1,4 @@
-import { CTRL_KEY, KEY_CODE, NIL, TRULY } from "block-kit-utils";
+import { CTRL_KEY, KEY_CODE, NIL, TRULY } from "@block-kit/utils";
 
 import { BOLD_KEY } from "../../bold/types";
 import { ITALIC_KEY } from "../../italic/types";

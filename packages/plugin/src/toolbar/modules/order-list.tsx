@@ -1,5 +1,5 @@
 import { IconOrderedList } from "@arco-design/web-react/icon";
-import { cs, TRULY } from "block-kit-utils";
+import { cs, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { ORDER_LIST_KEY } from "../../order-list/types";

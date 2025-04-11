@@ -1,5 +1,5 @@
 {
-  "name": "block-kit-react",
+  "name": "@block-kit/react",
   "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -13,7 +13,6 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite",
     "build": "tsc -p tsconfig.build.json",
     "test": "",
     "lint:ts": "tsc -p tsconfig.build.json --noEmit",
@@ -27,9 +26,9 @@
     "react-dom": ">=16"
   },
   "dependencies": {
-    "block-kit-core": "workspace: *",
-    "block-kit-delta": "workspace: *",
-    "block-kit-utils": "workspace: *"
+    "@block-kit/core": "workspace: *",
+    "@block-kit/delta": "workspace: *",
+    "@block-kit/utils": "workspace: *"
   },
   "devDependencies": {
     "@types/react": "17.0.2",

@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 export const INIT = new Delta({
   ops: [

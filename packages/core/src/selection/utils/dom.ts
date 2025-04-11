@@ -1,4 +1,4 @@
-import { isDOMComment, isDOMElement, isDOMText } from "block-kit-utils";
+import { isDOMComment, isDOMElement, isDOMText } from "@block-kit/utils";
 
 import {
   EDITABLE,

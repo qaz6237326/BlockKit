@@ -1,4 +1,4 @@
-import type { LeafContext, LeafState, LineContext, LineState } from "block-kit-core";
+import type { LeafContext, LeafState, LineContext, LineState } from "@block-kit/core";
 
 /**
  * 包装行状态

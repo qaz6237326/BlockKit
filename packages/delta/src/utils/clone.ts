@@ -1,4 +1,4 @@
-import { isNil } from "block-kit-utils";
+import { isNil } from "@block-kit/utils";
 
 import type { AttributeMap } from "../attributes/interface";
 import type { BlockDeltaLike, BlockSetLike, DeltaLike } from "../cluster/interface";

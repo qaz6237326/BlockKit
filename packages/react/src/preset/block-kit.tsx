@@ -1,5 +1,5 @@
-import type { Editor } from "block-kit-core";
-import { EDITOR_STATE } from "block-kit-core";
+import type { Editor } from "@block-kit/core";
+import { EDITOR_STATE } from "@block-kit/core";
 import { useMemo } from "react";
 
 import { BlockKitContext } from "../hooks/use-editor";

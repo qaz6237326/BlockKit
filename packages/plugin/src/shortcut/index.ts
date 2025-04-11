@@ -1,8 +1,8 @@
-import type { Editor } from "block-kit-core";
-import { CorePlugin, EDITOR_EVENT } from "block-kit-core";
-import type { Op } from "block-kit-delta";
-import { Bind } from "block-kit-utils";
-import type { F, O } from "block-kit-utils/dist/es/types";
+import type { Editor } from "@block-kit/core";
+import { CorePlugin, EDITOR_EVENT } from "@block-kit/core";
+import type { Op } from "@block-kit/delta";
+import { Bind } from "@block-kit/utils";
+import type { F, O } from "@block-kit/utils/dist/es/types";
 
 import { PLUGIN_EVENTS } from "../shared/utils/event";
 import { filterLineMarkMap, filterMarkMap } from "../toolbar/utils/marks";

@@ -1,7 +1,7 @@
-import type { Delta } from "block-kit-delta";
-import type { AttributeMap } from "block-kit-delta";
-import { EOL } from "block-kit-delta";
-import { isDOMElement } from "block-kit-utils";
+import type { Delta } from "@block-kit/delta";
+import type { AttributeMap } from "@block-kit/delta";
+import { EOL } from "@block-kit/delta";
+import { isDOMElement } from "@block-kit/utils";
 
 /** 块结构标记 */
 export const BLOCK_TAG_NAME = [

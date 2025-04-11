@@ -1,5 +1,5 @@
-import { Delta, isEOLOp, MutateDelta } from "block-kit-delta";
-import { isHTMLElement, TEXT_HTML } from "block-kit-utils";
+import { Delta, isEOLOp, MutateDelta } from "@block-kit/delta";
+import { isHTMLElement, TEXT_HTML } from "@block-kit/utils";
 
 import { applyLineMarker } from "../../src/clipboard/utils/deserialize";
 import { getFragmentText, serializeHTML } from "../../src/clipboard/utils/serialize";

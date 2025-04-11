@@ -1,4 +1,4 @@
-import { isFunction } from "block-kit-utils";
+import { isFunction } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { CorePlugin } from "./modules/implement";

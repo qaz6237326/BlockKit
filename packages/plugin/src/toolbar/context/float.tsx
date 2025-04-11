@@ -1,10 +1,10 @@
 import "../styles/float.scss";
 
-import type { SelectionChangeEvent } from "block-kit-core";
-import { EDITOR_EVENT } from "block-kit-core";
-import { useEditorStatic, useReadonly } from "block-kit-react";
-import { cs } from "block-kit-utils";
-import { useMemoFn } from "block-kit-utils/dist/es/hooks";
+import type { SelectionChangeEvent } from "@block-kit/core";
+import { EDITOR_EVENT } from "@block-kit/core";
+import { useEditorStatic, useReadonly } from "@block-kit/react";
+import { cs } from "@block-kit/utils";
+import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";

@@ -1,4 +1,4 @@
-import type { Object } from "block-kit-utils";
+import type { Object } from "@block-kit/utils";
 
 export const NATIVE_EVENTS = {
   COMPOSITION_START: "compositionstart",

@@ -1,4 +1,4 @@
-import type { F, O } from "block-kit-utils/dist/es/types";
+import type { F, O } from "@block-kit/utils/dist/es/types";
 
 import type { CorePlugin } from "../modules/implement";
 

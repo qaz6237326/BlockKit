@@ -1,6 +1,6 @@
-import type { AttributeMap } from "block-kit-delta";
-import type { Op } from "block-kit-delta";
-import type { P } from "block-kit-utils/dist/es/types";
+import type { AttributeMap } from "@block-kit/delta";
+import type { Op } from "@block-kit/delta";
+import type { P } from "@block-kit/utils/dist/es/types";
 import type { Properties } from "csstype";
 
 import type { LeafState } from "../../state/modules/leaf-state";

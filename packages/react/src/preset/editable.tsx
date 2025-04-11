@@ -1,5 +1,5 @@
-import { EDITOR_KEY, Point, Range } from "block-kit-core";
-import { cs } from "block-kit-utils";
+import { EDITOR_KEY, Point, Range } from "@block-kit/core";
+import { cs } from "@block-kit/utils";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 
 import { useEditorStatic } from "../hooks/use-editor";

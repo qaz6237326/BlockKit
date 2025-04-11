@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 import { Editor, LOG_LEVEL, Range } from "../../src";
 import { mountEditorViewModel } from "../config/view";

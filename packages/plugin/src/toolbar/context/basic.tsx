@@ -1,10 +1,10 @@
 import "../styles/index.scss";
 
-import { EDITOR_EVENT } from "block-kit-core";
-import type { Op } from "block-kit-delta";
-import { useEditorStatic } from "block-kit-react";
-import { cs } from "block-kit-utils";
-import { useMemoFn } from "block-kit-utils/dist/es/hooks";
+import { EDITOR_EVENT } from "@block-kit/core";
+import type { Op } from "@block-kit/delta";
+import { useEditorStatic } from "@block-kit/react";
+import { cs } from "@block-kit/utils";
+import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import { forwardRef, useEffect, useState } from "react";
 
 import { PLUGIN_EVENTS } from "../../shared/utils/event";

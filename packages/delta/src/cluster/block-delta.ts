@@ -1,4 +1,4 @@
-import { getId } from "block-kit-utils";
+import { getId } from "@block-kit/utils";
 
 import { Delta } from "../delta/delta";
 import { cloneOps } from "../utils/clone";

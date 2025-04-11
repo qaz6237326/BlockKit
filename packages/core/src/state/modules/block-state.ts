@@ -1,6 +1,6 @@
-import type { Op } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import { cloneOps } from "block-kit-delta";
+import type { Op } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import { cloneOps } from "@block-kit/delta";
 
 import type { Editor } from "../../editor";
 import { Key } from "../utils/key";

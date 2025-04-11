@@ -1,5 +1,5 @@
-import type { Editor } from "block-kit-core";
-import type { Range } from "block-kit-core";
+import type { Editor } from "@block-kit/core";
+import type { Range } from "@block-kit/core";
 import React from "react";
 
 export type ToolbarContextType = {

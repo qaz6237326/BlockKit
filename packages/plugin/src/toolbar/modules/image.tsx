@@ -1,5 +1,5 @@
 import { IconImage } from "@arco-design/web-react/icon";
-import { cs, TRULY } from "block-kit-utils";
+import { cs, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { IMAGE_KEY } from "../../image/types";

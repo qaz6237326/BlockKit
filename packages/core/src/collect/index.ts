@@ -1,7 +1,7 @@
-import type { AttributeMap, Op } from "block-kit-delta";
-import type { InsertOp } from "block-kit-delta";
-import { getOpLength, isEOLOp } from "block-kit-delta";
-import { Bind } from "block-kit-utils";
+import type { AttributeMap, Op } from "@block-kit/delta";
+import type { InsertOp } from "@block-kit/delta";
+import { getOpLength, isEOLOp } from "@block-kit/delta";
+import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { SelectionChangeEvent } from "../event/bus/types";

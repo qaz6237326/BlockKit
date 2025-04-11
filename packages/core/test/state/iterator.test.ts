@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 import { Editor } from "../../src/editor";
 import type { LineState } from "../../src/state/modules/line-state";

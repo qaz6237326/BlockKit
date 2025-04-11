@@ -3,8 +3,8 @@ import "../styles/link.scss";
 import { Button, Form, Input, Switch, Trigger } from "@arco-design/web-react";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { IconLink, IconRight } from "@arco-design/web-react/icon";
-import { APPLY_SOURCE, EDITOR_EVENT } from "block-kit-core";
-import { cs, NIL, TRULY } from "block-kit-utils";
+import { APPLY_SOURCE, EDITOR_EVENT } from "@block-kit/core";
+import { cs, NIL, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 

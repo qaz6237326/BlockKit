@@ -1,5 +1,5 @@
-import { Delta } from "block-kit-delta";
-import { isDOMText, TEXT_PLAIN } from "block-kit-utils";
+import { Delta } from "@block-kit/delta";
+import { isDOMText, TEXT_PLAIN } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { CALLER_TYPE } from "../../plugin/types";

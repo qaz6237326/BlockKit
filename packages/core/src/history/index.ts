@@ -1,6 +1,6 @@
-import type { Delta } from "block-kit-delta";
-import { isRetainOp } from "block-kit-delta";
-import { Bind } from "block-kit-utils";
+import type { Delta } from "@block-kit/delta";
+import { isRetainOp } from "@block-kit/delta";
+import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { ContentChangeEvent } from "../event/bus/types";

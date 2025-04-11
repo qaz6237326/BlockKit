@@ -1,12 +1,12 @@
 import "../styles/wrapper.scss";
 
 import { Image } from "@arco-design/web-react";
-import type { Editor } from "block-kit-core";
-import type { LeafState } from "block-kit-core";
-import { RawRange } from "block-kit-core";
-import { Delta } from "block-kit-delta";
-import { useReadonly } from "block-kit-react";
-import { cs, throttle } from "block-kit-utils";
+import type { Editor } from "@block-kit/core";
+import type { LeafState } from "@block-kit/core";
+import { RawRange } from "@block-kit/core";
+import { Delta } from "@block-kit/delta";
+import { useReadonly } from "@block-kit/react";
+import { cs, throttle } from "@block-kit/utils";
 import type { FC } from "react";
 import React, { Fragment, useRef, useState } from "react";
 

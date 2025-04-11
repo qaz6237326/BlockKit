@@ -1,5 +1,5 @@
 import { IconCode } from "@arco-design/web-react/icon";
-import { cs, NIL, TRULY } from "block-kit-utils";
+import { cs, NIL, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { INLINE_CODE } from "../../inline-code/types";

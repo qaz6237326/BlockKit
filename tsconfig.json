@@ -19,12 +19,12 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "paths": {
-      "block-kit-core": ["./packages/core/src"],
-      "block-kit-delta": ["./packages/delta/src"],
-      "block-kit-react": ["./packages/react/src"],
-      "block-kit-plugin": ["./packages/plugin/src"],
-      "block-kit-utils": ["./packages/utils/src"],
-      "block-kit-utils/dist/es/*": ["./packages/utils/src/*"]
+      "@block-kit/core": ["./packages/core/src"],
+      "@block-kit/delta": ["./packages/delta/src"],
+      "@block-kit/react": ["./packages/react/src"],
+      "@block-kit/plugin": ["./packages/plugin/src"],
+      "@block-kit/utils": ["./packages/utils/src"],
+      "@block-kit/utils/dist/es/*": ["./packages/utils/src/*"]
     }
   },
   "include": ["packages/*/src"],

@@ -1,10 +1,10 @@
 import "./styles/index.scss";
 
-import type { Editor, SerializeContext } from "block-kit-core";
-import { Priority } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
+import type { Editor, SerializeContext } from "@block-kit/core";
+import { Priority } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
 import type { ReactNode } from "react";
 
 import { INLINE_CODE } from "./types";

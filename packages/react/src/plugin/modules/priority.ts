@@ -1,7 +1,7 @@
-import type { CorePlugin } from "block-kit-core";
-import { PRIORITY_KEY } from "block-kit-core";
-import { DEFAULT_PRIORITY, isNumber } from "block-kit-utils";
-import type { O } from "block-kit-utils/dist/es/types";
+import type { CorePlugin } from "@block-kit/core";
+import { PRIORITY_KEY } from "@block-kit/core";
+import { DEFAULT_PRIORITY, isNumber } from "@block-kit/utils";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 /**
  * 获取插件的优先级

@@ -1,8 +1,8 @@
 import "../styles/index.scss";
 
-import type { Editor } from "block-kit-core";
-import type { ReactLineContext } from "block-kit-react";
-import { cs, preventNativeEvent } from "block-kit-utils";
+import type { Editor } from "@block-kit/core";
+import type { ReactLineContext } from "@block-kit/react";
+import { cs, preventNativeEvent } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { formatListLevel } from "../utils/format";

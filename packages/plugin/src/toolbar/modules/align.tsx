@@ -5,8 +5,8 @@ import {
   IconAlignRight,
   IconDown,
 } from "@arco-design/web-react/icon";
-import { NIL } from "block-kit-utils";
-import type { O } from "block-kit-utils/dist/es/types";
+import { NIL } from "@block-kit/utils";
+import type { O } from "@block-kit/utils/dist/es/types";
 import type { FC } from "react";
 
 import { ALIGN_KEY } from "../../align/types";

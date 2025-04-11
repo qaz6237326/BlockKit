@@ -1,10 +1,10 @@
-import type { CMDPayload, Editor } from "block-kit-core";
-import { APPLY_SOURCE, Point, Range, RawRange } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
-import { Bind, sleep, TRULY } from "block-kit-utils";
+import type { CMDPayload, Editor } from "@block-kit/core";
+import { APPLY_SOURCE, Point, Range, RawRange } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
+import { Bind, sleep, TRULY } from "@block-kit/utils";
 import type { ReactNode } from "react";
 
 import { SelectionPlugin } from "../shared/modules/selection";

@@ -1,4 +1,4 @@
-import { cs, TRULY } from "block-kit-utils";
+import { cs, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { DIVIDER_KEY } from "../../divider/types";

@@ -2,7 +2,7 @@ import "../styles/line-height.scss";
 
 import { Trigger } from "@arco-design/web-react";
 import { IconCheck, IconDown } from "@arco-design/web-react/icon";
-import { NIL } from "block-kit-utils";
+import { NIL } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { LINE_HEIGHT_KEY } from "../../line-height/types";

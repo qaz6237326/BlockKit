@@ -1,8 +1,8 @@
 import "../styles/index.scss";
 
-import type { AttributeMap } from "block-kit-delta";
-import { useReadonly } from "block-kit-react";
-import { CTRL_KEY } from "block-kit-utils";
+import type { AttributeMap } from "@block-kit/delta";
+import { useReadonly } from "@block-kit/react";
+import { CTRL_KEY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { LINK_BLANK_KEY, LINK_KEY } from "../types";

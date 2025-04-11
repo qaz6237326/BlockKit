@@ -1,7 +1,7 @@
-import type { Editor, SelectionChangeEvent } from "block-kit-core";
-import { EDITOR_EVENT, Point, Range, relativeTo } from "block-kit-core";
-import { Delta, deltaToText } from "block-kit-delta";
-import { Bind, KEY_CODE } from "block-kit-utils";
+import type { Editor, SelectionChangeEvent } from "@block-kit/core";
+import { EDITOR_EVENT, Point, Range, relativeTo } from "@block-kit/core";
+import { Delta, deltaToText } from "@block-kit/delta";
+import { Bind, KEY_CODE } from "@block-kit/utils";
 import ReactDOM from "react-dom";
 
 import { getMountDOM } from "../../shared/utils/dom";

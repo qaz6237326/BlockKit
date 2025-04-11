@@ -1,4 +1,4 @@
-import { isString } from "block-kit-utils";
+import { isString } from "@block-kit/utils";
 
 import { BlockDelta } from "./block-delta";
 import type { BlockSetOption } from "./interface";

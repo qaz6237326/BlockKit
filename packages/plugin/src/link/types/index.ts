@@ -1,4 +1,4 @@
-import { CLIENT_KEY } from "block-kit-core";
+import { CLIENT_KEY } from "@block-kit/core";
 
 export const LINK_KEY = "link";
 export const LINK_BLANK_KEY = "link-blank";

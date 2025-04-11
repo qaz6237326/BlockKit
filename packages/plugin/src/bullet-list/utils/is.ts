@@ -1,4 +1,4 @@
-import type { AttributeMap } from "block-kit-delta";
+import type { AttributeMap } from "@block-kit/delta";
 
 import { BULLET_LIST_TYPE, LIST_TYPE_KEY } from "../types";
 

@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 import { Clipboard } from "../clipboard";
 import { Collect } from "../collect";

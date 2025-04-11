@@ -1,5 +1,5 @@
-import { Delta } from "block-kit-delta";
-import { MutateDelta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
+import { MutateDelta } from "@block-kit/delta";
 
 import { Editor, Point, Range } from "../../src";
 

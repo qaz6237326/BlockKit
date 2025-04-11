@@ -1,8 +1,8 @@
 import "./styles/index.scss";
 import "@arco-design/web-react/es/style/index.less";
 
-import { Editor, LOG_LEVEL } from "block-kit-core";
-import { Delta } from "block-kit-delta";
+import { Editor, LOG_LEVEL } from "@block-kit/core";
+import { Delta } from "@block-kit/delta";
 import {
   AlignPlugin,
   BackgroundPlugin,
@@ -25,12 +25,12 @@ import {
   StrikePlugin,
   Toolbar,
   UnderlinePlugin,
-} from "block-kit-plugin";
-import { FontColorPlugin } from "block-kit-plugin";
-import { BulletListPlugin } from "block-kit-plugin";
-import { OrderListPlugin } from "block-kit-plugin";
-import { MentionPlugin } from "block-kit-plugin";
-import { BlockKit, Editable } from "block-kit-react";
+} from "@block-kit/plugin";
+import { FontColorPlugin } from "@block-kit/plugin";
+import { BulletListPlugin } from "@block-kit/plugin";
+import { OrderListPlugin } from "@block-kit/plugin";
+import { MentionPlugin } from "@block-kit/plugin";
+import { BlockKit, Editable } from "@block-kit/react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";

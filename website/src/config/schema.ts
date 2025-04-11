@@ -1,4 +1,4 @@
-import type { EditorSchema } from "block-kit-core";
+import type { EditorSchema } from "@block-kit/core";
 import {
   BACKGROUND_KEY,
   BOLD_KEY,
@@ -10,10 +10,10 @@ import {
   LINK_KEY,
   STRIKE_KEY,
   UNDERLINE_KEY,
-} from "block-kit-plugin";
-import { IMAGE_KEY } from "block-kit-plugin";
-import { INLINE_CODE } from "block-kit-plugin";
-import { MENTION_KEY } from "block-kit-plugin";
+} from "@block-kit/plugin";
+import { IMAGE_KEY } from "@block-kit/plugin";
+import { INLINE_CODE } from "@block-kit/plugin";
+import { MENTION_KEY } from "@block-kit/plugin";
 
 export const schema: EditorSchema = {
   [BOLD_KEY]: { mark: true },

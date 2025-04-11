@@ -1,6 +1,6 @@
-import type { Op } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import { Bind, TEXT_HTML, TEXT_PLAIN, TSON } from "block-kit-utils";
+import type { Op } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import { Bind, TEXT_HTML, TEXT_PLAIN, TSON } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import { EDITOR_EVENT } from "../event/bus/types";

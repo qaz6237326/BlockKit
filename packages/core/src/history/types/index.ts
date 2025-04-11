@@ -1,4 +1,4 @@
-import type { Delta } from "block-kit-delta";
+import type { Delta } from "@block-kit/delta";
 
 import type { RawRange } from "../../selection/modules/raw-range";
 

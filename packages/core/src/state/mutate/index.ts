@@ -1,5 +1,5 @@
-import type { AttributeMap, Delta, Op } from "block-kit-delta";
-import type { InsertOp } from "block-kit-delta";
+import type { AttributeMap, Delta, Op } from "@block-kit/delta";
+import type { InsertOp } from "@block-kit/delta";
 import {
   cloneOp,
   composeAttributes,
@@ -11,9 +11,9 @@ import {
   isRetainOp,
   normalizeEOL,
   OP_TYPES,
-} from "block-kit-delta";
-import { OpIterator } from "block-kit-delta";
-import { isObject } from "block-kit-utils";
+} from "@block-kit/delta";
+import { OpIterator } from "@block-kit/delta";
+import { isObject } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import type { BlockState } from "../modules/block-state";

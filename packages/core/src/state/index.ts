@@ -1,5 +1,5 @@
-import type { Delta } from "block-kit-delta";
-import { getId } from "block-kit-utils";
+import type { Delta } from "@block-kit/delta";
+import { getId } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { ContentChangeEvent } from "../event/bus/types";

@@ -1,5 +1,5 @@
 {
-  "name": "block-kit-core",
+  "name": "@block-kit/core",
   "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -18,8 +18,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "block-kit-delta": "workspace: *",
-    "block-kit-utils": "workspace: *"
+    "@block-kit/delta": "workspace: *",
+    "@block-kit/utils": "workspace: *"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

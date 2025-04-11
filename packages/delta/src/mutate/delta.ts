@@ -1,4 +1,4 @@
-import { isObject } from "block-kit-utils";
+import { isObject } from "@block-kit/utils";
 
 import { composeAttributes } from "../attributes/compose";
 import type { AttributeMap } from "../attributes/interface";

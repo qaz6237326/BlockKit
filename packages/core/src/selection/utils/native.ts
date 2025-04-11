@@ -1,4 +1,4 @@
-import { isDOMElement, isDOMText } from "block-kit-utils";
+import { isDOMElement, isDOMText } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import {

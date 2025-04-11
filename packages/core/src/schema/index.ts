@@ -1,5 +1,5 @@
-import type { Op } from "block-kit-delta";
-import { isEOLOp } from "block-kit-delta";
+import type { Op } from "@block-kit/delta";
+import { isEOLOp } from "@block-kit/delta";
 
 import type { EditorSchema } from "./types";
 

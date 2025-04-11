@@ -1,5 +1,5 @@
-import type { Delta } from "block-kit-delta";
-import type { O } from "block-kit-utils/dist/es/types";
+import type { Delta } from "@block-kit/delta";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 import type { LOG_LEVEL } from "../../log";
 import type { EditorSchema } from "../../schema/types";

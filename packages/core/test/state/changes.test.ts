@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 import { Editor } from "../../src/editor";
 import { Mutate } from "../../src/state/mutate";

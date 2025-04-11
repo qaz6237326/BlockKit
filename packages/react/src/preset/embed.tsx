@@ -1,6 +1,6 @@
-import { VOID_KEY } from "block-kit-core";
-import { Range } from "block-kit-core";
-import { Point } from "block-kit-core";
+import { VOID_KEY } from "@block-kit/core";
+import { Range } from "@block-kit/core";
+import { Point } from "@block-kit/core";
 import type { FC, PropsWithChildren } from "react";
 import React from "react";
 

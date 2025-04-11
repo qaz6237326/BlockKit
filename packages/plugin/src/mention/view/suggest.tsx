@@ -1,10 +1,10 @@
 import "../styles/suggest.scss";
 
-import { EDITOR_EVENT, Range, RawRange } from "block-kit-core";
-import { Delta } from "block-kit-delta";
-import type { EventContext } from "block-kit-utils";
-import { cs, KEY_CODE, preventNativeEvent, TRULY } from "block-kit-utils";
-import { useMemoFn } from "block-kit-utils/dist/es/hooks";
+import { EDITOR_EVENT, Range, RawRange } from "@block-kit/core";
+import { Delta } from "@block-kit/delta";
+import type { EventContext } from "@block-kit/utils";
+import { cs, KEY_CODE, preventNativeEvent, TRULY } from "@block-kit/utils";
+import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 

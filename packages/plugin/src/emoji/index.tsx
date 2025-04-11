@@ -1,15 +1,15 @@
 import "./styles/index.scss";
 
+import type { CMDPayload } from "@block-kit/core";
+import type { Editor } from "@block-kit/core";
+import { RawRange } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { Embed } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
+import { Bind } from "@block-kit/utils";
 import data from "@emoji-mart/data";
-import type { CMDPayload } from "block-kit-core";
-import type { Editor } from "block-kit-core";
-import { RawRange } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { Embed } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
-import { Bind } from "block-kit-utils";
 import { init } from "emoji-mart";
 import type { ReactNode } from "react";
 

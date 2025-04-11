@@ -1,4 +1,4 @@
-import type { Delta } from "block-kit-delta";
+import type { Delta } from "@block-kit/delta";
 
 import type { Op } from "../../../../delta/dist";
 

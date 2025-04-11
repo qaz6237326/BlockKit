@@ -1,5 +1,5 @@
 import { IconMoon, IconSun } from "@arco-design/web-react/icon";
-import { Storage } from "block-kit-utils";
+import { Storage } from "@block-kit/utils";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 

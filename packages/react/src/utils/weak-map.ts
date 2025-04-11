@@ -1,4 +1,4 @@
-import type { LeafState, LineState } from "block-kit-core";
+import type { LeafState, LineState } from "@block-kit/core";
 
 /**
  * LeafState 与 Text 节点的映射

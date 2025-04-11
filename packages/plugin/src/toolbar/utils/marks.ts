@@ -1,5 +1,5 @@
-import type { Op } from "block-kit-delta";
-import type { AttributeMap } from "block-kit-delta";
+import type { Op } from "@block-kit/delta";
+import type { AttributeMap } from "@block-kit/delta";
 
 export const filterMarkMap = (ops: Op[]): Record<string, string> => {
   const firstOp = ops[0];

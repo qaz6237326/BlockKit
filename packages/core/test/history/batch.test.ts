@@ -1,5 +1,5 @@
-import { Delta, MutateDelta } from "block-kit-delta";
-import { sleep } from "block-kit-utils";
+import { Delta, MutateDelta } from "@block-kit/delta";
+import { sleep } from "@block-kit/utils";
 
 import { Editor } from "../../src/editor";
 

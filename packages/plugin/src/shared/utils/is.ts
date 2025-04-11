@@ -1,6 +1,6 @@
-import type { LineState } from "block-kit-core";
-import { isEOLOp } from "block-kit-delta";
-import type { P } from "block-kit-utils/dist/es/types";
+import type { LineState } from "@block-kit/core";
+import { isEOLOp } from "@block-kit/delta";
+import type { P } from "@block-kit/utils/dist/es/types";
 
 export const isEmptyLine = (line: LineState | P.Nil) => {
   if (!line) return true;

@@ -1,10 +1,10 @@
-import type { Editor } from "block-kit-core";
-import { EDITOR_EVENT, Point, RawPoint } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLineContext } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
-import { Bind, KEY_CODE } from "block-kit-utils";
+import type { Editor } from "@block-kit/core";
+import { EDITOR_EVENT, Point, RawPoint } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLineContext } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
+import { Bind, KEY_CODE } from "@block-kit/utils";
 
 import { isKeyCode } from "../shared/utils/is";
 import { INDENT_LEVEL_KEY } from "./types";

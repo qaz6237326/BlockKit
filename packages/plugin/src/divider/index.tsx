@@ -1,13 +1,13 @@
 import "./styles/index.scss";
 
-import type { CMDPayload, Editor } from "block-kit-core";
-import { Point, Range } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { Void } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
-import { Bind, TRULY } from "block-kit-utils";
+import type { CMDPayload, Editor } from "@block-kit/core";
+import { Point, Range } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { Void } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
+import { Bind, TRULY } from "@block-kit/utils";
 import type { ReactNode } from "react";
 
 import { SelectionHOC } from "../shared/components/selection";

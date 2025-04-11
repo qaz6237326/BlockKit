@@ -1,8 +1,8 @@
-import type { AttributeMap } from "block-kit-delta";
-import type { Op } from "block-kit-delta";
-import { cloneOp, Delta, EOL, getOpLength } from "block-kit-delta";
-import { isInsertOp } from "block-kit-delta";
-import { OpIterator } from "block-kit-delta";
+import type { AttributeMap } from "@block-kit/delta";
+import type { Op } from "@block-kit/delta";
+import { cloneOp, Delta, EOL, getOpLength } from "@block-kit/delta";
+import { isInsertOp } from "@block-kit/delta";
+import { OpIterator } from "@block-kit/delta";
 
 import { Point } from "../../selection/modules/point";
 import { Range } from "../../selection/modules/range";

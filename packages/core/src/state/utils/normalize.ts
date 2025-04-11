@@ -1,6 +1,6 @@
-import type { Op, Ops } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import { cloneOp, EOL, EOL_OP, isInsertOp, startsWithEOL } from "block-kit-delta";
+import type { Op, Ops } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import { cloneOp, EOL, EOL_OP, isInsertOp, startsWithEOL } from "@block-kit/delta";
 
 import type { Editor } from "../../editor";
 import type { LineState } from "../modules/line-state";

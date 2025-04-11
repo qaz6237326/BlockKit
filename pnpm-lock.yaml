@@ -68,10 +68,10 @@ importers:
 
   packages/core:
     dependencies:
-      block-kit-delta:
+      '@block-kit/delta':
         specifier: 'workspace: *'
         version: link:../delta
-      block-kit-utils:
+      '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../utils
     devDependencies:
@@ -108,7 +108,7 @@ importers:
 
   packages/delta:
     dependencies:
-      block-kit-utils:
+      '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../utils
       fast-diff:
@@ -142,24 +142,24 @@ importers:
       '@arco-design/web-react':
         specifier: ^2.64.0
         version: 2.64.0(@types/react@17.0.2)(react-dom@17.0.2)(react@17.0.2)
+      '@block-kit/core':
+        specifier: 'workspace: *'
+        version: link:../core
+      '@block-kit/delta':
+        specifier: 'workspace: *'
+        version: link:../delta
+      '@block-kit/react':
+        specifier: 'workspace: *'
+        version: link:../react
+      '@block-kit/utils':
+        specifier: 'workspace: *'
+        version: link:../utils
       '@emoji-mart/data':
         specifier: ^1.2.1
         version: 1.2.1
       '@emoji-mart/react':
         specifier: ^1.1.1
         version: 1.1.1(emoji-mart@5.6.0)(react@17.0.2)
-      block-kit-core:
-        specifier: 'workspace: *'
-        version: link:../core
-      block-kit-delta:
-        specifier: 'workspace: *'
-        version: link:../delta
-      block-kit-react:
-        specifier: 'workspace: *'
-        version: link:../react
-      block-kit-utils:
-        specifier: 'workspace: *'
-        version: link:../utils
       emoji-mart:
         specifier: ^5.6.0
         version: 5.6.0
@@ -215,13 +215,13 @@ importers:
 
   packages/react:
     dependencies:
-      block-kit-core:
+      '@block-kit/core':
         specifier: 'workspace: *'
         version: link:../core
-      block-kit-delta:
+      '@block-kit/delta':
         specifier: 'workspace: *'
         version: link:../delta
-      block-kit-utils:
+      '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../utils
       react:
@@ -320,19 +320,19 @@ importers:
       '@arco-design/web-react':
         specifier: ^2.64.0
         version: 2.64.0(@types/react@17.0.2)(react-dom@17.0.2)(react@17.0.2)
-      block-kit-core:
+      '@block-kit/core':
         specifier: 'workspace: *'
         version: link:../packages/core
-      block-kit-delta:
+      '@block-kit/delta':
         specifier: 'workspace: *'
         version: link:../packages/delta
-      block-kit-plugin:
+      '@block-kit/plugin':
         specifier: 'workspace: *'
         version: link:../packages/plugin
-      block-kit-react:
+      '@block-kit/react':
         specifier: 'workspace: *'
         version: link:../packages/react
-      block-kit-utils:
+      '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../packages/utils
       react:

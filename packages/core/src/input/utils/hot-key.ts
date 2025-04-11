@@ -1,4 +1,4 @@
-import { IS_MAC, KEY_CODE } from "block-kit-utils";
+import { IS_MAC, KEY_CODE } from "@block-kit/utils";
 
 export const CTRL = IS_MAC ? "metaKey" : "ctrlKey";
 

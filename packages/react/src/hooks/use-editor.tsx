@@ -1,4 +1,4 @@
-import type { Editor } from "block-kit-core";
+import type { Editor } from "@block-kit/core";
 import React, { createContext } from "react";
 
 export const BlockKitContext = createContext<Editor | null>(null);

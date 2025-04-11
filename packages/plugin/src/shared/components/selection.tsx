@@ -1,10 +1,10 @@
 import "../styles/selection.scss";
 
-import type { LeafState } from "block-kit-core";
-import type { Editor } from "block-kit-core";
-import { Range } from "block-kit-core";
-import { ReadonlyContext } from "block-kit-react";
-import { cs, getId } from "block-kit-utils";
+import type { LeafState } from "@block-kit/core";
+import type { Editor } from "@block-kit/core";
+import { Range } from "@block-kit/core";
+import { ReadonlyContext } from "@block-kit/react";
+import { cs, getId } from "@block-kit/utils";
 import React from "react";
 
 import type { SelectionPlugin } from "../modules/selection";

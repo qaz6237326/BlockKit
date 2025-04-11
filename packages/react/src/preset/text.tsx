@@ -1,5 +1,5 @@
-import { LEAF_STRING } from "block-kit-core";
-import { isDOMText, isFunction } from "block-kit-utils";
+import { LEAF_STRING } from "@block-kit/core";
+import { isDOMText, isFunction } from "@block-kit/utils";
 import { forwardRef } from "react";
 
 export type TextProps = {

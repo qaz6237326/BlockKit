@@ -1,4 +1,4 @@
-import type { O } from "block-kit-utils/dist/es/types";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 import type { RawRange } from "../../selection/modules/raw-range";
 

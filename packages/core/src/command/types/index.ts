@@ -1,4 +1,4 @@
-import type { AttributeMap } from "block-kit-delta";
+import type { AttributeMap } from "@block-kit/delta";
 
 import type { Range } from "../../selection/modules/range";
 

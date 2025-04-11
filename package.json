@@ -1,5 +1,5 @@
 {
-  "name": "block-kit",
+  "name": "blocks-kit",
   "description": "WYSIWYG Editor Widget",
   "version": "1.0.0",
   "scripts": {
@@ -9,15 +9,15 @@
     "test": "pnpm run --filter '*' test",
     "lint:ts": "pnpm run --filter '*' lint:ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
-  },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/WindrunnerMax/BlockKit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
   },
   "homepage": "https://github.com/WindrunnerMax/BlockKit",
   "devDependencies": {

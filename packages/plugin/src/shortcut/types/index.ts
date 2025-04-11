@@ -1,6 +1,6 @@
-import type { Editor } from "block-kit-core";
-import type { Range } from "block-kit-core";
-import type { O, P } from "block-kit-utils/dist/es/types";
+import type { Editor } from "@block-kit/core";
+import type { Range } from "@block-kit/core";
+import type { O, P } from "@block-kit/utils/dist/es/types";
 
 export const SHORTCUT_KEY = "SHORTCUT_KEY";
 

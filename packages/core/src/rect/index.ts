@@ -1,4 +1,4 @@
-import { isHTMLElement } from "block-kit-utils";
+import { isHTMLElement } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { Point } from "../selection/modules/point";

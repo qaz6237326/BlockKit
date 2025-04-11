@@ -2,7 +2,7 @@ import "../styles/font-color.scss";
 
 import { Trigger } from "@arco-design/web-react";
 import { IconDown } from "@arco-design/web-react/icon";
-import { cs } from "block-kit-utils";
+import { cs } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { BACKGROUND_KEY } from "../../background/types";

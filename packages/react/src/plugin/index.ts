@@ -1,4 +1,4 @@
-import { CorePlugin } from "block-kit-core";
+import { CorePlugin } from "@block-kit/core";
 
 import type {
   ReactLeafContext,

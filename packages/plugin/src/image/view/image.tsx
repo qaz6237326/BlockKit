@@ -1,13 +1,13 @@
 import "../styles/index.scss";
 
 import { IconLoading } from "@arco-design/web-react/icon";
-import type { Editor } from "block-kit-core";
-import { APPLY_SOURCE, RawRange } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLeafContext } from "block-kit-react";
-import { Void } from "block-kit-react";
-import { Styles } from "block-kit-utils";
+import type { Editor } from "@block-kit/core";
+import { APPLY_SOURCE, RawRange } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLeafContext } from "@block-kit/react";
+import { Void } from "@block-kit/react";
+import { Styles } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { SelectionHOC } from "../../shared/components/selection";

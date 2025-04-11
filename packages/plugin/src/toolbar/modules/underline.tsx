@@ -1,5 +1,5 @@
 import { IconUnderline } from "@arco-design/web-react/icon";
-import { cs, NIL, TRULY } from "block-kit-utils";
+import { cs, NIL, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { UNDERLINE_KEY } from "../../underline/types";

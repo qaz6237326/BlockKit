@@ -1,13 +1,13 @@
-import type { BlockState, Editor } from "block-kit-core";
-import type { LineState } from "block-kit-core";
+import type { BlockState, Editor } from "@block-kit/core";
+import type { LineState } from "@block-kit/core";
 import {
   BLOCK_ID_KEY,
   BLOCK_KEY,
   EDITOR_EVENT,
   EDITOR_STATE,
   PLACEHOLDER_KEY,
-} from "block-kit-core";
-import { useMemoFn } from "block-kit-utils/dist/es/hooks";
+} from "@block-kit/core";
+import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -84,6 +84,8 @@ const BlockView: FC<{
 
   /**
    * 视图更新需要触发视图绘制完成事件 无依赖数组
+   * state  -> parent -> node -> child ->|
+   * effect <- parent <- node <- child <-|
    */
   useEffect(() => {
     editor.logger.debug("OnPaint");

@@ -33,12 +33,12 @@ const config: Configuration = {
   ],
   resolve: {
     alias: {
-      "block-kit-utils/dist/es": utils,
-      "block-kit-core": core,
-      "block-kit-delta": delta,
-      "block-kit-react": react,
-      "block-kit-utils": utils,
-      "block-kit-plugin": plugin,
+      "@block-kit/utils/dist/es": utils,
+      "@block-kit/core": core,
+      "@block-kit/delta": delta,
+      "@block-kit/react": react,
+      "@block-kit/utils": utils,
+      "@block-kit/plugin": plugin,
     },
   },
   builtins: {

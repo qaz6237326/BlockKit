@@ -1,9 +1,9 @@
-import type { Editor, LineState } from "block-kit-core";
-import type { LeafState } from "block-kit-core";
-import { NODE_KEY, PLUGIN_TYPE } from "block-kit-core";
-import { EOL, EOL_OP } from "block-kit-delta";
-import { cs, isDOMText } from "block-kit-utils";
-import { useUpdateLayoutEffect } from "block-kit-utils/dist/es/hooks";
+import type { Editor, LineState } from "@block-kit/core";
+import type { LeafState } from "@block-kit/core";
+import { NODE_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { EOL, EOL_OP } from "@block-kit/delta";
+import { cs, isDOMText } from "@block-kit/utils";
+import { useUpdateLayoutEffect } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 

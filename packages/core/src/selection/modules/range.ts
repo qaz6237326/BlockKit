@@ -1,4 +1,4 @@
-import { isNil } from "block-kit-utils";
+import { isNil } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { Point } from "./point";

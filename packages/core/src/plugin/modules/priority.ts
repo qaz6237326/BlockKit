@@ -1,5 +1,5 @@
-import { DEFAULT_PRIORITY, isNil } from "block-kit-utils";
-import type { O } from "block-kit-utils/dist/es/types";
+import { DEFAULT_PRIORITY, isNil } from "@block-kit/utils";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 import type { PluginFuncKeys } from "../types";
 import type { CorePlugin } from "./implement";

@@ -1,5 +1,5 @@
 {
-  "name": "block-kit-utils",
+  "name": "@block-kit/utils",
   "version": "0.0.0",
   "description": "",
   "main": "./dist/lib/index.js",

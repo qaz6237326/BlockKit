@@ -1,7 +1,7 @@
-import type { Delta } from "block-kit-delta";
-import type { Op } from "block-kit-delta";
-import { EOL, isEOLOp, normalizeEOL } from "block-kit-delta";
-import { Clipboard, TEXT_HTML, TEXT_PLAIN } from "block-kit-utils";
+import type { Delta } from "@block-kit/delta";
+import type { Op } from "@block-kit/delta";
+import { EOL, isEOLOp, normalizeEOL } from "@block-kit/delta";
+import { Clipboard, TEXT_HTML, TEXT_PLAIN } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { NODE_KEY } from "../../model/types";

@@ -1,6 +1,6 @@
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import { invertAttributes } from "block-kit-delta";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import { invertAttributes } from "@block-kit/delta";
 
 import { isLeafOffsetTail } from "../collect/utils/is";
 import { getFirstUnicodeLen, getLastUnicodeLen } from "../collect/utils/string";

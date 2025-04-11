@@ -1,5 +1,5 @@
-import { Delta } from "block-kit-delta";
-import { isHTMLElement, TEXT_HTML } from "block-kit-utils";
+import { Delta } from "@block-kit/delta";
+import { isHTMLElement, TEXT_HTML } from "@block-kit/utils";
 
 import { isMatchHTMLTag } from "../../src/clipboard/utils/deserialize";
 import { getFragmentText, serializeHTML } from "../../src/clipboard/utils/serialize";

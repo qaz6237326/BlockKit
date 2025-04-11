@@ -1,4 +1,4 @@
-import { ROOT_BLOCK } from "block-kit-utils";
+import { ROOT_BLOCK } from "@block-kit/utils";
 
 import type { Editor } from "../../src/index";
 import {

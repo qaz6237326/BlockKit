@@ -1,5 +1,5 @@
 import { IconQuote } from "@arco-design/web-react/icon";
-import { cs, TRULY } from "block-kit-utils";
+import { cs, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { QUOTE_KEY } from "../../quote/types";

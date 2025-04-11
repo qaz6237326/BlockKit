@@ -1,4 +1,4 @@
-import type { LineState } from "block-kit-core";
+import type { LineState } from "@block-kit/core";
 
 export const isStrictEmptyLine = (line: LineState) => {
   const leaves = line.getLeaves();

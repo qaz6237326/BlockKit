@@ -1,5 +1,5 @@
-import type { Editor, LeafState } from "block-kit-core";
-import { LEAF_KEY, PLUGIN_TYPE } from "block-kit-core";
+import type { Editor, LeafState } from "@block-kit/core";
+import { LEAF_KEY, PLUGIN_TYPE } from "@block-kit/core";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 

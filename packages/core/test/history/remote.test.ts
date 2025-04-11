@@ -1,5 +1,5 @@
-import { Delta } from "block-kit-delta";
-import { sleep } from "block-kit-utils";
+import { Delta } from "@block-kit/delta";
+import { sleep } from "@block-kit/utils";
 
 import { APPLY_SOURCE, Editor } from "../../src";
 

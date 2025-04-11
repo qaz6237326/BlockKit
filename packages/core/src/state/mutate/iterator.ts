@@ -1,5 +1,5 @@
-import type { Op } from "block-kit-delta";
-import { getOpLength, isDeleteOp, isInsertOp, isRetainOp, OP_TYPES } from "block-kit-delta";
+import type { Op } from "@block-kit/delta";
+import { getOpLength, isDeleteOp, isInsertOp, isRetainOp, OP_TYPES } from "@block-kit/delta";
 
 import { LeafState } from "../modules/leaf-state";
 import type { LineState } from "../modules/line-state";

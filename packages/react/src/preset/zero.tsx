@@ -5,7 +5,7 @@ import {
   ZERO_SPACE_KEY,
   ZERO_SYMBOL,
   ZERO_VOID_KEY,
-} from "block-kit-core";
+} from "@block-kit/core";
 import { forwardRef } from "react";
 
 import { NO_CURSOR } from "../utils/constant";

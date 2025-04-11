@@ -1,7 +1,7 @@
-import type { Delta } from "block-kit-delta";
-import type { InsertOp } from "block-kit-delta";
-import type { Object } from "block-kit-utils";
-import type { Reflex } from "block-kit-utils";
+import type { Delta } from "@block-kit/delta";
+import type { InsertOp } from "@block-kit/delta";
+import type { Object } from "@block-kit/utils";
+import type { Reflex } from "@block-kit/utils";
 
 import type { Range } from "../../selection/modules/range";
 import type { NativeEventMap } from "../native/types";

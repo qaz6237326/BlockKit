@@ -1,4 +1,4 @@
-import { EOL } from "block-kit-delta";
+import { EOL } from "@block-kit/delta";
 
 import { NODE_KEY } from "../../model/types";
 

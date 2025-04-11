@@ -1,4 +1,4 @@
-import { Bind } from "block-kit-utils";
+import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import type { ContentChangeEvent } from "../event/bus/types";

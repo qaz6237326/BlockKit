@@ -1,4 +1,4 @@
-import { Delta } from "block-kit-delta";
+import { Delta } from "@block-kit/delta";
 
 import { Editor } from "../../src/editor";
 import { normalizeDelta } from "../../src/state/utils/normalize";

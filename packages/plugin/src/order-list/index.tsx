@@ -1,11 +1,11 @@
-import type { CMDPayload, Editor } from "block-kit-core";
-import { EDITOR_EVENT, Point, RawPoint } from "block-kit-core";
-import type { AttributeMap } from "block-kit-delta";
-import { Delta } from "block-kit-delta";
-import type { ReactLineContext } from "block-kit-react";
-import { EditorPlugin } from "block-kit-react";
-import type { EventContext } from "block-kit-utils";
-import { Bind, KEY_CODE, NIL } from "block-kit-utils";
+import type { CMDPayload, Editor } from "@block-kit/core";
+import { EDITOR_EVENT, Point, RawPoint } from "@block-kit/core";
+import type { AttributeMap } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
+import type { ReactLineContext } from "@block-kit/react";
+import { EditorPlugin } from "@block-kit/react";
+import type { EventContext } from "@block-kit/utils";
+import { Bind, KEY_CODE, NIL } from "@block-kit/utils";
 import type { ReactNode } from "react";
 
 import { LIST_TYPE_KEY } from "../bullet-list/types";

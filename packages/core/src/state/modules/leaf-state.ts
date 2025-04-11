@@ -1,7 +1,7 @@
-import type { Op } from "block-kit-delta";
-import type { InsertOp } from "block-kit-delta";
-import { EOL } from "block-kit-delta";
-import { isNil } from "block-kit-utils";
+import type { Op } from "@block-kit/delta";
+import type { InsertOp } from "@block-kit/delta";
+import { EOL } from "@block-kit/delta";
+import { isNil } from "@block-kit/utils";
 
 import { Point } from "../../selection/modules/point";
 import { Range } from "../../selection/modules/range";

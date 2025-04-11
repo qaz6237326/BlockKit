@@ -1,5 +1,5 @@
-import type { Editor } from "block-kit-core";
-import type { EventContext } from "block-kit-utils";
+import type { Editor } from "@block-kit/core";
+import type { EventContext } from "@block-kit/utils";
 
 const EDITOR_TO_DOM = new WeakMap<Editor, HTMLElement | null>();
 

@@ -1,4 +1,4 @@
-import { isObject, isString } from "block-kit-utils";
+import { isObject, isString } from "@block-kit/utils";
 import diff from "fast-diff";
 
 import { composeAttributes } from "../attributes/compose";

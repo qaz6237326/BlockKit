@@ -1,5 +1,5 @@
-import type { CorePlugin, Editor } from "block-kit-core";
-import type { O, P } from "block-kit-utils/dist/es/types";
+import type { CorePlugin, Editor } from "@block-kit/core";
+import type { O, P } from "@block-kit/utils/dist/es/types";
 
 import type { EditorPlugin } from "../index";
 import { WRAP_TYPE } from "../types";

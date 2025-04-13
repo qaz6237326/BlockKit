@@ -9,6 +9,10 @@ import ts from "rollup-plugin-typescript2";
 const SIGNAL_ENTRY = ["src/index.ts"];
 const COMPOSE_ENTRY = ["./src/*/index.{ts,tsx}", "./src/*/types/index.{ts,tsx}"];
 
+/**
+ * @typedef { import("rollup").RollupOptions } RollupConfig
+ * @return { Promise<RollupConfig[]> }
+ * */
 export default async () => {
   const dirsMap = await Promise.all(COMPOSE_ENTRY.map(item => glob(item)))
     .then(res => res.reduce((pre, cur) => [...pre, ...cur], [...SIGNAL_ENTRY]))
@@ -28,27 +32,52 @@ export default async () => {
   const deps = { ...(packages.dependencies || {}), ...(packages.peerDependencies || {}) };
   const external = Object.keys(deps).map(key => new RegExp(`(^${key}$)|(^${key}/.*)`));
 
-  return {
-    input: dirsMap,
-    output: {
-      dir: "./dist",
-      format: "es",
+  return [
+    {
+      input: dirsMap,
+      output: {
+        dir: "./dist/es",
+        format: "es",
+      },
+      plugins: [
+        resolve({ preferBuiltins: false }),
+        commonjs({ include: /node_modules/ }),
+        ts({
+          tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
+          extensions: [".ts", ".tsx"],
+        }),
+        replace({
+          values: {
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+          },
+          preventAssignment: true,
+        }),
+        postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      ],
+      external: external,
     },
-    plugins: [
-      resolve({ preferBuiltins: false }),
-      commonjs({ include: /node_modules/ }),
-      ts({
-        tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
-        extensions: [".ts", ".tsx"],
-      }),
-      replace({
-        values: {
-          "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-        },
-        preventAssignment: true,
-      }),
-      postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
-    ],
-    external: external,
-  };
+    {
+      input: dirsMap,
+      output: {
+        dir: "./dist/lib",
+        format: "commonjs",
+      },
+      plugins: [
+        resolve({ preferBuiltins: false }),
+        commonjs({ include: /node_modules/ }),
+        ts({
+          tsconfig: path.resolve(__dirname, "./tsconfig.lib.json"),
+          extensions: [".ts", ".tsx"],
+        }),
+        replace({
+          values: {
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+          },
+          preventAssignment: true,
+        }),
+        postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      ],
+      external: external,
+    },
+  ];
 };

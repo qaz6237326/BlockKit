@@ -200,7 +200,7 @@ export class Delta {
   }
 
   /**
-   * 获取 Ops 变更的长度
+   * 获取 Ops 内容变更的长度
    * - 即 insert 长度 - delete 长度
    * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#changelength
    */
@@ -216,7 +216,8 @@ export class Delta {
   }
 
   /**
-   * 获取 Ops 总长度 [内容长度]
+   * 获取 Ops 总长度
+   * - 相当于指针最后移动到的位置
    * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#length
    */
   public length(): number {
@@ -328,6 +329,7 @@ export class Delta {
 
   /**
    * Diff Ops
+   * - 获取由 this -> other 变更的增量
    * @param other
    * @param cursor
    * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#diff

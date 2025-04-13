@@ -34,6 +34,7 @@ for item in "${packages[@]}"; do
   cd $dir
   path="./packages/$item"
   cd $path
+  rm -rf dist
   npm run build
 done
 
@@ -56,7 +57,7 @@ for item in "${packages[@]}"; do
     " | node
   set +e
   if check_argument "--emit"; then
-    npm publish --registry=https://registry.npmjs.org/
+    npm publish --registry=https://registry.npmjs.org/ --access public
   else
     npm publish --registry=https://registry.npmjs.org/ --dry-run
   fi

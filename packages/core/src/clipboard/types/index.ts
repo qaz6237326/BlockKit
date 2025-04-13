@@ -1,6 +1,4 @@
-import type { Delta } from "@block-kit/delta";
-
-import type { Op } from "../../../../delta/dist";
+import type { Delta, Op } from "@block-kit/delta";
 
 export const TEXT_DOC = "application/x-block-kit";
 

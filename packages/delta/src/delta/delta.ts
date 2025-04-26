@@ -216,8 +216,8 @@ export class Delta {
   }
 
   /**
-   * 获取 Ops 总长度
-   * - 相当于指针最后移动到的位置
+   * 获取 Ops 变更总长度
+   * - 相当于累计了所有操作的长度 len(r) + len(i) + len(d)
    * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#length
    */
   public length(): number {
@@ -401,9 +401,10 @@ export class Delta {
 
   /**
    * 按行迭代 Ops
+   * - 迭代的行 Delta 会携带 LF-Op, 不存在则会自动补充
+   * - predicate 返回 false 之后, 将不会继续拆分行循环迭代
    * @param predicate
    * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#eachline
-   * @note 迭代的行 Delta 会携带 LF-Op, 不存在则会自动补充
    */
   public eachLine(
     predicate: (line: Delta, attributes: AttributeMap, index: number) => boolean | void
@@ -477,10 +478,10 @@ export class Delta {
    * 操作变换
    * @param other 操作变换目标
    * @param priority true: this > other false: other > this
-   * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#transform
    * @usage User: A [uid:1] B [uid:2] Base: i("12") Priority: A > B
    * - oa=r(2).i("A") 12A ob1=oa.transform(ob, true)=r(3).i("B") 12AB
    * - ob=r(2).i("B") 12B oa1=ob.transform(oa, false)=r(2).i("A") 12AB
+   * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#transform
    */
   public transform(other: Delta, priority = false): Delta {
     priority = !!priority;

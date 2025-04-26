@@ -63,16 +63,6 @@ export const throttle = <T extends Func.Any>(fn: T, options: Options | number): 
   };
 
   /**
-   * 立即执行
-   */
-  const flush = () => {
-    invoke();
-    if (leading && !trailing) {
-      timer = setTimeout(clear, wait);
-    }
-  };
-
-  /**
    * 节流
    * @param {unknown} this
    * @param {Array.Any} args
@@ -101,7 +91,7 @@ export const throttle = <T extends Func.Any>(fn: T, options: Options | number): 
   }
 
   /** 立即执行 */
-  throttled.flush = flush;
+  throttled.flush = invoke;
   /** 清除定时器 */
   throttled.cancel = clear;
   return throttled as ThrottledFn<T>;

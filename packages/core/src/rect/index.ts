@@ -97,7 +97,7 @@ export class Rect {
    */
   public getRawSelectionRect(): RectType | null {
     const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return null;
+    if (!selection || !selection.rangeCount) return null;
     const range = selection.getRangeAt(0);
     if (!range) return null;
     const clientRect = range.getBoundingClientRect();
@@ -110,7 +110,7 @@ export class Rect {
    */
   public getSelectionRect(): RectType | null {
     const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return null;
+    if (!selection || !selection.rangeCount) return null;
     const range = selection.getRangeAt(0);
     if (!range) return null;
     const clientRect = range.getBoundingClientRect();

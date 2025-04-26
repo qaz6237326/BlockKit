@@ -61,14 +61,6 @@ export const debounce = <T extends Func.Any>(fn: T, options: Options | number): 
   };
 
   /**
-   * 立即执行
-   */
-  const flush = () => {
-    invoke();
-    timer = setTimeout(clear, wait);
-  };
-
-  /**
    * 防抖
    * @param {unknown} this
    * @param {Array.Any} args
@@ -96,7 +88,7 @@ export const debounce = <T extends Func.Any>(fn: T, options: Options | number): 
   }
 
   /** 立即执行 */
-  debounced.flush = flush;
+  debounced.flush = invoke;
   /** 清除定时器 */
   debounced.cancel = clear;
   return debounced as DebouncedFn<T>;

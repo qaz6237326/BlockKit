@@ -112,7 +112,7 @@ const App: FC = () => {
           <ThemeMode></ThemeMode>
           <GitHubIcon></GitHubIcon>
         </Toolbar>
-        <FloatToolbar offsetTop={-10}>
+        <FloatToolbar offsetTop={-8}>
           <Mixin.Bold></Mixin.Bold>
           <Mixin.Italic></Mixin.Italic>
           <Mixin.Underline></Mixin.Underline>

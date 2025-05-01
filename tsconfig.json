@@ -23,6 +23,7 @@
       "@block-kit/delta": ["./packages/delta/src"],
       "@block-kit/react": ["./packages/react/src"],
       "@block-kit/plugin": ["./packages/plugin/src"],
+      "@block-kit/vue": ["./packages/vue/src"],
       "@block-kit/utils": ["./packages/utils/src"],
       "@block-kit/utils/dist/es/*": ["./packages/utils/src/*"]
     }

@@ -30,26 +30,14 @@ const config: Configuration = {
   plugins: [
     new CopyPlugin([{ from: "./public", to: "./" }]),
     new HtmlPlugin({
-      inject: false,
       filename: "index.html",
       template: "./public/index.html",
-      templateParameters: (compilation, assets) => {
-        return {
-          jsFiles: assets.js.filter(it => /index/.test(it)),
-          cssFiles: assets.css.filter(it => /index/.test(it)),
-        };
-      },
+      chunks: ["index"],
     }),
     new HtmlPlugin({
-      inject: false,
       filename: "vue.html",
       template: "./public/vue.html",
-      templateParameters: (compilation, assets) => {
-        return {
-          jsFiles: assets.js.filter(it => /vue/.test(it)),
-          cssFiles: assets.css.filter(it => /vue/.test(it)),
-        };
-      },
+      chunks: ["vue"],
     }),
   ],
   resolve: {

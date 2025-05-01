@@ -30,23 +30,27 @@ export type ZeroSpaceProps = {
  * - enter => 行末尾占位, 保留于 EOLView
  * - len => 空节点占位长度, 配合 Void/Embed
  */
-export const ZeroSpace = /*#__PURE__*/ defineComponent<ZeroSpaceProps>((props, { expose }) => {
-  const spanRef = ref<HTMLSpanElement | null>(null);
+export const ZeroSpace = /*#__PURE__*/ defineComponent<ZeroSpaceProps>({
+  name: "ZeroSpace",
+  props: ["hide", "void", "embed", "enter", "len"],
+  setup: (props, { expose }) => {
+    const spanRef = ref<HTMLSpanElement | null>(null);
 
-  expose({ el: spanRef });
+    expose({ el: spanRef });
 
-  return () =>
-    h(
-      "span",
-      {
-        ref: spanRef,
-        [ZERO_SPACE_KEY]: true,
-        [ZERO_VOID_KEY]: props.void,
-        [ZERO_ENTER_KEY]: props.enter,
-        [ZERO_EMBED_KEY]: props.embed,
-        [VOID_LEN_KEY]: props.len,
-        style: props.hide ? NO_CURSOR : undefined,
-      },
-      ZERO_SYMBOL
-    );
+    return () =>
+      h(
+        "span",
+        {
+          ref: spanRef,
+          [ZERO_SPACE_KEY]: true,
+          [ZERO_VOID_KEY]: props.void,
+          [ZERO_ENTER_KEY]: props.enter,
+          [ZERO_EMBED_KEY]: props.embed,
+          [VOID_LEN_KEY]: props.len,
+          style: props.hide ? NO_CURSOR : undefined,
+        },
+        ZERO_SYMBOL
+      );
+  },
 });

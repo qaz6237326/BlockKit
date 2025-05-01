@@ -5,4 +5,5 @@ packages:
   - "packages/core"
   - "packages/react"
   - "packages/plugin"
+  - "packages/vue"
   - "website"

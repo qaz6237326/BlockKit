@@ -2,8 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Block Kit</title>
+    <% for (let i = 0; i < cssFiles.length; i++) { %>
+    <link href="<%= cssFiles[i] %>" rel="stylesheet" />
+    <% } %>
   </head>
   <body>
     <% if (process.env.NODE_ENV === "production") { %>
@@ -34,5 +38,8 @@
     ></script>
     <% } %>
     <div id="root" class="root"></div>
+    <% for (let i = 0; i < jsFiles.length; i++) { %>
+    <script src="<%= jsFiles[i] %>"></script>
+    <% } %>
   </body>
 </html>

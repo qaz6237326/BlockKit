@@ -10,6 +10,7 @@ const delta = path.resolve(__dirname, "../packages/delta/src");
 const react = path.resolve(__dirname, "../packages/react/src");
 const utils = path.resolve(__dirname, "../packages/utils/src");
 const plugin = path.resolve(__dirname, "../packages/plugin/src");
+const vue = path.resolve(__dirname, "../packages/vue/src");
 
 /**
  * @type {import("@rspack/cli").Configuration}
@@ -19,16 +20,36 @@ const config: Configuration = {
   context: __dirname,
   entry: {
     index: "./src/index.tsx",
+    vue: "./src/vue.ts",
   },
   externals: {
     "react": "React",
     "react-dom": "ReactDOM",
+    "vue": "Vue",
   },
   plugins: [
     new CopyPlugin([{ from: "./public", to: "./" }]),
     new HtmlPlugin({
+      inject: false,
       filename: "index.html",
       template: "./public/index.html",
+      templateParameters: (compilation, assets) => {
+        return {
+          jsFiles: assets.js.filter(it => /index/.test(it)),
+          cssFiles: assets.css.filter(it => /index/.test(it)),
+        };
+      },
+    }),
+    new HtmlPlugin({
+      inject: false,
+      filename: "vue.html",
+      template: "./public/vue.html",
+      templateParameters: (compilation, assets) => {
+        return {
+          jsFiles: assets.js.filter(it => /vue/.test(it)),
+          cssFiles: assets.css.filter(it => /vue/.test(it)),
+        };
+      },
     }),
   ],
   resolve: {
@@ -39,6 +60,7 @@ const config: Configuration = {
       "@block-kit/react": react,
       "@block-kit/utils": utils,
       "@block-kit/plugin": plugin,
+      "@block-kit/vue": vue,
     },
   },
   builtins: {

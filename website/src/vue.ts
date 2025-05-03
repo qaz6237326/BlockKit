@@ -25,18 +25,25 @@ const App = defineComponent({
     });
 
     return () =>
-      h(BlockKit, {
-        editor: editor.value,
-        readonly: readonly.value,
-        children: h("div", { class: "block-kit-editable-container" }, [
-          h("div", { class: "block-kit-mount-dom" }),
-          h(Editable, {
-            placeholder: "Please Enter...",
-            autoFocus: true,
-            class: "block-kit-editable",
-          }),
-        ]),
-      });
+      h(
+        BlockKit,
+        {
+          editor: editor.value,
+          readonly: readonly.value,
+        },
+        {
+          default: () => {
+            return h("div", { class: "block-kit-editable-container" }, [
+              h("div", { class: "block-kit-mount-dom" }),
+              h(Editable, {
+                placeholder: "Please Enter...",
+                autoFocus: true,
+                class: "block-kit-editable",
+              }),
+            ]);
+          },
+        }
+      );
   },
 });
 

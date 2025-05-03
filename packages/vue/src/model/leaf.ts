@@ -33,7 +33,9 @@ export const LeafModel = /*#__PURE__*/ defineComponent<LeafModelProps>({
         attributes: props.leafState.op.attributes,
         style: {},
         children: h(Text, {
-          ref: (refs: P.Any) => refs && LT.set(props.leafState, refs.el),
+          ref: (refs: P.Any) => {
+            refs && refs.el && LT.set(toRaw(props.leafState), refs.el);
+          },
           text: text,
         }),
       };

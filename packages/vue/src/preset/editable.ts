@@ -1,6 +1,6 @@
 import { EDITOR_KEY, Point, Range } from "@block-kit/core";
 import { cs } from "@block-kit/utils";
-import { defineComponent, h, onMounted, ref } from "vue";
+import { defineComponent, h, onMounted, onUnmounted, ref } from "vue";
 
 import { useEditorStatic } from "../hooks/use-editor";
 import { useReadonly } from "../hooks/use-readonly";
@@ -42,9 +42,10 @@ export const Editable = /*#__PURE__*/ defineComponent<EditableProps>({
         editor.selection.set(new Range(start, start), true);
         editor.selection.focus();
       }
-      return () => {
-        editor.destroy();
-      };
+    });
+
+    onUnmounted(() => {
+      editor.destroy();
     });
 
     return () =>

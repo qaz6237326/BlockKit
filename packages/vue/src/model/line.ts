@@ -5,7 +5,7 @@ import { EOL, EOL_OP } from "@block-kit/delta";
 import { cs, isDOMText } from "@block-kit/utils";
 import type { P } from "@block-kit/utils/dist/es/types";
 import type { VNode } from "vue";
-import { computed, defineComponent, Fragment, h, onUpdated, toRaw } from "vue";
+import { computed, defineComponent, Fragment, h, toRaw, watch } from "vue";
 
 import { EDITOR_TO_WRAP_LEAF_KEYS, EDITOR_TO_WRAP_LEAF_PLUGINS } from "../plugin/modules/wrap";
 import type { VueLineContext, VueNode, VueWrapLeafContext } from "../plugin/types";
@@ -41,25 +41,29 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
      * 首次处理会将所有 DOM 渲染, 不需要执行脏数据检查
      * 需要 LayoutEffect 以保证 DOM -> Sel 的执行顺序
      */
-    onUpdated(() => {
-      const leaves = props.lineState.getLeaves();
-      for (const leaf of leaves) {
-        const dom = LEAF_TO_TEXT.get(leaf);
-        if (!dom) continue;
-        const text = leaf.getText();
-        // 避免 Vue 非受控与 IME 造成的 DOM 内容问题
-        if (text === dom.textContent) continue;
-        props.editor.logger.debug("Correct Text Node", dom);
-        const nodes = dom.childNodes;
-        for (let i = 1; i < nodes.length; ++i) {
-          const node = nodes[i];
-          node && node.remove();
+    watch(
+      () => props.lineState,
+      () => {
+        const leaves = props.lineState.getLeaves();
+        for (const leaf of leaves) {
+          const dom = LEAF_TO_TEXT.get(toRaw(leaf));
+          if (!dom) continue;
+          const text = leaf.getText();
+          // 避免 Vue 非受控与 IME 造成的 DOM 内容问题
+          if (text === dom.textContent) continue;
+          props.editor.logger.debug("Correct Text Node", dom);
+          const nodes = dom.childNodes;
+          for (let i = 1; i < nodes.length; ++i) {
+            const node = nodes[i];
+            node && node.remove();
+          }
+          if (isDOMText(dom.firstChild)) {
+            dom.firstChild.nodeValue = text;
+          }
         }
-        if (isDOMText(dom.firstChild)) {
-          dom.firstChild.nodeValue = text;
-        }
-      }
-    });
+      },
+      { flush: "pre" }
+    );
 
     /**
      * 处理行内的节点
@@ -68,14 +72,23 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
       const leaves = props.lineState.getLeaves();
       const textLeaves = leaves.slice(0, -1);
       const nodes = textLeaves.map((n, i) => {
-        const node = h(LeafModel, { key: i, editor: props.editor, index: i, leafState: n });
+        const node = h(LeafModel, {
+          key: i,
+          editor: props.editor,
+          index: i,
+          leafState: n,
+        });
         JSX_TO_STATE.set(node, n);
         return node;
       });
       // 空行则仅存在一个 Leaf, 此时需要渲染空的占位节点
       if (!nodes.length && leaves[0]) {
         const leaf = leaves[0];
-        const node = h(EOLModel, { key: EOL, editor: props.editor, leafState: leaf });
+        const node = h(EOLModel, {
+          key: EOL,
+          editor: props.editor,
+          leafState: leaf,
+        });
         JSX_TO_STATE.set(node, leaf);
         nodes.push(node);
         return nodes;
@@ -84,7 +97,11 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
       const eolLeaf = leaves[leaves.length - 1];
       const lastLeaf = textLeaves[textLeaves.length - 1];
       if (lastLeaf && eolLeaf && lastLeaf.embed) {
-        const node = h(EOLModel, { key: EOL, editor: props.editor, leafState: eolLeaf });
+        const node = h(EOLModel, {
+          key: EOL,
+          editor: props.editor,
+          leafState: eolLeaf,
+        });
         JSX_TO_STATE.set(node, eolLeaf);
         nodes.push(node);
         return nodes;

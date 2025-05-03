@@ -14,10 +14,10 @@ import {
   defineComponent,
   Fragment,
   h,
-  nextTick,
   onUpdated,
   ref,
   toRaw,
+  watch,
   watchEffect,
 } from "vue";
 
@@ -81,20 +81,24 @@ export const BlockModel = /*#__PURE__*/ defineComponent<BlockModelProps>({
     });
 
     /**
-     * 视图更新需要重新设置选区 无依赖数组
+     * 视图更新需要重新设置选区
      */
-    onUpdated(() => {
-      const selection = props.editor.selection.get();
-      if (
-        !props.editor.state.get(EDITOR_STATE.COMPOSING) &&
-        props.editor.state.get(EDITOR_STATE.FOCUS) &&
-        selection
-      ) {
-        // 更新浏览器选区
-        props.editor.logger.debug("UpdateDOMSelection");
-        props.editor.selection.updateDOMSelection(true);
-      }
-    });
+    watch(
+      () => lines.value,
+      () => {
+        const selection = props.editor.selection.get();
+        if (
+          !props.editor.state.get(EDITOR_STATE.COMPOSING) &&
+          props.editor.state.get(EDITOR_STATE.FOCUS) &&
+          selection
+        ) {
+          // 更新浏览器选区
+          props.editor.logger.debug("UpdateDOMSelection");
+          props.editor.selection.updateDOMSelection(true);
+        }
+      },
+      { flush: "post" }
+    );
 
     /**
      * 视图更新需要触发视图绘制完成事件 无依赖数组
@@ -102,7 +106,6 @@ export const BlockModel = /*#__PURE__*/ defineComponent<BlockModelProps>({
      * effect <- parent <- node <- child <-|
      */
     onUpdated(async () => {
-      await nextTick(); // 等待 DOM 更新
       props.editor.logger.debug("OnPaint");
       props.editor.state.set(EDITOR_STATE.PAINTING, false);
       Promise.resolve().then(() => {

@@ -1,6 +1,6 @@
 import { LEAF_STRING } from "@block-kit/core";
 import { isDOMText } from "@block-kit/utils";
-import { defineComponent, h, onMounted, ref } from "vue";
+import { defineComponent, h, ref } from "vue";
 
 export type TextProps = {
   text: string;
@@ -32,10 +32,8 @@ export const Text = /*#__PURE__*/ defineComponent<TextProps>({
       }
     };
 
-    onMounted(() => {
-      // 处理外部引用的 ref
-      expose({ el: container });
-    });
+    // 处理外部引用的 ref
+    expose({ el: container });
 
     return () =>
       h(

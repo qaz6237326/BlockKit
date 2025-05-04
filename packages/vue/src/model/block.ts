@@ -8,14 +8,14 @@ import {
   PLACEHOLDER_KEY,
 } from "@block-kit/core";
 import type { P } from "@block-kit/utils/dist/es/types";
-import type { Ref, VNode } from "vue";
+import type { VNode } from "vue";
 import {
   computed,
   defineComponent,
   Fragment,
   h,
   onUpdated,
-  ref,
+  shallowRef,
   toRaw,
   watch,
   watchEffect,
@@ -42,8 +42,8 @@ export const BlockModel = /*#__PURE__*/ defineComponent<BlockModelProps>({
   name: "BlockModel",
   props: ["editor", "state", "placeholder"],
   setup: props => {
-    const flushing = ref(false);
-    const lines = ref(props.state.getLines()) as Ref<LineState[]>;
+    const flushing = shallowRef(false);
+    const lines = shallowRef(props.state.getLines());
 
     /**
      * 设置行 DOM 节点
@@ -117,7 +117,11 @@ export const BlockModel = /*#__PURE__*/ defineComponent<BlockModelProps>({
      * 处理行节点
      */
     const elements = computed(() => {
-      return lines.value.map((line, index) => {
+      // 此处取原始值, 可以避免 Vue 进行深度代理
+      // 已实现 immutable, 仅需要处理顶层引用类型
+      // https://cn.vuejs.org/guide/best-practices/performance
+      const rawLines = toRaw(lines.value);
+      return rawLines.map((line, index) => {
         const node = h(LineModel, {
           key: line.key,
           editor: props.editor,

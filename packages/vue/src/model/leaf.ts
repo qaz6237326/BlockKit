@@ -1,7 +1,7 @@
 import type { Editor, LeafState } from "@block-kit/core";
 import { LEAF_KEY, PLUGIN_TYPE } from "@block-kit/core";
 import type { P } from "@block-kit/utils/dist/es/types";
-import { computed, defineComponent, h, toRaw } from "vue";
+import { computed, defineComponent, h } from "vue";
 
 import type { VueLeafContext } from "../plugin/types";
 import { Text } from "../preset/text";
@@ -19,7 +19,7 @@ export const LeafModel = /*#__PURE__*/ defineComponent<LeafModelProps>({
   setup: props => {
     const setModel = (dom: P.Any) => {
       if (dom instanceof HTMLSpanElement) {
-        props.editor.model.setLeafModel(dom, toRaw(props.leafState));
+        props.editor.model.setLeafModel(dom, props.leafState);
       }
     };
 
@@ -34,7 +34,7 @@ export const LeafModel = /*#__PURE__*/ defineComponent<LeafModelProps>({
         style: {},
         children: h(Text, {
           ref: (refs: P.Any) => {
-            refs && refs.el && LT.set(toRaw(props.leafState), refs.el);
+            refs && refs.el && LT.set(props.leafState, refs.el);
           },
           text: text,
         }),

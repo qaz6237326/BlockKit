@@ -5,7 +5,7 @@ import { EOL, EOL_OP } from "@block-kit/delta";
 import { cs, isDOMText } from "@block-kit/utils";
 import type { P } from "@block-kit/utils/dist/es/types";
 import type { VNode } from "vue";
-import { computed, defineComponent, Fragment, h, toRaw, watch } from "vue";
+import { computed, defineComponent, Fragment, h, watch } from "vue";
 
 import { EDITOR_TO_WRAP_LEAF_KEYS, EDITOR_TO_WRAP_LEAF_PLUGINS } from "../plugin/modules/wrap";
 import type { VueLineContext, VueNode, VueWrapLeafContext } from "../plugin/types";
@@ -33,7 +33,7 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
      */
     const setModel = (dom: P.Any) => {
       if (dom instanceof HTMLDivElement) {
-        props.editor.model.setLineModel(dom, toRaw(props.lineState));
+        props.editor.model.setLineModel(dom, props.lineState);
       }
     };
 
@@ -46,7 +46,7 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
       () => {
         const leaves = props.lineState.getLeaves();
         for (const leaf of leaves) {
-          const dom = LEAF_TO_TEXT.get(toRaw(leaf));
+          const dom = LEAF_TO_TEXT.get(leaf);
           if (!dom) continue;
           const text = leaf.getText();
           // 避免 Vue 非受控与 IME 造成的 DOM 内容问题

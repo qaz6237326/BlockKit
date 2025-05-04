@@ -6,7 +6,7 @@ import {
   ZERO_SYMBOL,
   ZERO_VOID_KEY,
 } from "@block-kit/core";
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, shallowRef } from "vue";
 
 import { NO_CURSOR } from "../utils/constant";
 
@@ -34,7 +34,7 @@ export const ZeroSpace = /*#__PURE__*/ defineComponent<ZeroSpaceProps>({
   name: "ZeroSpace",
   props: ["hide", "void", "embed", "enter", "len"],
   setup: (props, { expose }) => {
-    const spanRef = ref<HTMLSpanElement | null>(null);
+    const spanRef = shallowRef<HTMLSpanElement | null>(null);
 
     expose({ el: spanRef });
 

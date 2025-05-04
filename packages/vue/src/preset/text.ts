@@ -1,6 +1,6 @@
 import { LEAF_STRING } from "@block-kit/core";
 import { isDOMText } from "@block-kit/utils";
-import { defineComponent, h, ref } from "vue";
+import { defineComponent, h, shallowRef } from "vue";
 
 export type TextProps = {
   text: string;
@@ -14,7 +14,7 @@ export const Text = /*#__PURE__*/ defineComponent<TextProps>({
   name: "Text",
   props: ["text"],
   setup: (props, { expose }) => {
-    const container = ref<HTMLSpanElement | null>(null);
+    const container = shallowRef<HTMLSpanElement | null>(null);
 
     const onRef = (dom: HTMLSpanElement | null) => {
       // COMPAT: 避免 Vue 非受控与 IME 造成的 DOM 内容问题

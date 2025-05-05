@@ -33,6 +33,7 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
      */
     const setModel = (dom: P.Any) => {
       if (dom instanceof HTMLDivElement) {
+        // 必须从 props 取 lineState, 否则会造成闭包问题
         props.editor.model.setLineModel(dom, props.lineState);
       }
     };

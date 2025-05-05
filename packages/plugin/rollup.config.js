@@ -6,16 +6,16 @@ import path from "path";
 import postcss from "rollup-plugin-postcss";
 import ts from "rollup-plugin-typescript2";
 
-const SIGNAL_ENTRY = ["src/index.ts"];
-const COMPOSE_ENTRY = ["./src/*/index.{ts,tsx}", "./src/*/types/index.{ts,tsx}"];
+const IGNORE_ENTRY = ["src/**/*.d.ts"];
+const COMPOSE_ENTRY = ["src/**/*.{ts,tsx}"];
 
 /**
  * @typedef { import("rollup").RollupOptions } RollupConfig
  * @return { Promise<RollupConfig[]> }
  * */
 export default async () => {
-  const dirsMap = await Promise.all(COMPOSE_ENTRY.map(item => glob(item)))
-    .then(res => res.reduce((pre, cur) => [...pre, ...cur], [...SIGNAL_ENTRY]))
+  const dirsMap = await Promise.all(COMPOSE_ENTRY.map(item => glob(item, { ignore: IGNORE_ENTRY })))
+    .then(res => res.reduce((pre, cur) => [...pre, ...cur]))
     .then(dirs => {
       return Promise.all(
         dirs.map(async fullPath => [
@@ -38,6 +38,12 @@ export default async () => {
       output: {
         dir: "./dist/es",
         format: "es",
+        // https://rollupjs.org/configuration-options/#output-preservemodules
+        // 类似 BundleLess 模式保留模块独立性, 可能会造成依赖问题, 例如 tslib 会被处理为从 .pnpm 中引入
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        // https://rollupjs.org/faqs/#why-do-additional-imports-turn-up-in-my-entry-chunks-when-code-splitting
+        hoistTransitiveImports: false,
       },
       plugins: [
         resolve({ preferBuiltins: false }),
@@ -61,6 +67,8 @@ export default async () => {
       output: {
         dir: "./dist/lib",
         format: "commonjs",
+        // https://rollupjs.org/configuration-options/#output-hoisttransitiveimports
+        hoistTransitiveImports: false,
       },
       plugins: [
         resolve({ preferBuiltins: false }),

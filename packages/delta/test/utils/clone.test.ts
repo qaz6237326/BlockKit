@@ -3,8 +3,8 @@ import { cloneBlockSetLike } from "../../src";
 
 describe("clone", () => {
   const blockSet: BlockSetLike = {
-    a: { ops: [{ insert: "123", attributes: { a: "1" } }], blockId: "a", blockType: "Z" },
-    b: { ops: [{ insert: "456" }], blockId: "b", blockType: "Z" },
+    a: { ops: [{ insert: "123", attributes: { a: "1" } }], id: "a", type: "Z" },
+    b: { ops: [{ insert: "456" }], id: "b", type: "Z" },
   };
   const newBlockSet = cloneBlockSetLike(blockSet);
 

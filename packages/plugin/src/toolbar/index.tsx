@@ -21,7 +21,7 @@ import { Underline } from "./modules/underline";
 export { Toolbar } from "./context/basic";
 export { FloatToolbar } from "./context/float";
 
-export const Mixin = {
+export const ToolBarMixin = {
   Cut,
   Bold,
   Link,

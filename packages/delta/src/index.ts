@@ -3,9 +3,9 @@ export { diffAttributes } from "./attributes/diff";
 export type { AttributeMap } from "./attributes/interface";
 export { invertAttributes } from "./attributes/invert";
 export { transformAttributes } from "./attributes/transform";
-export { BlockDelta } from "./cluster/block-delta";
+export { Block } from "./cluster/block";
 export { BlockSet } from "./cluster/block-set";
-export type { BlockDeltaLike, BlockSetLike, DeltaLike } from "./cluster/interface";
+export type { BlockLike, BlockSetLike, DeltaLike } from "./cluster/interface";
 export { BLOCK_TYPE } from "./cluster/interface";
 export { Delta } from "./delta/delta";
 export type { DeleteOp, InsertOp, Op, Ops, RetainOp } from "./delta/interface";
@@ -16,7 +16,7 @@ export { MutateDelta } from "./mutate/delta";
 export { MutateIterator } from "./mutate/iterator";
 export {
   cloneAttributes,
-  cloneBlockDeltaLike,
+  cloneBlockLike,
   cloneBlockSetLike,
   cloneDeltaLike,
   cloneOp,

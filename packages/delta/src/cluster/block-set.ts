@@ -1,21 +1,19 @@
-import { isString } from "@block-kit/utils";
-
-import { BlockDelta } from "./block-delta";
+import { Block } from "./block";
 import type { BlockSetOption } from "./interface";
 
 export class BlockSet {
   /** 内建值 */
-  protected _blocks: Record<string, BlockDelta>;
+  protected _blocks: Record<string, Block>;
 
   /**
    * 构造函数
    * @param blocks
    */
   constructor(blocks: BlockSetOption = {}) {
-    this._blocks = Object.keys(blocks).reduce(
-      (acc, blockId) => ({ ...acc, [blockId]: new BlockDelta(blocks[blockId]) }),
-      {} as Record<string, BlockDelta>
-    );
+    this._blocks = {};
+    Object.entries(blocks).forEach(([id, block]) => {
+      this._blocks[id] = new Block({ ...block, id });
+    });
   }
 
   /**
@@ -29,7 +27,7 @@ export class BlockSet {
    * 获取指定块
    * @param blockId
    */
-  public get(blockId: string): BlockDelta | null {
+  public get(blockId: string): Block | null {
     return this._blocks[blockId] || null;
   }
 
@@ -44,55 +42,40 @@ export class BlockSet {
 
   /**
    * 增加块
-   * @param params
+   * @param block
    */
-  public add(params: BlockDelta): this;
-  public add(params: string, blockDelta: BlockDelta): this;
-  public add(params: BlockDelta | string, blockDelta?: BlockDelta): this {
-    if (isString(params)) {
-      const delta = blockDelta;
-      if (!delta) {
-        console.error("BlockDelta is not defined:", params);
-        return this;
-      }
-      if (delta.blockId !== params) {
-        console.error("BlockId is not equal:", params, delta.blockId);
-        return this;
-      }
-      this._blocks[params] = delta;
-    } else {
-      this._blocks[params.blockId] = params;
-    }
+  public add(block: Block): this {
+    this._blocks[block.id] = block;
     return this;
   }
 
   /**
-   * 替换块
-   * @param blockId 被替换的块
-   * @param blockDelta 替换的块
+   * 将 id 指向的块替换为新的块
+   * @param id 被替换的块 id
+   * @param block 新置入的块
    */
-  public replace(blockId: string, blockDelta: BlockDelta): this {
-    return this.delete(blockId).add(blockDelta.blockId, blockDelta);
+  public replace(id: string, block: Block): this {
+    return this.delete(id).add(block);
   }
 
   /**
    * 遍历块
    * @param cb
    */
-  public forEach(cb: (blockId: string, blockDelta: BlockDelta) => void) {
-    for (const [blockId, blockDelta] of Object.entries(this._blocks)) {
-      cb(blockId, blockDelta);
+  public forEach(cb: (blockId: string, block: Block) => void) {
+    for (const [blockId, block] of Object.entries(this._blocks)) {
+      cb(blockId, block);
     }
   }
 
   /**
    * 克隆对象
-   * @param deep [?=undefined] 是否深拷贝
+   * @param deep [?=undef] 是否深拷贝
    */
   public clone(deep?: boolean): BlockSet {
     const newBlockSet = new BlockSet();
-    this.forEach((blockId, delta) => {
-      newBlockSet.add(blockId, delta.clone(deep));
+    this.forEach((_, delta) => {
+      newBlockSet.add(delta.clone(deep));
     });
     return newBlockSet;
   }

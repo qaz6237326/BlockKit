@@ -1,17 +1,19 @@
 import type { Ops } from "../delta/interface";
 
 export const BLOCK_TYPE = {
-  L: "L", // List
-  C: "C", // Content
+  /** 内容块类型 - Content */
+  C: "C",
+  /** 列表块类型 - List */
+  L: "L",
 } as const;
 
-export type BlockDeltaOption = {
+export type BlockOption = {
   ops?: Ops;
-  blockId?: string;
-  blockType?: string;
+  id?: string;
+  type?: string;
 };
 
-export type BlockSetOption = Record<string, BlockDeltaOption>;
-export type BlockDeltaLike = Required<BlockDeltaOption>;
-export type BlockSetLike = Record<string, BlockDeltaLike>;
-export type DeltaLike = Omit<BlockDeltaLike, "blockId" | "blockType">;
+export type BlockLike = Required<BlockOption>;
+export type BlockSetLike = Record<string, BlockLike>;
+export type DeltaLike = Omit<BlockLike, "id" | "type">;
+export type BlockSetOption = Record<string, BlockOption>;

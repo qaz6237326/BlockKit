@@ -108,7 +108,7 @@
 到这里，其实可以感觉到我们主要是用到了浏览器的`ContentEditable`编辑、选区以及`DOM`的能力，那么我们的编辑器最重要的一个能力就是输入，有了之前聊到的一些设计与抽象，我们似乎可以比较简单的设计整个流程: 
 
 * 通过选区映射到我们自行维护的`Range Model`，包括选区变换时根据`DOMRange`映射到`Model`，这一步需要比较多的查找和遍历，还需要借助我们之前聊的`WeakMap`对象来查找`Model`来计算位置。
-* 通过键盘进行输入，借助于浏览器的`BeforeInputEvent`以及`CompositionEvent`分别处理输入/删除与`IME`输入，基于输入构造`Delta Change`应用到`DeltaSet`上并且触发`ContentChange`，视图层由此进行更新。
+* 通过键盘进行输入，借助于浏览器的`BeforeInputEvent`以及`CompositionEvent`分别处理输入/删除与`IME`输入，基于输入构造`Delta Change`应用到`BlockSet`上并且触发`ContentChange`，视图层由此进行更新。
 * 当视图层更新之后，需要根据浏览器的`DOM`以及我们维护的`Model`刷新选区，需要根据`Model`映射到`DOMRange`，再应用到浏览器的`selection`对象中，这其中也涉及了很多边界条件。
 
 实际上在完成上边整个流程的过程中，我遇到了两个非常麻烦的问题，而且也是在解决问题的过程中，慢慢地完善了整个流程的实现，路程还是比较曲折的。

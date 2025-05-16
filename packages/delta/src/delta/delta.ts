@@ -6,7 +6,7 @@ import { diffAttributes } from "../attributes/diff";
 import type { AttributeMap } from "../attributes/interface";
 import { invertAttributes } from "../attributes/invert";
 import { transformAttributes } from "../attributes/transform";
-import { cloneOp } from "../utils/clone";
+import { cloneOp, cloneOps } from "../utils/clone";
 import { isEqualAttributes, isEqualOp } from "../utils/equal";
 import type { Op, Ops } from "./interface";
 import { EOL, OP_TYPES } from "./interface";
@@ -52,7 +52,6 @@ export class Delta {
   /**
    * 插入操作
    * @param attributes
-   * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#insert
    */
   public insertEOL(attributes?: AttributeMap): this {
     return this.insert(EOL, attributes);
@@ -202,7 +201,6 @@ export class Delta {
   /**
    * 获取 Ops 内容变更的长度
    * - 即 insert 长度 - delete 长度
-   * @link https://www.npmjs.com/package/quill-delta/v/4.2.2#changelength
    */
   public changeLength(): number {
     return this.reduce((length, elem) => {
@@ -325,6 +323,24 @@ export class Delta {
       delta.ops = delta.ops.concat(other.ops.slice(1));
     }
     return delta;
+  }
+
+  /**
+   * 原地拼接 Ops
+   * - 常用于纯文档描述的原地拼接, 非纯文档应使用 compose
+   * @param other
+   * @param fastMode [?=true] 快速模式下直接拼接, 否则会尝试合并 Ops
+   */
+  public merge(other: Delta, fastMode = true): Delta {
+    if (fastMode) {
+      this.ops.push(...other.ops);
+      return this;
+    }
+    if (other.ops.length > 0) {
+      this.push(other.ops[0]);
+      this.ops.push(...other.ops.slice(1));
+    }
+    return this;
   }
 
   /**
@@ -540,5 +556,13 @@ export class Delta {
       offset = offset + length;
     }
     return index;
+  }
+
+  /**
+   * 克隆 Delta
+   * @param deep [?=undef] 是否深克隆
+   */
+  public clone(deep?: boolean): Delta {
+    return new Delta(deep ? cloneOps(this.ops) : this.ops);
   }
 }

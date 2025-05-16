@@ -1,7 +1,7 @@
 import { isNil } from "@block-kit/utils";
 
 import type { AttributeMap } from "../attributes/interface";
-import type { BlockDeltaLike, BlockSetLike, DeltaLike } from "../cluster/interface";
+import type { BlockLike, BlockSetLike, DeltaLike } from "../cluster/interface";
 import type { Op, Ops } from "../delta/interface";
 
 /**
@@ -42,10 +42,10 @@ export const cloneDeltaLike = (delta: DeltaLike): DeltaLike => {
 };
 
 /**
- * 克隆 BlockDeltaLike
+ * 克隆 BlockLike
  * @param delta
  */
-export const cloneBlockDeltaLike = (delta: BlockDeltaLike): BlockDeltaLike => {
+export const cloneBlockLike = (delta: BlockLike): BlockLike => {
   return { ...delta, ops: cloneOps(delta.ops) };
 };
 
@@ -56,7 +56,7 @@ export const cloneBlockDeltaLike = (delta: BlockDeltaLike): BlockDeltaLike => {
 export const cloneBlockSetLike = (blockSet: BlockSetLike): BlockSetLike => {
   const newBlockSetLike = {} as BlockSetLike;
   for (const [key, value] of Object.entries(blockSet)) {
-    newBlockSetLike[key] = cloneBlockDeltaLike(value);
+    newBlockSetLike[key] = cloneBlockLike(value);
   }
   return newBlockSetLike;
 };

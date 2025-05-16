@@ -57,7 +57,7 @@ export { Shortcut } from "./shortcut";
 export type { ShortcutFunc, ShortcutFuncMap } from "./shortcut/types";
 export { StrikePlugin } from "./strike/index";
 export { STRIKE_KEY } from "./strike/types";
-export { FloatToolbar, Mixin, Toolbar } from "./toolbar";
+export { FloatToolbar, Toolbar, ToolBarMixin } from "./toolbar";
 export type { ToolbarContextType } from "./toolbar/context/provider";
 export { ToolbarContext, useToolbarContext } from "./toolbar/context/provider";
 export { UnderlinePlugin } from "./underline/index";

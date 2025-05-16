@@ -18,12 +18,12 @@ import {
   ItalicPlugin,
   LineHeightPlugin,
   LinkPlugin,
-  Mixin,
   QuotePlugin,
   setMountDOM,
   Shortcut,
   StrikePlugin,
   Toolbar,
+  ToolBarMixin as Tools,
   UnderlinePlugin,
 } from "@block-kit/plugin";
 import { FontColorPlugin } from "@block-kit/plugin";
@@ -85,43 +85,43 @@ const App: FC = () => {
     <BlockKit editor={editor} readonly={readonly}>
       <div className="block-kit-editor-container">
         <Toolbar className="block-kit-toolbar">
-          <Mixin.Bold></Mixin.Bold>
-          <Mixin.Italic></Mixin.Italic>
-          <Mixin.Underline></Mixin.Underline>
-          <Mixin.Strike></Mixin.Strike>
-          <Mixin.Link></Mixin.Link>
-          <Mixin.InlineCode></Mixin.InlineCode>
-          <Mixin.Cut></Mixin.Cut>
-          <Mixin.FontSize></Mixin.FontSize>
-          <Mixin.FontColor></Mixin.FontColor>
-          <Mixin.Cut></Mixin.Cut>
-          <Mixin.Heading></Mixin.Heading>
-          <Mixin.Align></Mixin.Align>
-          <Mixin.LineHeight></Mixin.LineHeight>
-          <Mixin.Cut></Mixin.Cut>
-          <Mixin.Quote></Mixin.Quote>
-          <Mixin.BulletList></Mixin.BulletList>
-          <Mixin.OrderList></Mixin.OrderList>
-          <Mixin.Cut></Mixin.Cut>
-          <Mixin.Image></Mixin.Image>
-          <Mixin.Divider></Mixin.Divider>
-          <Mixin.Emoji></Mixin.Emoji>
-          <Mixin.Cut></Mixin.Cut>
-          <Mixin.History></Mixin.History>
-          <Mixin.Cut></Mixin.Cut>
+          <Tools.Bold></Tools.Bold>
+          <Tools.Italic></Tools.Italic>
+          <Tools.Underline></Tools.Underline>
+          <Tools.Strike></Tools.Strike>
+          <Tools.Link></Tools.Link>
+          <Tools.InlineCode></Tools.InlineCode>
+          <Tools.Cut></Tools.Cut>
+          <Tools.FontSize></Tools.FontSize>
+          <Tools.FontColor></Tools.FontColor>
+          <Tools.Cut></Tools.Cut>
+          <Tools.Heading></Tools.Heading>
+          <Tools.Align></Tools.Align>
+          <Tools.LineHeight></Tools.LineHeight>
+          <Tools.Cut></Tools.Cut>
+          <Tools.Quote></Tools.Quote>
+          <Tools.BulletList></Tools.BulletList>
+          <Tools.OrderList></Tools.OrderList>
+          <Tools.Cut></Tools.Cut>
+          <Tools.Image></Tools.Image>
+          <Tools.Divider></Tools.Divider>
+          <Tools.Emoji></Tools.Emoji>
+          <Tools.Cut></Tools.Cut>
+          <Tools.History></Tools.History>
+          <Tools.Cut></Tools.Cut>
           <ThemeMode></ThemeMode>
           <GitHubIcon></GitHubIcon>
         </Toolbar>
         <FloatToolbar offsetTop={-8}>
-          <Mixin.Bold></Mixin.Bold>
-          <Mixin.Italic></Mixin.Italic>
-          <Mixin.Underline></Mixin.Underline>
-          <Mixin.Strike></Mixin.Strike>
-          <Mixin.Link></Mixin.Link>
-          <Mixin.InlineCode></Mixin.InlineCode>
-          <Mixin.FontSize></Mixin.FontSize>
-          <Mixin.FontColor></Mixin.FontColor>
-          <Mixin.LineHeight></Mixin.LineHeight>
+          <Tools.Bold></Tools.Bold>
+          <Tools.Italic></Tools.Italic>
+          <Tools.Underline></Tools.Underline>
+          <Tools.Strike></Tools.Strike>
+          <Tools.Link></Tools.Link>
+          <Tools.InlineCode></Tools.InlineCode>
+          <Tools.FontSize></Tools.FontSize>
+          <Tools.FontColor></Tools.FontColor>
+          <Tools.LineHeight></Tools.LineHeight>
         </FloatToolbar>
         <div className="block-kit-editable-container">
           <div className="block-kit-mount-dom" ref={onMountRef}></div>

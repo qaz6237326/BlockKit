@@ -3,6 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import { glob } from "glob";
 import path from "path";
+import importPlugin from "rollup-plugin-import";
 import postcss from "rollup-plugin-postcss";
 import ts from "rollup-plugin-typescript2";
 
@@ -38,10 +39,6 @@ export default async () => {
       output: {
         dir: "./dist/es",
         format: "es",
-        // https://rollupjs.org/configuration-options/#output-preservemodules
-        // 类似 BundleLess 模式保留模块独立性, 可能会造成依赖问题, 例如 tslib 会被处理为从 .pnpm 中引入
-        preserveModules: true,
-        preserveModulesRoot: "src",
         // https://rollupjs.org/faqs/#why-do-additional-imports-turn-up-in-my-entry-chunks-when-code-splitting
         hoistTransitiveImports: false,
       },
@@ -59,6 +56,18 @@ export default async () => {
           preventAssignment: true,
         }),
         postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+        importPlugin({
+          libraryName: "@arco-design/web-react",
+          libraryDirectory: "es",
+          exportName: "default",
+          style: true,
+        }),
+        importPlugin({
+          libraryName: "@arco-design/web-react/icon",
+          libraryDirectory: "react-icon",
+          exportName: "default",
+          style: false,
+        }),
       ],
       external: external,
     },
@@ -67,6 +76,10 @@ export default async () => {
       output: {
         dir: "./dist/lib",
         format: "commonjs",
+        // https://rollupjs.org/configuration-options/#output-preservemodules
+        // 类似 BundleLess 模式保留模块独立性, 可能会造成依赖问题, 例如 tslib 会被处理为从 .pnpm 中引入
+        // preserveModules: true,
+        // preserveModulesRoot: "src",
         // https://rollupjs.org/configuration-options/#output-hoisttransitiveimports
         hoistTransitiveImports: false,
       },
@@ -84,6 +97,18 @@ export default async () => {
           preventAssignment: true,
         }),
         postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+        importPlugin({
+          libraryName: "@arco-design/web-react",
+          libraryDirectory: "lib",
+          exportName: "default",
+          style: true,
+        }),
+        importPlugin({
+          libraryName: "@arco-design/web-react/icon",
+          libraryDirectory: "react-icon-cjs",
+          exportName: "default",
+          style: false,
+        }),
       ],
       external: external,
     },

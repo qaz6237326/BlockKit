@@ -121,6 +121,7 @@ const App: FC = () => {
           <Mixin.InlineCode></Mixin.InlineCode>
           <Mixin.FontSize></Mixin.FontSize>
           <Mixin.FontColor></Mixin.FontColor>
+          <Mixin.LineHeight></Mixin.LineHeight>
         </FloatToolbar>
         <div className="block-kit-editable-container">
           <div className="block-kit-mount-dom" ref={onMountRef}></div>

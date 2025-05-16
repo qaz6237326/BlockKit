@@ -200,6 +200,9 @@ importers:
       rollup:
         specifier: 2.75.7
         version: 2.75.7
+      rollup-plugin-import:
+        specifier: 1.1.1
+        version: 1.1.1
       rollup-plugin-postcss:
         specifier: 4.0.2
         version: 4.0.2(postcss@8.3.3)(ts-node@10.9.2)
@@ -587,7 +590,7 @@ packages:
     resolution: {integrity: sha512-0NFvs3VkuSYbFi1x2Vd6tKrywq+z/cLeYC/RJNFrIX/30Bf5aiGYbtvGXolEktzJH8o5E5KJ3tT+nkxuuZFVlA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.20.7
+      '@babel/types': 7.27.0
     dev: true
 
   /@babel/helper-module-transforms@7.20.11:
@@ -8878,6 +8881,13 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rollup-plugin-import@1.1.1:
+    resolution: {integrity: sha512-5b58sCSXh5yMKoz2mrEmfOZ4FDaUdUZ7XtS0dZDcgzxLQjp3WNoIavtZWSLVEX7vnjO1lDxkNypOyZeEhGZDcg==}
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      magic-string: 0.25.9
     dev: true
 
   /rollup-plugin-postcss@4.0.2(postcss@8.3.3)(ts-node@10.9.2):

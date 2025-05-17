@@ -48,12 +48,12 @@ export class Clipboard {
     const delta = new Delta();
     if (sel.isCollapsed) {
       // 在选区折叠的情况下需要特判 Void 节点类型
-      const op = this.editor.collect.getOpAtPoint(sel.start);
+      const op = this.editor.lookup.getOpAtPoint(sel.start);
       if (op && this.editor.schema.isVoid(op)) {
         delta.push(op);
       }
     } else {
-      const fragment = this.editor.collect.getFragment();
+      const fragment = this.editor.lookup.getFragment();
       fragment && delta.ops.push(...fragment);
     }
     if (!delta.ops.length) return void 0;

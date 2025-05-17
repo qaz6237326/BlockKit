@@ -32,7 +32,7 @@ export type ZeroSpaceProps = {
  * @param props
  * @param ref
  */
-export const ZeroSpace = forwardRef<HTMLSpanElement, ZeroSpaceProps>((props, ref) => {
+export const ZeroSpace = /*#__PURE__*/ forwardRef<HTMLSpanElement, ZeroSpaceProps>((props, ref) => {
   return (
     <span
       ref={ref}

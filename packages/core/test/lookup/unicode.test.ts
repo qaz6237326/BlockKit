@@ -1,6 +1,6 @@
-import { getFirstUnicodeLen, getLastUnicodeLen } from "../../src/collect/utils/string";
+import { getFirstUnicodeLen, getLastUnicodeLen } from "../../src/lookup/utils/string";
 
-describe("collect unicode", () => {
+describe("lookup unicode", () => {
   it("forward emoji length", () => {
     expect(getFirstUnicodeLen("")).toEqual(0);
     expect(getFirstUnicodeLen("1")).toEqual(1);

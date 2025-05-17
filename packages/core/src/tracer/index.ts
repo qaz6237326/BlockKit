@@ -6,7 +6,7 @@ import { EDITOR_EVENT } from "../event/bus/types";
 import { RawRange } from "../selection/modules/raw-range";
 import type { RawRangeRef } from "./types";
 
-export class Ref {
+export class Tracer {
   /** 选区 */
   protected rangeRefs: Set<RawRangeRef>;
 

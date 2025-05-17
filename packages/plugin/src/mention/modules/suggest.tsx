@@ -67,7 +67,7 @@ export class SuggestModule {
       this.unmountSuggestPanel();
       return void 0;
     }
-    const ops = this.editor.collect.getFragment(new Range(this.point, current.end));
+    const ops = this.editor.lookup.getFragment(new Range(this.point, current.end));
     if (!ops) return void 0;
     const text = deltaToText(new Delta(ops));
     this.mountSuggestPanel(text.slice(1));

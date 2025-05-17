@@ -12,7 +12,7 @@ import type { ToolbarProps } from "../types";
 import { filterLineMarkMap, filterMarkMap } from "../utils/marks";
 import { ToolbarContext } from "./provider";
 
-export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => {
+export const Toolbar = /*#__PURE__*/ forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => {
   const { editor } = useEditorStatic();
   const [keys, setKeys] = useState<Record<string, string>>({});
 
@@ -28,15 +28,15 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => 
       lines.slice(start.line, end.line + 1).map(line => line.attributes)
     );
     if (current.isCollapsed) {
-      setKeys({ ...editor.collect.marks, ...lineMarkMap });
+      setKeys({ ...editor.lookup.marks, ...lineMarkMap });
       return void 0;
     }
     const ops: Op[] = [];
     if (current.isCollapsed) {
-      const op = editor.collect.getOpAtPoint(current.start);
+      const op = editor.lookup.getOpAtPoint(current.start);
       op && ops.push(op);
     } else {
-      const fragment = editor.collect.getFragment();
+      const fragment = editor.lookup.getFragment();
       fragment && ops.push(...fragment);
     }
     const markMap = filterMarkMap(ops);

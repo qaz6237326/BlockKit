@@ -3,7 +3,7 @@ import { MutateDelta } from "@block-kit/delta";
 
 import { Editor, Point, Range } from "../../src";
 
-describe("collect marks", () => {
+describe("lookup marks", () => {
   it("collapsed selection", () => {
     const delta = new Delta().insert("text", { bold: "true" });
     const editor = new Editor({
@@ -13,7 +13,7 @@ describe("collect marks", () => {
       },
     });
     editor.selection.set(new Range(new Point(0, 0), new Point(0, 0)));
-    expect(editor.collect.marks).toEqual({ bold: "true" });
+    expect(editor.lookup.marks).toEqual({ bold: "true" });
   });
 
   it("not collapsed selection", () => {
@@ -25,7 +25,7 @@ describe("collect marks", () => {
       },
     });
     editor.selection.set(new Range(new Point(0, 0), new Point(0, 1)));
-    expect(editor.collect.marks).toEqual({});
+    expect(editor.lookup.marks).toEqual({});
   });
 
   it("insert temp marks", () => {
@@ -38,10 +38,10 @@ describe("collect marks", () => {
       },
     });
     editor.selection.set(new Range(new Point(0, 1), new Point(0, 1)));
-    expect(editor.collect.marks).toEqual({ bold: "true" });
-    editor.collect.marks["italic"] = "true";
+    expect(editor.lookup.marks).toEqual({ bold: "true" });
+    editor.lookup.marks["italic"] = "true";
     editor.perform.insertText(editor.selection.get()!, "1");
-    expect(editor.collect.marks).toEqual({ bold: "true", italic: "true" });
+    expect(editor.lookup.marks).toEqual({ bold: "true", italic: "true" });
     expect(editor.state.toBlockSet()).toEqual(
       new MutateDelta()
         .insert("t", { bold: "true" })
@@ -64,9 +64,9 @@ describe("collect marks", () => {
       },
     });
     const point = new Point(0, 5);
-    const leaf = editor.collect.getLeafAtPoint(point);
+    const leaf = editor.lookup.getLeafAtPoint(point);
     const isLeafTail = leaf && point.offset - leaf.offset - leaf.length >= 0;
-    const attributes = editor.collect.getLeafMarks(leaf, isLeafTail);
+    const attributes = editor.lookup.getLeafMarks(leaf, isLeafTail);
     expect(attributes).toEqual({ bold: "true", inline: "true" });
   });
 
@@ -83,9 +83,9 @@ describe("collect marks", () => {
       },
     });
     const point = new Point(0, 9);
-    const leaf = editor.collect.getLeafAtPoint(point);
+    const leaf = editor.lookup.getLeafAtPoint(point);
     const isLeafTail = leaf && point.offset - leaf.offset - leaf.length >= 0;
-    const attributes = editor.collect.getLeafMarks(leaf, isLeafTail);
+    const attributes = editor.lookup.getLeafMarks(leaf, isLeafTail);
     expect(attributes).toEqual({ bold: "true" });
   });
 
@@ -102,9 +102,9 @@ describe("collect marks", () => {
       },
     });
     const point = new Point(0, 4);
-    const leaf = editor.collect.getLeafAtPoint(point);
+    const leaf = editor.lookup.getLeafAtPoint(point);
     const isLeafTail = leaf && point.offset - leaf.offset - leaf.length >= 0;
-    const attributes = editor.collect.getLeafMarks(leaf, isLeafTail);
+    const attributes = editor.lookup.getLeafMarks(leaf, isLeafTail);
     expect(attributes).toEqual({ inline: "true" });
   });
 });

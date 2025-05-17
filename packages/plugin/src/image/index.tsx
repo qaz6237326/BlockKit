@@ -111,7 +111,7 @@ export class ImagePlugin extends EditorPlugin {
     for (let i = 0; i < packIndex.length; i++) {
       const file = files[i];
       const refIndex = packIndex[i];
-      const ref = editor.ref.pack(RawRange.from(refIndex, 0));
+      const ref = editor.tracer.pack(RawRange.from(refIndex, 0));
       // 独立并行上传, 且独立 unpack
       this.uploadImage(file)
         .then(res => {

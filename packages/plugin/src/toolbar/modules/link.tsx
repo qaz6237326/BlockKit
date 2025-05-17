@@ -30,9 +30,9 @@ export const Link: FC<{
     if (sel.isCollapsed) {
       // 折叠选区的情况下则插入文本
       if (!insert) return void 0;
-      editor.collect.marks = { ...editor.collect.marks, [LINK_KEY]: filteredHref };
+      editor.lookup.marks = { ...editor.lookup.marks, [LINK_KEY]: filteredHref };
       if (blank) {
-        editor.collect.marks[LINK_BLANK_KEY] = TRULY;
+        editor.lookup.marks[LINK_BLANK_KEY] = TRULY;
       }
       editor.perform.insertText(sel, insert);
     } else {

@@ -12,7 +12,6 @@ export const useEditorStatic = () => {
 
   return {
     editor,
-    ref: editor.ref,
     rect: editor.rect,
     state: editor.state,
     event: editor.event,
@@ -21,7 +20,8 @@ export const useEditorStatic = () => {
     plugin: editor.plugin,
     schema: editor.schema,
     logger: editor.logger,
-    collect: editor.collect,
+    lookup: editor.lookup,
+    tracer: editor.tracer,
     command: editor.command,
     history: editor.history,
     perform: editor.perform,

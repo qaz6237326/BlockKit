@@ -10,7 +10,7 @@ export type TextProps = {
  * 文本节点
  * @param props
  */
-export const Text = forwardRef<HTMLSpanElement, TextProps>((props, ref) => {
+export const Text = /*#__PURE__*/ forwardRef<HTMLSpanElement, TextProps>((props, ref) => {
   const onRef = (dom: HTMLSpanElement | null) => {
     // 处理外部引用的 ref
     if (isFunction(ref)) {

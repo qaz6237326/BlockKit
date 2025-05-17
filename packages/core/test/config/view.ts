@@ -67,9 +67,9 @@ export const mountEditorViewModel = (editor: Editor) => {
 
 // polyfill JSDOM 的 selection setBaseAndExtent
 const selection = document.getSelection();
-if (selection) {
+if (selection && selection.setBaseAndExtent.name !== "setBaseAndExtentMock") {
   const native = selection.setBaseAndExtent;
-  selection.setBaseAndExtent = function (
+  selection.setBaseAndExtent = function setBaseAndExtentMock(
     anchorNode: Node,
     anchorOffset: number,
     focusNode: Node,

@@ -1,21 +1,21 @@
 import { Delta } from "@block-kit/delta";
 
 import { Clipboard } from "../clipboard";
-import { Collect } from "../collect";
 import { Command } from "../command";
 import { Event } from "../event";
 import { History } from "../history";
 import { Input } from "../input";
 import { LOG_LEVEL, Logger } from "../log";
+import { Lookup } from "../lookup";
 import { Model } from "../model";
 import { Perform } from "../perform";
 import { Plugin } from "../plugin";
 import { Rect } from "../rect";
-import { Ref } from "../ref";
 import { Schema } from "../schema";
 import { Selection } from "../selection";
 import { EditorState } from "../state";
 import { EDITOR_STATE } from "../state/types";
+import { Tracer } from "../tracer";
 import type { EditorOptions } from "./types";
 import { BLOCK_LIKE } from "./utils/constant";
 
@@ -46,10 +46,10 @@ export class Editor {
   public perform: Perform;
   /** 命令模块 */
   public command: Command;
-  /** 引用模块 */
-  public ref: Ref;
-  /** 集合模块 */
-  public collect: Collect;
+  /** 追踪模块 */
+  public tracer: Tracer;
+  /** 检索模块 */
+  public lookup: Lookup;
   /** 位置模块 */
   public rect: Rect;
 
@@ -72,8 +72,8 @@ export class Editor {
     this.clipboard = new Clipboard(this);
     this.perform = new Perform(this);
     this.command = new Command();
-    this.ref = new Ref(this);
-    this.collect = new Collect(this);
+    this.tracer = new Tracer(this);
+    this.lookup = new Lookup(this);
     this.rect = new Rect(this);
   }
 
@@ -111,12 +111,12 @@ export class Editor {
     this.input.destroy();
     this.model.destroy();
     this.plugin.destroy();
-    this.collect.destroy();
+    this.lookup.destroy();
     this.selection.destroy();
     this.history.destroy();
     this.clipboard.destroy();
     this.command.destroy();
-    this.ref.destroy();
+    this.tracer.destroy();
     this.state.set(EDITOR_STATE.MOUNTED, false);
   }
 }

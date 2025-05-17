@@ -4,7 +4,7 @@ import { Editor } from "../../src/editor";
 import { Point } from "../../src/selection/modules/point";
 import { Range } from "../../src/selection/modules/range";
 
-describe("collect fragment", () => {
+describe("lookup fragment", () => {
   it("base", () => {
     const delta = new Delta()
       .insert("text")
@@ -14,7 +14,7 @@ describe("collect fragment", () => {
       .insert("\n");
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 1), new Point(0, 3));
-    const ops = editor.collect.getFragment(sel);
+    const ops = editor.lookup.getFragment(sel);
     expect(ops).toEqual(new Delta().insert("ex").ops);
   });
 
@@ -27,7 +27,7 @@ describe("collect fragment", () => {
       .insert("\n");
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 1), new Point(1, 3));
-    const ops = editor.collect.getFragment(sel);
+    const ops = editor.lookup.getFragment(sel);
     const t = new MutateDelta()
       .insert("ext")
       .insert("text", { bold: "true" })
@@ -47,7 +47,7 @@ describe("collect fragment", () => {
       .insert("\n");
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 1), new Point(2, 3));
-    const ops = editor.collect.getFragment(sel);
+    const ops = editor.lookup.getFragment(sel);
     const t = new MutateDelta()
       .insert("ext")
       .insert("text", { bold: "true", a: "true" })

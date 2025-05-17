@@ -2,9 +2,9 @@ import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import { invertAttributes } from "@block-kit/delta";
 
-import { isLeafOffsetTail } from "../collect/utils/is";
-import { getFirstUnicodeLen, getLastUnicodeLen } from "../collect/utils/string";
 import type { Editor } from "../editor";
+import { isLeafOffsetTail } from "../lookup/utils/is";
+import { getFirstUnicodeLen, getLastUnicodeLen } from "../lookup/utils/string";
 import { isBlockLine } from "../schema/utils/is";
 import { Point } from "../selection/modules/point";
 import { Range } from "../selection/modules/range";
@@ -28,14 +28,14 @@ export class Perform {
     const raw = RawRange.fromRange(this.editor, sel);
     if (!raw) return void 0;
     const point = sel.start;
-    const leaf = this.editor.collect.getLeafAtPoint(point);
+    const leaf = this.editor.lookup.getLeafAtPoint(point);
     // FIX: 当前节点为 void 时, 不能插入文本
     if (leaf && leaf.void) return void 0;
-    let attributes: AttributeMap | undefined = this.editor.collect.marks;
+    let attributes: AttributeMap | undefined = this.editor.lookup.marks;
     if (!sel.isCollapsed) {
       // 非折叠选区时, 需要以 start 起始判断该节点的尾部 marks
       const isLeafTail = isLeafOffsetTail(leaf, point);
-      attributes = this.editor.collect.getLeafMarks(leaf, isLeafTail);
+      attributes = this.editor.lookup.getLeafMarks(leaf, isLeafTail);
     }
     const delta = new Delta().retain(raw.start).delete(raw.len).insert(text, attributes);
     this.editor.state.apply(delta, { range: raw });
@@ -99,7 +99,7 @@ export class Perform {
     // 处理基本的删除操作
     const raw = RawRange.fromRange(this.editor, sel);
     if (!raw) return void 0;
-    const op = this.editor.collect.getBackwardOpAtPoint(sel.start);
+    const op = this.editor.lookup.getBackwardOpAtPoint(sel.start);
     let len = 1;
     if (op && op.insert) {
       // 处理 Unicode 字符
@@ -136,7 +136,7 @@ export class Perform {
     const raw = RawRange.fromRange(this.editor, sel);
     if (!raw) return void 0;
     const start = raw.start;
-    const op = this.editor.collect.getForwardOpAtPoint(sel.start);
+    const op = this.editor.lookup.getForwardOpAtPoint(sel.start);
     let len = 1;
     if (op && op.insert) {
       // 处理 Unicode 字符
@@ -210,8 +210,8 @@ export class Perform {
    */
   public applyMarks(sel: Range, attributes: AttributeMap, options?: ApplyOptions) {
     if (sel.isCollapsed) {
-      this.editor.collect.marks = {
-        ...this.editor.collect.marks,
+      this.editor.lookup.marks = {
+        ...this.editor.lookup.marks,
         ...attributes,
       };
       return void 0;

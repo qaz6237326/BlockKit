@@ -12,8 +12,6 @@ export {
   isMatchBlockTag,
   isMatchHTMLTag,
 } from "./clipboard/utils/deserialize";
-export { Collect } from "./collect";
-export { getFirstUnicodeLen, getLastUnicodeLen } from "./collect/utils/string";
 export { Command } from "./command";
 export type { CMDFunc, CMDPayload } from "./command/types";
 export { Editor } from "./editor";
@@ -33,6 +31,8 @@ export {
   isUndo,
 } from "./input/utils/hot-key";
 export { LOG_LEVEL, Logger } from "./log";
+export { Lookup } from "./lookup";
+export { getFirstUnicodeLen, getLastUnicodeLen } from "./lookup/utils/string";
 export { Model } from "./model";
 export {
   BLOCK_ID_KEY,
@@ -61,7 +61,6 @@ export { CALLER_TYPE, PLUGIN_TYPE } from "./plugin/types";
 export type { LeafContext, LineContext } from "./plugin/types/context";
 export type { Rect } from "./rect/types";
 export { relativeTo } from "./rect/utils/convert";
-export { Ref } from "./ref";
 export { Schema } from "./schema";
 export type { EditorSchema, SchemaRule } from "./schema/types";
 export { Selection } from "./selection";
@@ -79,3 +78,4 @@ export type { ApplyOptions } from "./state/types";
 export { APPLY_SOURCE, EDITOR_STATE } from "./state/types";
 export { Key, NODE_TO_KEY } from "./state/utils/key";
 export { normalizeDelta } from "./state/utils/normalize";
+export { Tracer } from "./tracer";

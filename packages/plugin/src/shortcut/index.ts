@@ -39,14 +39,14 @@ export class Shortcut extends CorePlugin {
       lines.slice(start.line, end.line + 1).map(line => line.attributes)
     );
     if (current.isCollapsed) {
-      return { ...this.editor.collect.marks, ...lineMarkMap };
+      return { ...this.editor.lookup.marks, ...lineMarkMap };
     }
     const ops: Op[] = [];
     if (current.isCollapsed) {
-      const op = this.editor.collect.getOpAtPoint(current.start);
+      const op = this.editor.lookup.getOpAtPoint(current.start);
       op && ops.push(op);
     } else {
-      const fragment = this.editor.collect.getFragment();
+      const fragment = this.editor.lookup.getFragment();
       fragment && ops.push(...fragment);
     }
     const markMap = filterMarkMap(ops);

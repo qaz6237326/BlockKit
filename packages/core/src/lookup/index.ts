@@ -11,7 +11,7 @@ import type { Range } from "../selection/modules/range";
 import type { LeafState } from "../state/modules/leaf-state";
 import { isLeafOffsetTail } from "./utils/is";
 
-export class Collect {
+export class Lookup {
   /** 选区折叠时的 marks */
   public marks: AttributeMap = {};
 
@@ -184,7 +184,7 @@ export class Collect {
       return void 0;
     }
     const point = current.start;
-    const leaf = this.editor.collect.getLeafAtPoint(point);
+    const leaf = this.editor.lookup.getLeafAtPoint(point);
     // FIX: 当前节点为 void 时, 不需要处理文本
     if (leaf && leaf.void) return void 0;
     const isLeafTail = isLeafOffsetTail(leaf, point);

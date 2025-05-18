@@ -31,10 +31,16 @@ export const APPLY_SOURCE = {
 export type ApplyOptions = {
   /** 操作源 */
   source?: O.Values<typeof APPLY_SOURCE>;
-  /** 当前 Raw Modal Range */
+  /** 当前 Raw Range Modal */
   range?: RawRange;
   /** 自动变换光标 */
   autoCaret?: boolean;
+  /**
+   * 阻止标准化 Delta
+   * - 需要调用前确保数据正确性
+   * - 相关规则参考 normalizeDelta 方法
+   */
+  preventNormalize?: boolean;
 };
 
 export type ApplyResult = {

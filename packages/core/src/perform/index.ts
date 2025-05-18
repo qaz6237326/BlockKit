@@ -5,7 +5,7 @@ import { invertAttributes } from "@block-kit/delta";
 import type { Editor } from "../editor";
 import { isLeafOffsetTail } from "../lookup/utils/is";
 import { getFirstUnicodeLen, getLastUnicodeLen } from "../lookup/utils/string";
-import { isBlockLine } from "../schema/utils/is";
+import { isBlockLine, isEmptyLine } from "../schema/utils/is";
 import { Point } from "../selection/modules/point";
 import { Range } from "../selection/modules/range";
 import { RawPoint } from "../selection/modules/raw-point";
@@ -70,6 +70,11 @@ export class Perform {
       const prevLine = line && line.prev();
       // 上一行为块节点且处于当前行首时, 删除则移动光标到该节点上
       if (prevLine && isBlockLine(prevLine)) {
+        // 当前行为空时特殊处理, 先删除掉该行
+        if (isEmptyLine(line)) {
+          const delta = new Delta().retain(line.start).delete(1);
+          this.editor.state.apply(delta, { autoCaret: false });
+        }
         const firstLeaf = prevLine.getFirstLeaf();
         const range = firstLeaf && firstLeaf.toRange();
         range && this.editor.selection.set(range, true);

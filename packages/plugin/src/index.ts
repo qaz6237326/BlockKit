@@ -5,7 +5,7 @@ export { BACKGROUND_KEY } from "./background/types";
 export { BoldPlugin } from "./bold";
 export { BOLD_KEY } from "./bold/types";
 export { BulletListPlugin } from "./bullet-list";
-export { BULLET_LIST_KEY, BULLET_LIST_TYPE, LIST_TYPE_KEY } from "./bullet-list/types";
+export { BULLET_LIST_TYPE, LIST_TYPE_KEY } from "./bullet-list/types";
 export { DividerPlugin } from "./divider";
 export { DIVIDER_KEY } from "./divider/types";
 export { EmojiPlugin } from "./emoji";
@@ -30,7 +30,7 @@ export {
 export { IndentPlugin } from "./indent";
 export { INDENT_LEVEL_KEY } from "./indent/types";
 export { InlineCodePlugin } from "./inline-code";
-export { INLINE_CODE } from "./inline-code/types/index";
+export { INLINE_CODE_KEY } from "./inline-code/types/index";
 export { ItalicPlugin } from "./italic/index";
 export { ITALIC_KEY } from "./italic/types";
 export { LineHeightPlugin } from "./line-height/index";
@@ -41,12 +41,7 @@ export { MentionPlugin } from "./mention";
 export { SuggestModule } from "./mention/modules/suggest";
 export { MENTION_KEY, MENTION_NAME } from "./mention/types";
 export { OrderListPlugin } from "./order-list";
-export {
-  LIST_RESTART_KEY,
-  LIST_START_KEY,
-  ORDER_LIST_KEY,
-  ORDER_LIST_TYPE,
-} from "./order-list/types";
+export { LIST_RESTART_KEY, LIST_START_KEY, ORDER_LIST_TYPE } from "./order-list/types";
 export { QuotePlugin } from "./quote";
 export { QUOTE_KEY } from "./quote/types";
 export { SelectionHOC } from "./shared/components/selection";

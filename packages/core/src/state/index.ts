@@ -90,12 +90,12 @@ export class EditorState {
    * @param options
    */
   public apply(delta: Delta, options: ApplyOptions = {}): ApplyResult {
-    const { source = "user", autoCaret = true } = options;
+    const { source = "user", autoCaret = true, preventNormalize } = options;
     const previous = this.toBlockSet();
     this._delta = null;
     const selection = this.editor.selection;
-    // 必须要先标准化 Delta, 否则会导致协同一致性问题
-    const normalized = normalizeDelta(this.editor, delta);
+    // 需要先标准化 Delta, 否则可能导致协同一致性问题
+    const normalized = preventNormalize ? delta : normalizeDelta(this.editor, delta);
 
     // 获取当前选区位置
     const raw: RawRange | null = autoCaret ? options.range || selection.toRaw() : null;

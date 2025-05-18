@@ -1,1 +1,1 @@
-export const INLINE_CODE = "inline-code";
+export const INLINE_CODE_KEY = "inline-code";

@@ -13,6 +13,9 @@ import { getMountDOM } from "../../shared/utils/dom";
 import { Toolbar } from "./basic";
 
 export const FloatToolbar: FC<{
+  /**
+   * 样式类名
+   */
   className?: string;
   /**
    * Top 偏移
@@ -22,6 +25,14 @@ export const FloatToolbar: FC<{
    * Left 偏移
    */
   offsetLeft?: number;
+  /**
+   * 挂载的 DOM
+   */
+  mountDOM?: HTMLElement;
+  /**
+   * 重载工具栏位置
+   */
+  overridePosition?: () => { left: number; top: number };
 }> = props => {
   const { editor } = useEditorStatic();
   const { readonly } = useReadonly();
@@ -60,8 +71,12 @@ export const FloatToolbar: FC<{
     };
   }, [editor, onWeakUp, readonly]);
 
+  const overridePosition = useRef(props.overridePosition);
   const { left, top } = useMemo(() => {
     if (!readonly && visible && !isMouseDown) {
+      if (overridePosition.current) {
+        return overridePosition.current(); // overlay
+      }
       const rect = editor.rect.getSelectionRect();
       if (rect) {
         const topOffset = props.offsetTop || 0;
@@ -85,6 +100,6 @@ export const FloatToolbar: FC<{
         >
           {props.children}
         </Toolbar>,
-        getMountDOM(editor)
+        props.mountDOM || getMountDOM(editor)
       );
 };

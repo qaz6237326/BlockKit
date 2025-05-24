@@ -8,12 +8,10 @@
   box-sizing: border-box;
   color: var(--color-text-1);
   font-size: 13px;
-  height: 150px;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 5px 7px;
   position: absolute;
-  width: 100px;
   z-index: 999;
 
   .block-kit-suggest-item {

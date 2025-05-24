@@ -21,15 +21,14 @@ export class Event {
    * 绑定事件
    */
   public bind() {
-    return this.nativeEvent.bind();
+    this.nativeEvent.bind();
   }
 
   /**
    * 解绑事件
    */
   public unbind() {
-    this.bus.clear();
-    return this.nativeEvent.unbind();
+    this.nativeEvent.unbind();
   }
 
   /**
@@ -69,4 +68,12 @@ export class Event {
   public trigger: EventBus["emit"] = (key, payload) => {
     return this.bus.emit(key, payload);
   };
+
+  /**
+   * 销毁模块
+   */
+  public destroy() {
+    this.unbind();
+    this.bus.clear();
+  }
 }

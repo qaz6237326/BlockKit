@@ -12,7 +12,7 @@ import { preventContextEvent, scrollIfNeeded } from "../../shared/utils/dom";
 import { isKeyCode } from "../../shared/utils/is";
 import type { SuggestModule } from "../modules/suggest";
 import { MENTION_KEY, MENTION_NAME } from "../types";
-import { DATA } from "../utils/constant";
+import { DATA, PANEL_HEIGHT, PANEL_WIDTH } from "../utils/constant";
 
 export const Suggest: FC<{
   top: number;
@@ -81,7 +81,7 @@ export const Suggest: FC<{
     <div
       ref={ref}
       className="block-kit-suggest-panel"
-      style={{ top: props.top, left: props.left }}
+      style={{ top: props.top, left: props.left, width: PANEL_WIDTH, height: PANEL_HEIGHT }}
       onMouseDown={preventNativeEvent}
     >
       {list.map((it, index) => (

@@ -78,7 +78,7 @@ export class Editor {
   }
 
   /**
-   * 挂载编辑器
+   * 挂载编辑器 DOM
    * @param container
    */
   public onMount(this: Editor, container: HTMLDivElement) {
@@ -88,6 +88,15 @@ export class Editor {
     this.container = container;
     this.state.set(EDITOR_STATE.MOUNTED, true);
     this.event.bind();
+  }
+
+  /**
+   * 卸载编辑器 DOM
+   */
+  public onUnmount(this: Editor) {
+    this.container = null;
+    this.state.set(EDITOR_STATE.MOUNTED, false);
+    this.event.unbind();
   }
 
   /**

@@ -1,4 +1,6 @@
 export const SUGGEST_OFFSET = 5;
+export const PANEL_WIDTH = 130;
+export const PANEL_HEIGHT = 150;
 
 export const DATA = [
   "Alice",

@@ -4,21 +4,25 @@ import type { EventContext } from "@block-kit/utils";
 const EDITOR_TO_DOM = new WeakMap<Editor, HTMLElement | null>();
 
 /**
- * 设置挂载 DOM
- * @param editor
- * @param dom
+ * 共享的挂载节点
  */
-export const setMountDOM = (editor: Editor, dom: HTMLElement | null) => {
-  EDITOR_TO_DOM.set(editor, dom);
-};
-
-/**
- * 获取挂载 DOM
- * @param editor
- * @param dom
- */
-export const getMountDOM = (editor: Editor) => {
-  return EDITOR_TO_DOM.get(editor) || document.body;
+export const MountNode = {
+  /**
+   * 设置挂载 DOM
+   * @param editor
+   * @param dom
+   */
+  set: (editor: Editor, dom: HTMLElement | null) => {
+    EDITOR_TO_DOM.set(editor, dom);
+  },
+  /**
+   * 获取挂载 DOM
+   * @param editor
+   * @param dom
+   */
+  get: (editor: Editor) => {
+    return EDITOR_TO_DOM.get(editor) || document.body;
+  },
 };
 
 /**

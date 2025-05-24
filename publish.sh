@@ -8,6 +8,7 @@ prefix="@block-kit/"
 packages=(delta utils core react plugin vue)
 # npm version patch --no-git-tag-version
 version=$(echo "console.log(require(\"./package.json\").version)" | node)
+export BUILD_VERSION=$version
 
 function check_argument {
   local value=$1

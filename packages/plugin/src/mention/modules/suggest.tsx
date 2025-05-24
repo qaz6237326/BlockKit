@@ -4,9 +4,9 @@ import { Delta, deltaToText } from "@block-kit/delta";
 import { Bind, KEY_CODE } from "@block-kit/utils";
 import ReactDOM from "react-dom";
 
-import { getMountDOM } from "../../shared/utils/dom";
+import { MountNode } from "../../shared/utils/dom";
 import { isKeyCode } from "../../shared/utils/is";
-import { SUGGEST_OFFSET } from "../utils/constant";
+import { PANEL_HEIGHT, SUGGEST_OFFSET } from "../utils/constant";
 import { Suggest } from "../view/suggest";
 
 export class SuggestModule {
@@ -37,8 +37,6 @@ export class SuggestModule {
       if (!caretRect || !sel) return void 0;
       const editorRect = this.editor.rect.getEditorRect();
       const rect = relativeTo(caretRect, editorRect);
-      // 这里是 CSS 预设的面板高度
-      const PANEL_HEIGHT = 150;
       if (caretRect.bottom + PANEL_HEIGHT <= window.innerHeight) {
         // 放置于下方
         rect.top = rect.bottom + SUGGEST_OFFSET;
@@ -78,7 +76,7 @@ export class SuggestModule {
     if (!this.mountSuggestNode) {
       this.mountSuggestNode = document.createElement("div");
       this.mountSuggestNode.dataset.type = "mention";
-      getMountDOM(this.editor).appendChild(this.mountSuggestNode);
+      MountNode.get(this.editor).appendChild(this.mountSuggestNode);
     }
     const top = this.rect.top;
     const left = this.rect.left;

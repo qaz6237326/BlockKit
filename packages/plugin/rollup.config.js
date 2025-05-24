@@ -30,8 +30,13 @@ export default async () => {
     });
 
   const packages = require("./package.json");
-  const deps = { ...(packages.dependencies || {}), ...(packages.peerDependencies || {}) };
+  const deps = { ...packages.dependencies, ...packages.peerDependencies };
   const external = Object.keys(deps).map(key => new RegExp(`(^${key}$)|(^${key}/.*)`));
+
+  const definedValues = {
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    "process.env.VERSION": JSON.stringify(process.env.BUILD_VERSION || packages.version),
+  };
 
   return [
     {
@@ -50,9 +55,7 @@ export default async () => {
           extensions: [".ts", ".tsx"],
         }),
         replace({
-          values: {
-            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-          },
+          values: definedValues,
           preventAssignment: true,
         }),
         postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
@@ -91,9 +94,7 @@ export default async () => {
           extensions: [".ts", ".tsx"],
         }),
         replace({
-          values: {
-            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-          },
+          values: definedValues,
           preventAssignment: true,
         }),
         postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),

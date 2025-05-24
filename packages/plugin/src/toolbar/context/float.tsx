@@ -9,7 +9,7 @@ import type { FC } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { getMountDOM } from "../../shared/utils/dom";
+import { MountNode } from "../../shared/utils/dom";
 import { Toolbar } from "./basic";
 
 export const FloatToolbar: FC<{
@@ -100,6 +100,6 @@ export const FloatToolbar: FC<{
         >
           {props.children}
         </Toolbar>,
-        props.mountDOM || getMountDOM(editor)
+        props.mountDOM || MountNode.get(editor)
       );
 };

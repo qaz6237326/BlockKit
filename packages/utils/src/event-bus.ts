@@ -97,7 +97,7 @@ export class EventBus {
    * @param {Listener<T>} listener
    * @returns {boolean} prevented
    */
-  public emit<T extends EventKeys>(key: T, payload: EventBusType[T]) {
+  public emit<T extends EventKeys>(key: T, payload: EventBusType[T]): boolean {
     const handler = this.listeners[key];
     if (!handler) return false;
     const context: EventContext = {

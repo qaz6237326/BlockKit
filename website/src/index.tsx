@@ -18,8 +18,8 @@ import {
   ItalicPlugin,
   LineHeightPlugin,
   LinkPlugin,
+  MountNode,
   QuotePlugin,
-  setMountDOM,
   Shortcut,
   StrikePlugin,
   Toolbar,
@@ -78,7 +78,7 @@ const App: FC = () => {
   }, [editor]);
 
   const onMountRef = (e: HTMLElement | null) => {
-    e && setMountDOM(editor, e);
+    e && MountNode.set(editor, e);
   };
 
   return (

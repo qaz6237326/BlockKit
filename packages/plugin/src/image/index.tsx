@@ -8,7 +8,7 @@ import { Bind, sleep, TRULY } from "@block-kit/utils";
 import type { ReactNode } from "react";
 
 import { SelectionPlugin } from "../shared/modules/selection";
-import { getMountDOM } from "../shared/utils/dom";
+import { MountNode } from "../shared/utils/dom";
 import { isEmptyLine } from "../shared/utils/is";
 import { IMAGE_KEY, IMAGE_SRC, IMAGE_STATUS, LOADING_STATUS } from "./types";
 import { ImageView } from "./view/image";
@@ -50,7 +50,7 @@ export class ImagePlugin extends EditorPlugin {
       imageInput.hidden = true;
       imageInput.setAttribute("multiple", "true");
       this.input = imageInput;
-      getMountDOM(this.editor).append(imageInput);
+      MountNode.get(this.editor).append(imageInput);
     }
     return new Promise<FileList | null>(resolve => {
       imageInput!.onchange = e => {

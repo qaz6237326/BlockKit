@@ -20,8 +20,14 @@ export const Editable: React.FC<{
    * - 节点会脱离文档流, 需要注意 CSS 布局
    */
   placeholder?: React.ReactNode;
+  /**
+   * 阻止编辑器主动销毁
+   * - 谨慎使用, 编辑器生命周期结束必须主动销毁
+   * - 注意保持值不可变, 否则会导致编辑器多次挂载
+   */
+  preventDestroy?: boolean;
 }> = props => {
-  const { className, autoFocus } = props;
+  const { className, autoFocus, preventDestroy } = props;
   const { editor } = useEditorStatic();
   const { readonly } = useReadonly();
   const ref = useRef<HTMLDivElement>(null);
@@ -30,9 +36,10 @@ export const Editable: React.FC<{
     const el = ref.current;
     el && editor.onMount(el);
     return () => {
-      editor.destroy();
+      editor.onUnmount();
+      !preventDestroy && editor.destroy();
     };
-  }, [editor]);
+  }, [editor, preventDestroy]);
 
   useEffect(() => {
     // COMPAT: 这里有个奇怪的表现

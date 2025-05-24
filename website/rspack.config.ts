@@ -56,6 +56,7 @@ const config: Configuration = {
       "__DEV__": JSON.stringify(isDev),
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
       "process.env.PUBLIC_URL": JSON.stringify("."),
+      "process.env.VERSION": JSON.stringify("1.0.0"),
     },
     pluginImport: [
       {

@@ -1744,5 +1744,104 @@ document.onselectionchange = () => {
 ```
 
 ## 视图层生命周期同步
+从最开始的编辑器设计中，我们就已经将核心层和视图层分离，并且为了更灵活地调度编辑器，我们将编辑器实例化的时机交予用户来控制。这种情况下若是暴露出`ref`可以不必要设置`null`的状态，通常情况下的调度方式类似于下面的实现:
 
+```js
+const Editor = () => {
+  const editor = useMemo(() => new Editor(), []);
+  return <Editable editor={editor} />;
+}
+```
 
+然而在这种情况下，编辑器实例化的生命周期和`Editable`组件的生命周期必须要同步，这样才能保证编辑器的状态和视图层的状态一致。例如下面的例子中，`Editable`组件的生命周期与`Editor`实例的生命周期不一致，会导致视图所有的插件卸载。
+
+```js
+const Editor = () => {
+  const editor = useMemo(() => new Editor(), []);
+  const [key, setKey] = useState(0);
+  return (
+    <Fragment>
+      <button onClick={() => setKey((k) => k + 1)}>切换</button>
+      {key % 2 ? <div><Editable editor={editor} /></div> : <Editable editor={editor} />}
+    </Fragment>
+  );
+}
+```
+
+上面的例子中，若是`Editable`组件层级一致其实是没问题的，但层级不一致的话会导致`Editable`组件级别的卸载和重新挂载。当然本质上就是组件生命周期导致的问题，因此可以推断出若是同一层级的组件，设置为不同的`key`值也会触发同样的效果。
+
+这里的核心原因实际上是，`Editable`组件的`useEffect`钩子会在组件卸载时触发清理函数，而编辑器实例化的时候是在最外层执行的。那么编辑器实例化和卸载的时机是无法对齐的，卸载后所有的编辑器功能都会销毁，只剩下纯文本的内容`DOM`结构。
+
+```js
+useLayoutEffect(() => {
+  const el = ref.current;
+  el && editor.onMount(el);
+  return () => {
+    editor.destroy();
+  };
+}, [editor]);
+```
+
+此外，实例化独立的编辑器后，同样也不能使用多个`Editable`组件来实现编辑器的功能，也就是说每个编辑器实例都必须要对应一个`Editable`组件，多个编辑器组件的调度会导致整个编辑器状态混乱。
+
+```js
+const Editor = () => {
+  const editor = useMemo(() => new Editor(), []);
+  return (
+    <Fragment>
+      <Editable editor={editor} />
+      <Editable editor={editor} />
+    </Fragment>
+  );
+}
+```
+
+因此为了避免类似的问题，我们是应该以最开始的实现方式一致，也就是说整个编辑器组件都应该是合并为独立组件的。那么类似于上述出现问题的组件应该有如下的形式，将实例化的编辑器和`Editable`组件合并为独立组件。
+
+```js
+const Editor = () => {
+  const editor = useMemo(() => new Editor(), []);
+  return <Editable editor={editor} />;
+};
+
+const App = () => {
+  const [key, setKey] = useState(0);
+  return (
+    <Fragment>
+      <button onClick={() => setKey((k) => k + 1)}>切换</button>
+      {key % 2 ? <div><Editor /></div> : <Editor />}
+    </Fragment>
+  );
+}
+```
+
+实际上我们完全可以将实例化编辑器这个行为封装到`Editable`组件中的，但是为了更灵活地调度编辑器，将实例化放置于外层更合适。此外，从上述的`Effect`中实际上可以看出，与`onMount`实例挂载对齐的生命周期应该是`Unmount`，因此这里更应该调度编辑器卸载`DOM`的事件。
+
+然而若是将相关的事件粒度拆得更细，即在插件中同样需要定义为`onMount`和`onUnmount`的生命周期，这样就能更好地控制相关处理时机问题。然而这种情况下，对于用户来说就需要有更复杂的插件逻辑，与`DOM`相关的事件绑定、卸载等都需要用户明确在哪个生命周期调用。
+
+即使分离了更细粒度的生命周期，编辑器的卸载时机仍然是需要主动调用的，不主动调用则会存在可能的内存泄漏问题，在插件的实现中用户是可能直接向`DOM`绑定事件的，这些事件在编辑器卸载时是需要主动解绑的。
+
+实际上如果能实现更细粒度的生命周期，对于整个编辑器的实现是更高效的，毕竟若是避免实例化编辑器则可以减少不必要的状态变更和事件绑定。因此这里还是折中实现，若是用户需要避免编辑器的卸载事件，可以通过`preventDestroy`参数来实现，用户在编辑器实例化生命周期结束主动卸载。
+
+```js
+export const Editable: React.FC<{
+  /**
+   * 避免编辑器主动销毁
+   * - 谨慎使用, 生命周期结束必须销毁编辑器
+   * - 注意保持值不可变, 否则会导致编辑器多次挂载
+   */
+  preventDestroy?: boolean;
+}> = props => {
+  const { preventDestroy } = props;
+  const { editor } = useEditorStatic();
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    el && editor.onMount(el);
+    return () => {
+      editor.onUnmount();
+      !preventDestroy && editor.destroy();
+    };
+  }, [editor, preventDestroy]);
+}
+```

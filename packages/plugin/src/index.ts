@@ -46,7 +46,7 @@ export { QuotePlugin } from "./quote";
 export { QUOTE_KEY } from "./quote/types";
 export { SelectionHOC } from "./shared/components/selection";
 export { SelectionPlugin } from "./shared/modules/selection";
-export { MountNode, preventContextEvent, scrollIfNeeded } from "./shared/utils/dom";
+export { preventContextEvent, scrollIfNeeded } from "./shared/utils/dom";
 export { isEmptyLine, isKeyCode } from "./shared/utils/is";
 export { Shortcut } from "./shortcut";
 export type { ShortcutFunc, ShortcutFuncMap } from "./shortcut/types";

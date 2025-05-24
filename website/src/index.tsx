@@ -7,9 +7,11 @@ import {
   AlignPlugin,
   BackgroundPlugin,
   BoldPlugin,
+  BulletListPlugin,
   DividerPlugin,
   EmojiPlugin,
   FloatToolbar,
+  FontColorPlugin,
   FontSizePlugin,
   HeadingPlugin,
   ImagePlugin,
@@ -18,7 +20,8 @@ import {
   ItalicPlugin,
   LineHeightPlugin,
   LinkPlugin,
-  MountNode,
+  MentionPlugin,
+  OrderListPlugin,
   QuotePlugin,
   Shortcut,
   StrikePlugin,
@@ -26,11 +29,7 @@ import {
   ToolBarMixin as Tools,
   UnderlinePlugin,
 } from "@block-kit/plugin";
-import { FontColorPlugin } from "@block-kit/plugin";
-import { BulletListPlugin } from "@block-kit/plugin";
-import { OrderListPlugin } from "@block-kit/plugin";
-import { MentionPlugin } from "@block-kit/plugin";
-import { BlockKit, Editable } from "@block-kit/react";
+import { BlockKit, Editable, MountNode } from "@block-kit/react";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";

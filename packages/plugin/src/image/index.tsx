@@ -4,11 +4,11 @@ import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
 import { EditorPlugin } from "@block-kit/react";
+import { MountNode } from "@block-kit/react";
 import { Bind, sleep, TRULY } from "@block-kit/utils";
 import type { ReactNode } from "react";
 
 import { SelectionPlugin } from "../shared/modules/selection";
-import { MountNode } from "../shared/utils/dom";
 import { isEmptyLine } from "../shared/utils/is";
 import { IMAGE_KEY, IMAGE_SRC, IMAGE_STATUS, LOADING_STATUS } from "./types";
 import { ImageView } from "./view/image";
@@ -107,7 +107,7 @@ export class ImagePlugin extends EditorPlugin {
     editor.state.apply(delta, { autoCaret: false });
     editor.selection.set(new Range(point, point));
     // 正式开始上传文件
-    // 注意这里需要先 apply 再上传文件，否则 pack 的索引会被影响到
+    // 注意这里是先 apply 再上传文件，否则 pack 的索引会被影响到
     for (let i = 0; i < packIndex.length; i++) {
       const file = files[i];
       const refIndex = packIndex[i];

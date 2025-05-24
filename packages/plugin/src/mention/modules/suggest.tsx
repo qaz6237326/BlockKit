@@ -1,24 +1,22 @@
 import type { Editor, SelectionChangeEvent } from "@block-kit/core";
 import { EDITOR_EVENT, Point, Range, relativeTo } from "@block-kit/core";
 import { Delta, deltaToText } from "@block-kit/delta";
+import { MountNode } from "@block-kit/react";
 import { Bind, KEY_CODE } from "@block-kit/utils";
-import ReactDOM from "react-dom";
 
-import { MountNode } from "../../shared/utils/dom";
 import { isKeyCode } from "../../shared/utils/is";
+import { MENTION_KEY } from "../types";
 import { PANEL_HEIGHT, SUGGEST_OFFSET } from "../utils/constant";
 import { Suggest } from "../view/suggest";
 
 export class SuggestModule {
   public point: Point;
   public isMountSuggest: boolean;
-  public mountSuggestNode: HTMLElement | null;
   public rect: { top: number; left: number } | null;
 
   constructor(public editor: Editor) {
     this.rect = null;
     this.isMountSuggest = false;
-    this.mountSuggestNode = null;
     this.point = new Point(0, 0);
     editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeydown, 101);
   }
@@ -73,25 +71,19 @@ export class SuggestModule {
 
   public mountSuggestPanel(text: string = "") {
     if (!this.rect) return void 0;
-    if (!this.mountSuggestNode) {
-      this.mountSuggestNode = document.createElement("div");
-      this.mountSuggestNode.dataset.type = "mention";
-      MountNode.get(this.editor).appendChild(this.mountSuggestNode);
-    }
     const top = this.rect.top;
     const left = this.rect.left;
-    const dom = this.mountSuggestNode!;
     this.isMountSuggest = true;
-    ReactDOM.render(<Suggest controller={this} top={top} left={left} text={text} />, dom);
+    MountNode.mount(
+      this.editor,
+      MENTION_KEY,
+      <Suggest controller={this} top={top} left={left} text={text} />
+    );
   }
 
   public unmountSuggestPanel() {
-    if (this.isMountSuggest && this.mountSuggestNode) {
-      ReactDOM.unmountComponentAtNode(this.mountSuggestNode);
-    }
-    this.mountSuggestNode && this.mountSuggestNode.remove();
+    MountNode.unmount(this.editor, MENTION_KEY);
     this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
-    this.mountSuggestNode = null;
     this.isMountSuggest = false;
   }
 }

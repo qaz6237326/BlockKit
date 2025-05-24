@@ -1845,3 +1845,71 @@ export const Editable: React.FC<{
   }, [editor, preventDestroy]);
 }
 ```
+
+## Portal 传送辅助节点
+在实现诸如`Mention`、划词改写等模块时，通常需要额外的辅助节点来渲染面板，例如`Mention`需要唤醒额外的面板来选择要`at`的对象，并且需要在此基础上实现诸如上下选择、回车等交互。
+
+这种情况下，`Mention`面板通常是不会渲染在编辑器内部的，需要额外的节点来渲染这个面板。因此在实现编辑器模块时，是额外渲染了一个`mount-dom`作为辅助节点的容器，以此作为原始的`DOM`结构提供给`ReactDOM`来渲染。
+
+```js
+const onMountRef = (e: HTMLElement | null) => {
+  e && MountNode.set(editor, e);
+};
+
+<BlockKit editor={editor} readonly={readonly}>
+  <div className="block-kit-editable-container">
+    <div className="block-kit-mount-dom" ref={onMountRef}></div>
+    <Editable></Editable>
+  </div>
+</BlockKit>
+```
+
+用`ReactDOM.render`来渲染节点时，是不能够直接将该节点作为容器的，因为调用时并非直接追加`React`节点到`DOM`节点，而是直接将`React`节点渲染到该节点上。因此这种情况下，若是存在多个需要挂载的辅助节点，是无法完成的。
+
+```js
+ReactDOM.render("string", document.getElementById("root"));
+```
+
+因此这里渲染辅助元素时，需要先将此节点作为容器，创建一个新的容器子节点，然后将该节点作为容器调用`ReactDOM.render`方法来渲染`React`节点。在最开始的时候，编辑器中的`Mention`面板是类似下面的实现:
+
+```js
+if (!this.mountSuggestNode) {
+  this.mountSuggestNode = document.createElement("div");
+  this.mountSuggestNode.dataset.type = "mention";
+  MountNode.get(this.editor).appendChild(this.mountSuggestNode);
+}
+const top = this.rect.top;
+const left = this.rect.left;
+const dom = this.mountSuggestNode!;
+this.isMountSuggest = true;
+ReactDOM.render(<Suggest controller={this} top={top} left={left} text={text} />, dom);
+```
+
+最近我在思考一个问题，在我们使用`ReactDOM.createPortal`来传送到目标节点时，更加类似于追加节点的方式来实现，而不是需要向上述的方式一样先创建容器再渲染节点，并且此时还可以使用`Context`来传递编辑器的状态。
+
+但是`createPortal`没有办法像`render`方法那样可以直接渲染节点，其只是创建了一个`Portal`节点，而不是实际进行了渲染行为。因此，最终还是无法避免需要一个实际渲染的行为，相互配合起来类似于下面的实现，这样就可以将元素实际创建到`body`上。
+
+```js
+const portal = ReactDOM.createPortal(
+  <Suggest controller={this} top={top} left={left} text={text} />,
+  document.body,
+);
+ReactDOM.render(portal, this.mountSuggestNode!);
+```
+
+那么如果类似于先前聊的`Lexical`的实现方式，独立控制一个`Portals`占位来渲染辅助节点，就可以避免使用`render`方法来渲染节点，并且可以直接在`mount-dom`追加节点而不需要再创建子容器，并且直接使用这种方法可以避免`React 18`的`createRoot`方法`Breaking Change`。
+
+```js
+const PortalView: FC<{ editor: Editor }> = props => {
+  const [portals, setPortals] = useState<O.Map<ReactPortal>>({});
+  EDITOR_TO_PORTAL.set(props.editor, setPortals);
+  return (
+    <Fragment key="block-kit-portal-model">
+      {Object.entries(portals).map(([key, node]) => (
+        <Fragment key={key}>{node}</Fragment>
+      ))}
+    </Fragment>
+  );
+};
+```
+

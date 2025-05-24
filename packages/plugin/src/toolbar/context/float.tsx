@@ -3,13 +3,13 @@ import "../styles/float.scss";
 import type { SelectionChangeEvent } from "@block-kit/core";
 import { EDITOR_EVENT } from "@block-kit/core";
 import { useEditorStatic, useReadonly } from "@block-kit/react";
+import { MountNode } from "@block-kit/react";
 import { cs } from "@block-kit/utils";
 import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { MountNode } from "../../shared/utils/dom";
 import { Toolbar } from "./basic";
 
 export const FloatToolbar: FC<{

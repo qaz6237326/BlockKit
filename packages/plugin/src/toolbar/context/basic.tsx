@@ -52,8 +52,8 @@ export const Toolbar = /*#__PURE__*/ forwardRef<HTMLDivElement, ToolbarProps>((p
     };
   }, [editor.event, refreshMarks]);
 
-  // 浮动工具栏的情况下, 挂载时需要刷新 marks
   useEffect(() => {
+    // 浮动工具栏的情况下, 挂载时需要刷新 marks
     refreshMarks();
   }, [refreshMarks]);
 

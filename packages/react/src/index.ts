@@ -20,4 +20,5 @@ export { Isolate } from "./preset/isolate";
 export { Text } from "./preset/text";
 export { Void } from "./preset/void";
 export { ZeroSpace } from "./preset/zero";
+export { MountNode } from "./utils/dom";
 export { preventNativeEvent, preventReactEvent } from "./utils/event";

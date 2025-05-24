@@ -1,6 +1,7 @@
-import type { DependencyList, EffectCallback, MutableRefObject, SetStateAction } from "react";
+import type { MutableRefObject, SetStateAction } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import { IS_DOM_ENV } from "./env";
 import type { Func } from "./types";
 
 /**
@@ -18,14 +19,14 @@ export const useIsMounted = () => {
 
   return {
     mounted: isMounted,
-    isMounted: () => isMounted.current,
+    isMounted: useCallback(() => isMounted.current, []),
   };
 };
 
 /**
  * 安全地使用 useState
- * @param {S} value 状态
- * @param {MutableRefObject<boolean>} mounted 组件挂载状态
+ * @param value 状态
+ * @param mounted 组件挂载状态
  */
 export const useMountState = <S = undefined>(value: S, mounted: MutableRefObject<boolean>) => {
   const [state, setStateOrigin] = useState<S>(value);
@@ -40,7 +41,7 @@ export const useMountState = <S = undefined>(value: S, mounted: MutableRefObject
 
 /**
  * 安全地使用 useState
- * @param {S} value 状态
+ * @param value 状态
  */
 export const useSafeState = <S = undefined>(value: S) => {
   const [state, setStateOrigin] = useState<S>(value);
@@ -56,7 +57,7 @@ export const useSafeState = <S = undefined>(value: S) => {
 
 /**
  * State 与 Ref 的使用与更新
- * @param {S} value 状态
+ * @param value 状态
  */
 export const useStateRef = <S = undefined>(value: S) => {
   const [state, setStateOrigin] = useState<S>(value);
@@ -74,10 +75,10 @@ export const useStateRef = <S = undefined>(value: S) => {
 
 /**
  * 避免挂载时触发副作用
- * @param {EffectCallback} effect 副作用依赖
- * @param {DependencyList} deps 依赖
+ * @param effect 副作用依赖
+ * @param deps 依赖
  */
-export const useUpdateEffect = (effect: EffectCallback, deps?: DependencyList) => {
+export const useUpdateEffect: typeof useEffect = (effect, deps?) => {
   const isMounted = useRef(false);
 
   useEffect(() => {
@@ -91,10 +92,10 @@ export const useUpdateEffect = (effect: EffectCallback, deps?: DependencyList) =
 
 /**
  * 避免挂载时触发副作用
- * @param {EffectCallback} effect 副作用依赖
- * @param {DependencyList} deps 依赖
+ * @param effect 副作用依赖
+ * @param deps 依赖
  */
-export const useUpdateLayoutEffect = (effect: EffectCallback, deps?: DependencyList) => {
+export const useUpdateLayoutEffect: typeof useLayoutEffect = (effect, deps?) => {
   const isMounted = useRef(false);
 
   useLayoutEffect(() => {
@@ -149,3 +150,8 @@ export const useIsFirstRender = () => {
     isFirstRender: () => isFirst.current,
   };
 };
+
+/**
+ * Prevent warning on SSR by falling back to useEffect when DOM isn't available
+ */
+export const useIsomorphicLayoutEffect = IS_DOM_ENV ? useLayoutEffect : useEffect;

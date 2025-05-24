@@ -18,7 +18,7 @@ import { getEditableChildAndIndex, getTextNode, isEmbedZeroNode, isNotEditableNo
  * 规范化 DOMPoint
  * @param domPoint DOM 节点
  * @param isCollapsed 是否折叠
- * @param isEndNode 是否是末尾节点
+ * @param isEndNode 是否是末尾节点(EndDOMPoint)
  */
 export const normalizeDOMPoint = (
   domPoint: DOMPoint,
@@ -33,6 +33,7 @@ export const normalizeDOMPoint = (
   if (isDOMElement(node) && node.childNodes.length) {
     // COMPAT: 特殊判断选区节点在 ContentEditable 上的情况
     // 在 Embed 情况下可以直接取得前向节点, 减少后续的查找消耗
+    // 即 [[z][editable(false)[caret]]] 的情况
     if (
       isNotEditableNode(node) &&
       node.previousElementSibling &&
@@ -101,7 +102,7 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
   // other siblings that may have been rendered alongside them.)
   const selector = `span[${LEAF_STRING}], span[${ZERO_SPACE_KEY}]`;
   // Maybe use LineState Model to iterate over node ?
-  // 所有文本类型标记的节点
+  // 所有文本类型标记的节点, 此处的查找方式倾向于左节点优先
   const leaves = Array.from(lineNode.querySelectorAll(selector));
   let start = 0;
   for (let i = 0; i < leaves.length; i++) {

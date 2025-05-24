@@ -7,3 +7,9 @@ export const echoLines = (lines: LineState[]) => {
 export const echoLineState = (lineState: LineState) => {
   console.log("LineState", lineState.getOps());
 };
+
+export const stringifyHTML = (node: Node) => {
+  const serializer = new XMLSerializer();
+  const html = serializer.serializeToString(node);
+  console.log("HTML", html);
+};

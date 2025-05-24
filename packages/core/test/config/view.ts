@@ -21,7 +21,8 @@ export const mountEditorViewModel = (editor: Editor) => {
       let dom: HTMLElement | DocumentFragment;
       if (n.embed) {
         const extraDOM = document.createElement("div");
-        extraDOM.appendChild(document.createTextNode(" "));
+        extraDOM.setAttribute("data-embed-text", "true");
+        extraDOM.appendChild(document.createTextNode(n.op.attributes?.text || " "));
         dom = createEmbedDOM(extraDOM);
       } else {
         dom = createTextDOM(n.getText());

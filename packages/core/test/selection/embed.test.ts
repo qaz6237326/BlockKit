@@ -7,8 +7,8 @@ describe("selection embed", () => {
   const delta = new Delta({
     ops: [
       { insert: "text" },
-      { insert: " ", attributes: { mention: "1" } },
-      { insert: " ", attributes: { mention: "2" } },
+      { insert: " ", attributes: { mention: " ", text: "123456" } },
+      { insert: " ", attributes: { mention: " ", text: "789" } },
       { insert: "\n" },
     ],
   });
@@ -69,5 +69,14 @@ describe("selection embed", () => {
     sel?.setBaseAndExtent(leafDOMs[0][1], 2, leafDOMs[0][2], 2);
     document.dispatchEvent(new Event("selectionchange"));
     expect(editor.selection.get()).toEqual(Range.fromTuple([0, 4], [0, 6]));
+  });
+
+  it("text content selection embed", () => {
+    const sel = document.getSelection();
+    const node = leafDOMs[0][1].querySelector("[data-embed-text]")!;
+    const text = node.firstChild!;
+    sel?.setBaseAndExtent(text, 2, text, 2);
+    document.dispatchEvent(new Event("selectionchange"));
+    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 5], [0, 5]));
   });
 });

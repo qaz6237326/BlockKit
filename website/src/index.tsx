@@ -123,6 +123,7 @@ const App: FC = () => {
           <Tools.FontColor></Tools.FontColor>
           <Tools.LineHeight></Tools.LineHeight>
         </FloatToolbar>
+        {/* 保证 relative, mount-dom 则保证 absolute, 以此挂载辅助节点 */}
         <div className="block-kit-editable-container">
           <div className="block-kit-mount-dom" ref={onMountRef}></div>
           <Editable

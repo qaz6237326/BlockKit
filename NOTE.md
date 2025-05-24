@@ -1651,6 +1651,13 @@ for (const leaf of leaves) {
 
 当拖拽选区的时候，此时如果没有拖过`Embed`节点，那么浏览器选区的放置则是`contenteditable="false"`的节点。那么从上述就能够看出来，在`slate`中查找节点的时候，是应该正常向内部查找，而我们实际上应该查找平级的节点，因此这里的实现是有差异的。当然如果选区落点在`data-leaf`节点上的话，向内查找自然是没有问题的。
 
+```js
+document.onselectionchange = () => {
+  const sel = document.getSelection();
+  console.log(sel.anchorNode, sel.anchorOffset, sel.focusNode, sel.focusOffset);
+};
+```
+
 ## 表格双侧光标表现
 在实现表格节点时，`HTML`中`Table`元素选区存在怪异的表现，无论是在`slate`、`lexical`、`prosemirror`都存在类似的问题。如下所示，当实现`fixed`表格之后，点击表格右侧空白区域，光标会落在表格最右列后，若是点击光标上方，光标则会落在最左侧前。
 

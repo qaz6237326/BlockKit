@@ -24,11 +24,12 @@ export const Void: FC<VoidProps> = props => {
   const { editor } = useEditorStatic();
   const leaf = context.leafState;
 
-  const onMouseDown = () => {
+  const onMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
     // FIX: 修复选区偏移量, leaf 的长度可能 > 1, 而 DOM 节点的长度仅为 1
     const point = new Point(leaf.parent.index, leaf.offset + 1);
     const range = new Range(point, point.clone());
     editor.selection.set(range, true);
+    event.preventDefault();
   };
 
   return (

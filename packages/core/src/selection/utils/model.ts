@@ -10,6 +10,8 @@ import { normalizeDOMPoint } from "./native";
  * 将 DOMPoint 转换为 ModelPoint
  * @param editor
  * @param domPoint
+ * @param isCollapsed 是否折叠
+ * @param isEndNode 是否是末尾节点(EndDOMPoint)
  */
 export const toModelPoint = (
   editor: Editor,
@@ -49,7 +51,7 @@ export const toModelPoint = (
   // [[caret]void]\n => [void[caret]]\n
   // Case 3: 光标位于 data-zero-void 节点后其他位置时, 修正为节点末
   // 唤起 IME 输入时会导致原本零宽字符出现过多文本, 导致选区映射问题
-  // [ xxx[caret]]\n => [ [caret]xxx]\n
+  // [[z]xxx[caret]]\n => [[z][caret]xxx]\n
   const isVoidZero = isVoidZeroNode(node);
   if (isVoidZero && offset !== 1) {
     return new Point(lineIndex, 1);
@@ -66,11 +68,11 @@ export const toModelPoint = (
     }
     return new Point(lineIndex, leafOffset - 1);
   }
-  // Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上
-  // 若不校正会导致选区越界, 会导致拖拽选区时出现偏移问题
+  // Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上(offset 可能 > 1)
+  // 无论是选区折叠与否, 若不校正会导致选区越界, 会导致拖拽选区时出现偏移问题
   // [embed[caret > 1]] => [embed[caret = 1]]
-  if (leafModel && leafModel.embed && offset > 1) {
-    return new Point(lineIndex, leafOffset - offset);
+  if (leafModel && leafModel.embed && offset >= 1) {
+    return new Point(lineIndex, leafModel.offset + 1);
   }
   return new Point(lineIndex, leafOffset);
 };
@@ -98,7 +100,7 @@ export const toModelRange = (editor: Editor, staticSel: StaticRange, isBackward:
       node: startContainer,
       offset: startOffset,
     });
-    startRangePoint = toModelPoint(editor, anchorDOMPoint);
+    startRangePoint = toModelPoint(editor, anchorDOMPoint, true);
     endRangePoint = startRangePoint.clone();
   }
   // FIX: 修正选区折叠状态, 以 Range 的值计算为准

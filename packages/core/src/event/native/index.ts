@@ -84,6 +84,10 @@ export class NativeEvent {
     this.event.emit(NATIVE_EVENTS.MOUSE_UP_GLOBAL, e);
   };
 
+  protected onClick = (e: MouseEvent) => {
+    this.event.emit(NATIVE_EVENTS.CLICK, e);
+  };
+
   public bind() {
     this.unbind();
     const container = this.editor.getContainer();
@@ -102,6 +106,7 @@ export class NativeEvent {
     container.addEventListener(NATIVE_EVENTS.BLUR, this.onBlur);
     container.addEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDown);
     container.addEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUp);
+    container.addEventListener(NATIVE_EVENTS.CLICK, this.onClick);
     document.addEventListener(NATIVE_EVENTS.SELECTION_CHANGE_NATIVE, this.onSelectionChange);
     document.addEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDownGlobal);
     document.addEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUpGlobal);
@@ -124,6 +129,7 @@ export class NativeEvent {
     container.removeEventListener(NATIVE_EVENTS.BLUR, this.onBlur);
     container.removeEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDown);
     container.removeEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUp);
+    container.removeEventListener(NATIVE_EVENTS.CLICK, this.onClick);
     document.removeEventListener(NATIVE_EVENTS.SELECTION_CHANGE_NATIVE, this.onSelectionChange);
     document.removeEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDownGlobal);
     document.removeEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUpGlobal);

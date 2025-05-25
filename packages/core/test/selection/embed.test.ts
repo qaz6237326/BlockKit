@@ -30,7 +30,8 @@ describe("selection embed", () => {
       1
     );
     document.dispatchEvent(new Event("selectionchange"));
-    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 0], [0, 5]));
+    // 在零宽字符的节点光标放置在左侧
+    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 0], [0, 4]));
   });
 
   it("forward content-editable embed", () => {
@@ -66,9 +67,10 @@ describe("selection embed", () => {
 
   it("backward content-editable embed", () => {
     const sel = document.getSelection();
+    // leafDOMs[0][1], 2 => span contenteditable="false" data-void="true"
     sel?.setBaseAndExtent(leafDOMs[0][1], 2, leafDOMs[0][2], 2);
     document.dispatchEvent(new Event("selectionchange"));
-    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 4], [0, 6]));
+    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 5], [0, 6]));
   });
 
   it("text content selection embed", () => {

@@ -27,6 +27,7 @@ export class Selection {
    * @param editor
    */
   constructor(protected editor: Editor) {
+    this.editor.event.on(EDITOR_EVENT.MOUSE_DOWN, this.onTripleClick);
     this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onArrowKeyDown);
     this.editor.event.on(EDITOR_EVENT.SELECTION_CHANGE_NATIVE, this.onNativeSelectionChange);
     this.editor.event.on(EDITOR_EVENT.MOUSE_UP_GLOBAL, this.onForceUpdateDOMSelection);
@@ -36,6 +37,7 @@ export class Selection {
    * 销毁模块
    */
   public destroy() {
+    this.editor.event.off(EDITOR_EVENT.MOUSE_DOWN, this.onTripleClick);
     this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onArrowKeyDown);
     this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE_NATIVE, this.onNativeSelectionChange);
     this.editor.event.off(EDITOR_EVENT.MOUSE_UP_GLOBAL, this.onForceUpdateDOMSelection);
@@ -248,5 +250,25 @@ export class Selection {
       const newRange = new Range(newAnchor, newFocus, isBackward);
       this.set(newRange, true);
     }
+  }
+
+  /**
+   * 鼠标三击事件
+   * - 阻止默认的整行选中行为
+   * @param event
+   */
+  @Bind
+  protected onTripleClick(event: MouseEvent) {
+    if (event.detail !== 3 || !this.current) {
+      return void 0;
+    }
+    const line = this.current.start.line;
+    const state = this.editor.state.block.getLine(line);
+    if (!state) {
+      return void 0;
+    }
+    const range = Range.fromTuple([state.index, 0], [state.index, state.length - 1]);
+    this.set(range, true);
+    event.preventDefault();
   }
 }

@@ -67,7 +67,7 @@ export class Range {
   }
 
   /**
-   * 构建 Range
+   * 从元组构建 Range
    * @param start
    * @param end
    * @param isBackward

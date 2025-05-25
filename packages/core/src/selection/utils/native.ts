@@ -17,15 +17,19 @@ import { getEditableChildAndIndex, getTextNode, isEmbedZeroNode, isNotEditableNo
 /**
  * 规范化 DOMPoint
  * @param domPoint DOM 节点
- * @param isCollapsed 是否折叠
- * @param isEndNode 是否是末尾节点(EndDOMPoint)
+ * @param context 环境信息
  */
 export const normalizeDOMPoint = (
   domPoint: DOMPoint,
-  isCollapsed?: boolean,
-  isEndNode?: boolean
+  context: {
+    /** 是否折叠 */
+    isCollapsed: boolean;
+    /** 是否是末尾节点(EndDOMPoint) */
+    isEndNode: boolean;
+  }
 ): DOMPoint => {
   let { node, offset } = domPoint;
+  const { isCollapsed, isEndNode } = context;
 
   // If it's an element node, its offset refers to the index of its children
   // 此处说明节点非 Text 节点, 需要将选区转移到 Text 节点

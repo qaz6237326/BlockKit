@@ -59,4 +59,12 @@ describe("selection dom", () => {
     expect(endContainer.textContent).toBe("text2");
     expect(endOffset).toBe(2);
   });
+
+  it("triple click", () => {
+    const range = Range.fromTuple([1, 0], [1, 0]);
+    editor.selection.set(range, true);
+    const dom = editor.getContainer();
+    dom.dispatchEvent(new MouseEvent("mousedown", { detail: 3 }));
+    expect(editor.selection.get()).toEqual(Range.fromTuple([1, 0], [1, 10]));
+  });
 });

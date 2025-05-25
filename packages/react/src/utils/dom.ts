@@ -3,11 +3,6 @@ import type { O } from "@block-kit/utils/dist/es/types";
 import type { ReactPortal } from "react";
 import { createPortal } from "react-dom";
 
-export type PortalModelRef = {
-  mount: (key: string, node: ReactPortal) => void;
-  unmount: (key: string) => void;
-};
-
 export const EDITOR_TO_DOM = new WeakMap<Editor, HTMLElement | null>();
 export const EDITOR_TO_PORTAL = new WeakMap<
   Editor,

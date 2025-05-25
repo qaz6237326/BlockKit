@@ -1,3 +1,5 @@
+import { isDOMText } from "@block-kit/utils";
+
 import type { Editor } from "../../editor";
 import { getLeafNode, getLineNode } from "../../model/utils/dom";
 import { Point } from "../modules/point";
@@ -10,16 +12,24 @@ import { normalizeDOMPoint } from "./native";
  * 将 DOMPoint 转换为 ModelPoint
  * @param editor
  * @param domPoint
- * @param isCollapsed 是否折叠
- * @param isEndNode 是否是末尾节点(EndDOMPoint)
+ * @param context
  */
 export const toModelPoint = (
   editor: Editor,
   domPoint: DOMPoint,
-  isCollapsed?: boolean,
-  isEndNode?: boolean
+  context: {
+    /** 是否折叠 */
+    isCollapsed: boolean;
+    /** 是否是末尾节点(EndDOMPoint) */
+    isEndNode: boolean;
+    /** 原始容器 */
+    nodeContainer: Node;
+    /** 原始偏移 */
+    nodeOffset: number;
+  }
 ) => {
   const { offset, node } = domPoint;
+  const { nodeContainer, nodeOffset, isCollapsed, isEndNode } = context;
 
   const leafNode = getLeafNode(node);
   let lineIndex = 0;
@@ -56,24 +66,26 @@ export const toModelPoint = (
   if (isVoidZero && offset !== 1) {
     return new Point(lineIndex, 1);
   }
-  // Case 4: 光标位于 data-zero-embed 节点后时, 需要将其修正为节点前
+  // Case 4: 光标位于 data-zero-embed 节点上时, 需要将其修正为节点前
   // 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
-  // [embed[caret]]\n => [[caret]embed]\n
-  const isEmbedZero = isEmbedZeroNode(node);
-  if (isEmbedZero && offset) {
-    // 非折叠选区时会在减少 1 的偏移的问题, 需要判断折叠与末尾节点
-    // 这里必须在 offset 存在值再判断, 否则会导致连续的 Embed 选区向后扩展
-    if (!isCollapsed && isEndNode) {
-      return new Point(lineIndex, leafOffset);
-    }
-    return new Point(lineIndex, leafOffset - 1);
-  }
+  // 主体原则是落于零宽字符时，光标置于节点前, `div`位置表示节点后, 对齐浏览器
+  // [[z][caret]]\n => [[caret][z]]\n
+  // [[z][div[caret]]][123]\n => [[z][div]][[caret]123]\n
   // Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上(offset 可能 > 1)
   // 无论是选区折叠与否, 若不校正会导致选区越界, 会导致拖拽选区时出现偏移问题
+  // 若是非折叠的选区, 则需要判断是否是 End 节点决定边界, 将整个 Embed 选区选中
   // [embed[caret > 1]] => [embed[caret = 1]]
   if (leafModel && leafModel.embed && offset >= 1) {
+    const isEmbedZeroContainer = isEmbedZeroNode(nodeContainer);
+    if (isEmbedZeroContainer && nodeOffset) {
+      return new Point(lineIndex, leafModel.offset);
+    }
+    if (!isCollapsed && isDOMText(nodeContainer)) {
+      return new Point(lineIndex, leafModel.offset + (isEndNode ? 1 : 0));
+    }
     return new Point(lineIndex, leafModel.offset + 1);
   }
+
   return new Point(lineIndex, leafOffset);
 };
 
@@ -91,16 +103,38 @@ export const toModelRange = (editor: Editor, staticSel: StaticRange, isBackward:
   if (!collapsed) {
     const startPoint = { node: startContainer, offset: startOffset };
     const endPoint = { node: endContainer, offset: endOffset };
-    const startDOMPoint = normalizeDOMPoint(startPoint);
-    const endDOMPoint = normalizeDOMPoint(endPoint, false, true);
-    startRangePoint = toModelPoint(editor, startDOMPoint);
-    endRangePoint = toModelPoint(editor, endDOMPoint, false, true);
-  } else {
-    const anchorDOMPoint = normalizeDOMPoint({
-      node: startContainer,
-      offset: startOffset,
+    const startDOMPoint = normalizeDOMPoint(startPoint, {
+      isCollapsed: false,
+      isEndNode: false,
     });
-    startRangePoint = toModelPoint(editor, anchorDOMPoint, true);
+    const endDOMPoint = normalizeDOMPoint(endPoint, {
+      isCollapsed: false,
+      isEndNode: true,
+    });
+    startRangePoint = toModelPoint(editor, startDOMPoint, {
+      isCollapsed: false,
+      isEndNode: false,
+      nodeContainer: startContainer,
+      nodeOffset: startOffset,
+    });
+    endRangePoint = toModelPoint(editor, endDOMPoint, {
+      isCollapsed: false,
+      isEndNode: true,
+      nodeContainer: endContainer,
+      nodeOffset: endOffset,
+    });
+  } else {
+    const domPoint = { node: startContainer, offset: startOffset };
+    const anchorDOMPoint = normalizeDOMPoint(domPoint, {
+      isCollapsed: true,
+      isEndNode: false,
+    });
+    startRangePoint = toModelPoint(editor, anchorDOMPoint, {
+      isCollapsed: true,
+      isEndNode: false,
+      nodeContainer: startContainer,
+      nodeOffset: startOffset,
+    });
     endRangePoint = startRangePoint.clone();
   }
   // FIX: 修正选区折叠状态, 以 Range 的值计算为准

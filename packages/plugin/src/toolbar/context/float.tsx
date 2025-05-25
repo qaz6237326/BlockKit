@@ -53,7 +53,9 @@ export const FloatToolbar: FC<{
     const onMouseUp = () => {
       setIsMouseDown(false);
     };
-    const onMouseDown = () => {
+    const onMouseDown = (event: MouseEvent) => {
+      // 避免浮动工具栏的快速重置
+      if (event.detail === 3) return void 0;
       setIsMouseDown(true);
     };
     const onSelectionChange = (e: SelectionChangeEvent) => {

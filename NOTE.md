@@ -1913,3 +1913,61 @@ const PortalView: FC<{ editor: Editor }> = props => {
 };
 ```
 
+## Embed 节点选区行为
+`Embed`节点选区行为需要注意的点过多，在前边的实现中虽然基本是可以实现，但是在实际使用过程中会出现一些问题。例如在从左到右选择时，若是鼠标拖拽到`Embed`节点偏左时，浏览器选区并未覆盖节点，然而抬起鼠标时的计算会将其覆盖整个节点，这属于是选区不同步的问题。
+
+造成这个问题的原因是，我们的选区模型设计是左侧的零宽节点设计，因为放置于右侧的话可能会导致输入法的问题，对于类似的问题我在`slate#5685`以及`slate#5736`中都有提到过。因此，在我们的编辑器实现中，会直接将其放置于嵌入节点的左侧。
+
+```js
+<span data-leaf="true">
+  <span data-zero-space="true" data-zero-embed="true">&ZeroWidthSpace;</span>
+  <span contenteditable="false" data-void="true">{/** xxx */}</span>
+</span>
+```
+
+因此在先前的实现中，虽然整个选区的行为是更倾向于偏左的节点，但是在`Embed`节点上的右侧选区则是偏右的，这是因为这里的设计会导致浏览器的光标展示是在左侧的，这部分实现则依旧保持现状。说起来`slate`的实现是额外增加了零宽节点作为选区，不会存在类似问题。
+
+此处的修改主要是对于`Case 4`做了增添，主体原则是落于零宽字符时，无论`offset`是`0`还是`1`，光标都会置于节点前，当然由于`offset`为`0`时本身就是左选区无需特殊处理。`data-void`位置表示选区需要置于节点后, 由此能够对齐浏览器的实现。
+
+并且实现了`Case 5`的情况，由于`Embed`节点是不会实现`user-select: none`的情况，因此在拖拽选区时，`offset`可能会越界出现偏移问题。此外，若是非折叠的选区, 则需要判断是否是`End`节点决定边界, 将整个`Embed`选区选中，这里需要传递相关环境状态。
+
+```js
+// Case 4: 光标位于 data-zero-embed 节点上时, 需要将其修正为节点前
+// 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
+// 主体原则是落于零宽字符时，光标置于节点前, `div`位置表示节点后, 对齐浏览器
+// [[z][caret]]\n => [[caret][z]]\n
+// [[z][div[caret]]][123]\n => [[z][div]][[caret]123]\n
+// Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上(offset 可能 > 1)
+// 无论是选区折叠与否, 若不校正会导致选区越界, 会导致拖拽选区时出现偏移问题
+// 若是非折叠的选区, 则需要判断是否是 End 节点决定边界, 将整个 Embed 选区选中
+// [embed[caret > 1]] => [embed[caret = 1]]
+if (leafModel && leafModel.embed && offset >= 1) {
+  const isEmbedZeroContainer = isEmbedZeroNode(nodeContainer);
+  if (isEmbedZeroContainer && nodeOffset) {
+    return new Point(lineIndex, leafModel.offset);
+  }
+  if (!isCollapsed && isDOMText(nodeContainer)) {
+    return new Point(lineIndex, leafModel.offset + (isEndNode ? 1 : 0));
+  }
+  return new Point(lineIndex, leafModel.offset + 1);
+}
+```
+
+此外，若是存在连续的`Embed`节点时，浏览器三击时会导致仅能选中覆盖首个节点，后续节点无法覆盖，选区变换时拿到的是`Embed div`节点。因此，我们需要额外判断三击时的选区行为，直接主动选择整行，而不需要依赖浏览器的选区变换。
+
+```js
+protected onTripleClick(event: MouseEvent) {
+  if (event.detail !== 3 || !this.current) {
+    return void 0;
+  }
+  const line = this.current.start.line;
+  const state = this.editor.state.block.getLine(line);
+  if (!state) {
+    return void 0;
+  }
+  const range = Range.fromTuple([state.index, 0], [state.index, state.length - 1]);
+  this.set(range, true);
+  event.preventDefault();
+}
+```
+

@@ -96,7 +96,7 @@ export const FloatToolbar: FC<{
     ? null
     : ReactDOM.createPortal(
         <Toolbar
-          ref={ref}
+          onRef={ref}
           className={cs("block-kit-float-toolbar", props.className)}
           styles={{ top: top, left: left }}
         >

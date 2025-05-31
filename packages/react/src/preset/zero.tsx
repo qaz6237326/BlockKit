@@ -6,7 +6,7 @@ import {
   ZERO_SYMBOL,
   ZERO_VOID_KEY,
 } from "@block-kit/core";
-import { forwardRef } from "react";
+import type { FC } from "react";
 
 import { NO_CURSOR } from "../utils/constant";
 
@@ -21,6 +21,8 @@ export type ZeroSpaceProps = {
   enter?: boolean;
   /** 空节点占位长度 */
   len?: number;
+  /** 获取 DOM 引用 */
+  onRef?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 /**
@@ -30,12 +32,11 @@ export type ZeroSpaceProps = {
  * - enter => 行末尾占位, 保留于 EOLView
  * - len => 空节点占位长度, 配合 Void/Embed
  * @param props
- * @param ref
  */
-export const ZeroSpace = /*#__PURE__*/ forwardRef<HTMLSpanElement, ZeroSpaceProps>((props, ref) => {
+export const ZeroSpace: FC<ZeroSpaceProps> = props => {
   return (
     <span
-      ref={ref}
+      ref={props.onRef}
       {...{
         [ZERO_SPACE_KEY]: true,
         [ZERO_VOID_KEY]: props.void,
@@ -48,4 +49,4 @@ export const ZeroSpace = /*#__PURE__*/ forwardRef<HTMLSpanElement, ZeroSpaceProp
       {ZERO_SYMBOL}
     </span>
   );
-});
+};

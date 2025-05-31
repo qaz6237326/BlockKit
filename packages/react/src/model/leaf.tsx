@@ -33,7 +33,7 @@ const LeafView: FC<{
       leafState: leafState,
       attributes: leafState.op.attributes,
       style: {},
-      children: <Text ref={el => LT.set(leafState, el)}>{text}</Text>,
+      children: <Text onRef={el => LT.set(leafState, el)}>{text}</Text>,
     };
     const plugins = editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LEAF);
     for (const plugin of plugins) {

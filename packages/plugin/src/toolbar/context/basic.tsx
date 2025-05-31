@@ -5,14 +5,15 @@ import type { Op } from "@block-kit/delta";
 import { useEditorStatic } from "@block-kit/react";
 import { cs } from "@block-kit/utils";
 import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
-import { forwardRef, useEffect, useState } from "react";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
 import { PLUGIN_EVENTS } from "../../shared/utils/event";
 import type { ToolbarProps } from "../types";
 import { filterLineMarkMap, filterMarkMap } from "../utils/marks";
 import { ToolbarContext } from "./provider";
 
-export const Toolbar = /*#__PURE__*/ forwardRef<HTMLDivElement, ToolbarProps>((props, ref) => {
+export const Toolbar: FC<ToolbarProps> = props => {
   const { editor } = useEditorStatic();
   const [keys, setKeys] = useState<Record<string, string>>({});
 
@@ -59,7 +60,7 @@ export const Toolbar = /*#__PURE__*/ forwardRef<HTMLDivElement, ToolbarProps>((p
 
   return (
     <div
-      ref={ref}
+      ref={props.onRef}
       style={props.styles}
       className={cs("block-kit-menu-toolbar", props.className)}
       onMouseDown={e => {
@@ -86,4 +87,4 @@ export const Toolbar = /*#__PURE__*/ forwardRef<HTMLDivElement, ToolbarProps>((p
       </ToolbarContext.Provider>
     </div>
   );
-});
+};

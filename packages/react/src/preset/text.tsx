@@ -1,23 +1,20 @@
 import { LEAF_STRING } from "@block-kit/core";
-import { isDOMText, isFunction } from "@block-kit/utils";
-import { forwardRef } from "react";
+import { isDOMText } from "@block-kit/utils";
+import type { FC } from "react";
 
 export type TextProps = {
   children: string;
+  onRef?: (ref: HTMLSpanElement | null) => void;
 };
 
 /**
  * 文本节点
  * @param props
  */
-export const Text = /*#__PURE__*/ forwardRef<HTMLSpanElement, TextProps>((props, ref) => {
+export const Text: FC<TextProps> = props => {
   const onRef = (dom: HTMLSpanElement | null) => {
     // 处理外部引用的 ref
-    if (isFunction(ref)) {
-      ref(dom);
-    } else if (ref) {
-      ref.current = dom;
-    }
+    props.onRef && props.onRef(dom);
     // COMPAT: 避免 React 非受控与 IME 造成的 DOM 内容问题
     if (!dom || props.children === dom.textContent) return void 0;
     const nodes = dom.childNodes;
@@ -38,4 +35,4 @@ export const Text = /*#__PURE__*/ forwardRef<HTMLSpanElement, TextProps>((props,
       {props.children}
     </span>
   );
-});
+};

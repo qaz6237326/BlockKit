@@ -94,7 +94,7 @@ export class Block extends Delta {
 
   /**
    * 克隆 Block
-   * @param [deep?=false] 是否深克隆
+   * @param [deep?=undef] 是否深克隆
    */
   public clone(deep?: boolean): Block {
     return new Block({

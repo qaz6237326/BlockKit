@@ -2,6 +2,7 @@ import type { Editor } from "@block-kit/core";
 import React, { createContext } from "react";
 
 export const BlockKitContext = createContext<Editor | null>(null);
+BlockKitContext.displayName = "BlockKit";
 
 export const useEditorStatic = () => {
   const editor = React.useContext(BlockKitContext);

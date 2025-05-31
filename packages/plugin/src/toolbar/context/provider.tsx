@@ -17,5 +17,6 @@ export const ToolbarContext = React.createContext<ToolbarContextType>({
   editor: null as unknown as Editor,
   selection: null,
 });
+ToolbarContext.displayName = "Toolbar";
 
 export const useToolbarContext = () => React.useContext(ToolbarContext);

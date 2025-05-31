@@ -99,8 +99,7 @@ export class Iterator {
     let firstRetain = retain;
     while (retain > 0) {
       const line = this.lines[this.row];
-      if (!line) break;
-      if (firstRetain < line.length) break;
+      if (!line || firstRetain < line.length) break;
       this.row++;
       newLines.push(line);
       firstRetain = firstRetain - line.length;

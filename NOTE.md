@@ -1971,3 +1971,52 @@ protected onTripleClick(event: MouseEvent) {
 }
 ```
 
+## 词级别内容删除
+先前我们针对`Emoji`的删除做了特殊处理，因为其本身是多个字符组成的内容，所以在删除时如果直接取长度为`1`的话会导致出现遗留不可见字符的情况。那么除了`Emoji`可能存在删除多个字符的情况，使用`Alt + Del`组合键在默认情况下是删除词级别内容，同样是存在多个字符的情况。
+
+如果仅仅是使用`ContentEditable`的情况下，浏览器会自动处理词级别的删除行为，包括`Emoji`的删除行为也是可以自动处理的。因此针对非受控输入的编辑器例如`Quill`、飞书文档的实现，是不太需要主动处理相关行为的，主要关注点在于`DOM`变更后的被动同步状态。
+
+而在我们实现的编辑器中，因为输入的相关实现是完全基于`beforeInput`事件来处理的，是完全受控的行为，因此我们必须要主动处理删除的行为。实际上在事件中，`inputType`值是给出了`deleteWordBackward`和`deleteWordForward`的，却没有给出默认行为要删除的长度。
+
+因此我最开始是想要么改为非受控输入，要么是通过`Intl.Segmenter`方法来主动分词实现。然而在看到`MDN`的`DEMO`之后，发现这个构造器需要传递语言参数，这样的话在编辑器中是没有办法实现的，编辑器中无法实际确定语言类型。
+
+```js
+const segmenterZH = new Intl.Segmenter("ZH-CN", { granularity: "word" });
+const string1 = "当前所有功能都是基于插件化定义实现";
+const iterator1 = segmenterZH.segment(string1)[Symbol.iterator]();
+console.log(iterator1.next().value.segment); // 当前
+```
+
+因此我去找了相关开源编辑器的实现，`slate`是完全自定义处理的行为，使用`getWordDistance`来自行计算词的距离。这样对于英文问题不大，但是对于中文词组的处理就比较差了，是以标点符号为准作为切割目标的，因此对于中文实现更像是按句删除了。
+
+而在`Lexical`中尝试了删除词组的表现则比较符合预期，本来我以为也是非受控的输入，但是查阅源码后发现同样是基于`beforeInput`事件来处理的。那么这个表现就非常符合浏览器的行为，本来我以为也是基于`Segmenter`实现，想查看是如何处理语言问题的，发现首参数是可以不传递的。
+
+```js
+const segmenterZH = new Intl.Segmenter(undefined, { granularity: "word" });
+const string1 = "当前所有功能都是基于插件化定义实现";
+const iterator1 = segmenterZH.segment(string1)[Symbol.iterator]();
+console.log(iterator1.next().value.segment); // 当前
+```
+
+然而，再细致地查阅源码后发现，`Lexical`并未直接使用`Segmenter`来处理分词，而是使用了`selection.modify`这个`API`来预处理选区的变更。基于这个`API`可以同步地变更选区的`DOM`引用，然后我们就可以立即得到未来的选区状态，因此就可以构造删除的范围。
+
+```js
+const root = this.editor.getContainer();
+const domSelection = getRootSelection(root);
+const selection = this.current;
+if (!domSelection || !selection) return null;
+domSelection.modify(ALERT.MOVE, direction, granularity);
+const staticSel = getStaticSelection(domSelection);
+if (!staticSel || this.limit()) return null;
+const { startContainer } = staticSel;
+if (!root.contains(startContainer)) return null;
+const newRange = toModelRange(this.editor, staticSel, false);
+newRange && this.set(newRange);
+```
+
+并且在`Lexical`中还解释了`beforeInput`事件以及对应的`getTargetRanges()`方法。由此先前我对于浏览器没有给出默认要删除的长度的判断是错误的，其是通过`Range`来表达的。但是注释中还提到了这个方案不可靠，其在复杂场景下可能无法正确反应操作后的选区状态。
+
+而对于使用像`Intl.Segmenter`等按词组分割的工具，比较容易出错，而且需要对于整个`Op`进行分词，也有很多不必要的计算。不同语言的分词规则差异巨大，例如英文空格分词以及中文无空格分词，自动识别词边界非常困难，尤其是在涉及自动换行和非罗马语言的情况下会非常困难。
+
+总结起来，使用`selection.modify`方法直接利用了浏览器引擎自身对选区计算的内置、高度优化的逻辑，浏览器如何分词自然是浏览器本身最熟知。此外，这次还发现`beforeInput`事件的诸多方法，诸如`drop`的相关事件其实也可以用`getTargetRanges + dataTransfer`来实现。
+

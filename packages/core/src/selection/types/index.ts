@@ -5,6 +5,17 @@ export const DIRECTION = {
   BACKWARD: "backward",
 } as const;
 
+export const ALERT = {
+  MOVE: "move",
+  EXTEND: "EXTEND",
+} as const;
+
+export const GRANULARITY = {
+  CHARACTER: "character",
+  WORD: "word",
+  LINE: "line",
+} as const;
+
 export type DOMPoint = {
   node: Node | null;
   offset: number;

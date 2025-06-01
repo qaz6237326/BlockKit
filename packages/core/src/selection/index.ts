@@ -1,4 +1,5 @@
 import { Bind } from "@block-kit/utils";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 import type { Editor } from "../editor";
 import { EDITOR_EVENT } from "../event/bus/types";
@@ -7,6 +8,8 @@ import { EDITOR_STATE } from "../state/types";
 import { Point } from "./modules/point";
 import { Range } from "./modules/range";
 import { RawRange } from "./modules/raw-range";
+import type { GRANULARITY } from "./types";
+import { ALERT, DIRECTION } from "./types";
 import { getRootSelection, getStaticSelection, isEmbedZeroNode, isVoidZeroNode } from "./utils/dom";
 import { isBackwardDOMRange } from "./utils/dom";
 import { toModelRange } from "./utils/model";
@@ -270,5 +273,44 @@ export class Selection {
     const range = Range.fromTuple([state.index, 0], [state.index, state.length - 1]);
     this.set(range, true);
     event.preventDefault();
+  }
+
+  /**
+   * 同步移动浏览器选区并设置模型选区
+   * - 可用于移动选区, 同样可用于计算新选区范围
+   * @param granularity
+   * @param direction [?=FORWARD]
+   */
+  public move(
+    granularity: O.Values<typeof GRANULARITY>,
+    direction: O.Values<typeof DIRECTION> = DIRECTION.FORWARD
+  ): Range | null {
+    const root = this.editor.getContainer();
+    const domSelection = getRootSelection(root);
+    const selection = this.current;
+    if (!domSelection || !selection) return null;
+    domSelection.modify(ALERT.MOVE, direction, granularity);
+    const staticSel = getStaticSelection(domSelection);
+    if (!staticSel || this.limit()) return null;
+    const { startContainer } = staticSel;
+    if (!root.contains(startContainer)) return null;
+    const newRange = toModelRange(this.editor, staticSel, false);
+    newRange && this.set(newRange);
+    return newRange;
+  }
+
+  /**
+   * 折叠选区
+   * - 将选区折叠到起始或结束位置
+   * @param direction [?=FORWARD] 默认结束位置
+   */
+  public collapse(direction: O.Values<typeof DIRECTION> = DIRECTION.FORWARD): Range | null {
+    const range = this.get();
+    if (!range || range.isCollapsed) return null;
+    const { start, end } = range;
+    const focus = direction === DIRECTION.FORWARD ? end : start;
+    const newRange = new Range(focus, focus.clone(), false, true);
+    this.set(newRange, true);
+    return newRange;
   }
 }

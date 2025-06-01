@@ -69,6 +69,17 @@ export { Point } from "./selection/modules/point";
 export { Range } from "./selection/modules/range";
 export { RawPoint } from "./selection/modules/raw-point";
 export { RawRange } from "./selection/modules/raw-range";
+export type {
+  DOMComment,
+  DOMElement,
+  DOMNode,
+  DOMPoint,
+  DOMRange,
+  DOMSelection,
+  DOMStaticRange,
+  DOMText,
+} from "./selection/types/index";
+export { ALERT, DIRECTION, GRANULARITY } from "./selection/types/index";
 export { EditorState } from "./state";
 export { BlockState } from "./state/modules/block-state";
 export { LeafState } from "./state/modules/leaf-state";

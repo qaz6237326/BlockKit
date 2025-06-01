@@ -128,4 +128,17 @@ export class Range {
     const end = Point.isBefore(end1, end2) ? end1 : end2;
     return !Point.isAfter(start, end);
   }
+
+  /**
+   * 合并 Range 取最大范围
+   * @param range1
+   * @param range2
+   * @returns
+   */
+  public static aggregate(range1: Range | null, range2: Range | null): Range | null {
+    if (!range1 || !range2) return null;
+    const start = Point.isBefore(range1.start, range2.start) ? range1.start : range2.start;
+    const end = Point.isAfter(range1.end, range2.end) ? range1.end : range2.end;
+    return new Range(start, end, false, false);
+  }
 }

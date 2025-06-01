@@ -2,6 +2,8 @@ import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
 import { EDITOR_EVENT } from "../event/bus/types";
+import { Range } from "../selection/modules/range";
+import { DIRECTION, GRANULARITY } from "../selection/types";
 import { EDITOR_STATE } from "../state/types";
 
 export class Input {
@@ -44,13 +46,22 @@ export class Input {
         this.editor.perform.deleteFragment(sel);
         break;
       }
-      case "deleteWordBackward":
+      case "deleteWordBackward": {
+        // https://github.com/facebook/lexical/blob/af687fa/packages/lexical/src/LexicalSelection.ts#L1605
+        const newRange = this.editor.selection.move(GRANULARITY.WORD, DIRECTION.BACKWARD);
+        this.editor.perform.deleteBackward(Range.aggregate(newRange, sel) || sel);
+        break;
+      }
       case "deleteContentBackward": {
         this.editor.perform.deleteBackward(sel);
         break;
       }
+      case "deleteWordForward": {
+        const newRange = this.editor.selection.move(GRANULARITY.WORD);
+        this.editor.perform.deleteBackward(Range.aggregate(newRange, sel) || sel);
+        break;
+      }
       case "deleteContent":
-      case "deleteWordForward":
       case "deleteContentForward": {
         this.editor.perform.deleteForward(sel);
         break;

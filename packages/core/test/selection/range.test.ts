@@ -115,4 +115,11 @@ describe("selection range", () => {
     expect(Range.includes(base, new Range(start, new Point(2, 2)))).toBe(true);
     expect(Range.includes(base, new Range(start, new Point(2, 6)))).toBe(false);
   });
+
+  it("aggregate", () => {
+    const range1 = Range.fromTuple([0, 0], [0, 5]);
+    const range2 = Range.fromTuple([0, 3], [0, 8]);
+    const aggregated = Range.aggregate(range1, range2);
+    expect(aggregated).toEqual(Range.fromTuple([0, 0], [0, 8]));
+  });
 });

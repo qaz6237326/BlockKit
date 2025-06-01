@@ -66,7 +66,7 @@ export const mountEditorViewModel = (editor: Editor) => {
   return { block, container, lineDOMs, leafDOMs };
 };
 
-// polyfill JSDOM 的 selection setBaseAndExtent
+// Polyfill JSDOM 的 Selection 相关方法
 const selection = document.getSelection();
 if (selection && selection.setBaseAndExtent.name !== "setBaseAndExtentMock") {
   const native = selection.setBaseAndExtent;
@@ -77,6 +77,22 @@ if (selection && selection.setBaseAndExtent.name !== "setBaseAndExtentMock") {
     focusOffset: number
   ) {
     native.call(selection, anchorNode, anchorOffset, focusNode, focusOffset);
+    document.dispatchEvent(new Event("selectionchange"));
+  };
+}
+
+if (selection && !selection.modify) {
+  // 仅处理 move backward word
+  selection.modify = function modifyMock() {
+    const textNode = selection.focusNode as Text;
+    const text = textNode.textContent || "";
+    const lastWordIndex = text.lastIndexOf(" ", selection.focusOffset - 1);
+    if (lastWordIndex !== -1) {
+      const newOffset = lastWordIndex + 1;
+      selection.setBaseAndExtent(textNode, newOffset, textNode, newOffset);
+    } else {
+      selection.setBaseAndExtent(textNode, 0, textNode, 0);
+    }
     document.dispatchEvent(new Event("selectionchange"));
   };
 }

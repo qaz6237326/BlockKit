@@ -88,15 +88,6 @@ export class LeafState {
   }
 
   /**
-   * 将 LeafState 转换为 Range
-   */
-  public toRange() {
-    const start = new Point(this.parent.index, this.offset);
-    const end = new Point(this.parent.index, this.offset + this.length);
-    return new Range(start, end);
-  }
-
-  /**
    * 裁剪当前 op
    * @param index
    * @param forward [?=false]
@@ -118,6 +109,25 @@ export class LeafState {
    */
   public updateKey(key: string) {
     this.key = key;
-    Key.update(this, key);
+    return Key.update(this, key);
+  }
+
+  /**
+   * 根据状态来尝试更新 DOM Model
+   * @param leafState
+   */
+  public updateModel(leafState: LeafState | null) {
+    const editor = this.parent.parent.editor;
+    const dom = editor.model.getLeafNode(leafState);
+    dom && editor.model.setLeafModel(dom, this);
+  }
+
+  /**
+   * 将 LeafState 转换为 Range
+   */
+  public toRange() {
+    const start = new Point(this.parent.index, this.offset);
+    const end = new Point(this.parent.index, this.offset + this.length);
+    return new Range(start, end);
   }
 }

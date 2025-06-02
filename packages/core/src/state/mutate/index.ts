@@ -78,9 +78,7 @@ export class Mutate {
         // this.key => 复用 other.key => 更新
         lineState.updateKey(key);
         // 复用的 LineState 可以直接更新到 Model
-        const reuseState = newLeaf.parent;
-        const lineDOM = this.editor.model.getLineNode(reuseState);
-        lineDOM && this.editor.model.setLineModel(lineDOM, lineState);
+        lineState.updateModel(newLeaf.parent);
       }
       lineState.updateLeaves();
       lineState._updateInternalOp(newOp);
@@ -161,7 +159,7 @@ export class Mutate {
           const newOp = cloneOp(thisLeaf.op);
           newOp.attributes = attrs;
           newLeaf = new LeafState(newOp, thisLeaf.parent);
-          thisLeaf.key && newLeaf.updateKey(thisLeaf.key);
+          thisLeaf.key && newLeaf.updateKey(thisLeaf.key) && newLeaf.updateModel(thisLeaf);
           this.revises.push({ insert: newOp.insert!, attributes: otherOp.attributes });
         }
         lineState = this.insert(lineState, newLeaf);

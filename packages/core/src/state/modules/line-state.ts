@@ -156,22 +156,6 @@ export class LineState {
   }
 
   /**
-   * 强制刷新行 key
-   */
-  public forceRefresh() {
-    this.key = Key.refresh(this);
-  }
-
-  /**
-   * 强制刷新行 key
-   * @param key
-   */
-  public updateKey(key: string) {
-    this.key = key;
-    Key.update(this, key);
-  }
-
-  /**
    * 向前查找行状态
    * @param len
    */
@@ -211,6 +195,32 @@ export class LineState {
       index = index + getOpLength(nextOp);
     }
     return nextOps;
+  }
+
+  /**
+   * 强制刷新行 key
+   */
+  public forceRefresh() {
+    this.key = Key.refresh(this);
+  }
+
+  /**
+   * 强制刷新行 key
+   * @param key
+   */
+  public updateKey(key: string) {
+    this.key = key;
+    return Key.update(this, key);
+  }
+
+  /**
+   * 根据状态来尝试更新 DOM Model
+   * @param lineState
+   */
+  public updateModel(lineState: LineState | null) {
+    const editor = this.parent.editor;
+    const dom = editor.model.getLineNode(lineState);
+    dom && editor.model.setLineModel(dom, this);
   }
 
   /**

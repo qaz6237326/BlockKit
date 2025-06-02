@@ -67,7 +67,7 @@ describe("state key", () => {
   });
 
   it("leaf key reuse - merge tail", () => {
-    const delta = new Delta().insert("te").insert("ex", { bold: "true" }).insertEOL();
+    const delta = new Delta().insert("te").insert("xt", { bold: "true" }).insertEOL();
     const editor = new Editor({ delta });
     const line0 = editor.state.block.getLine(0);
     const leaf0 = line0!.getLeaf(0);

@@ -112,7 +112,6 @@ const BlockView: FC<{
         <LineModel key={line.key} editor={editor} lineState={line} index={index}></LineModel>
       );
       JSX_TO_STATE.set(node, line);
-
       return node;
     });
   }, [editor, lines]);

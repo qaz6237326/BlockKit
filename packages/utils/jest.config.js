@@ -10,5 +10,6 @@ module.exports = {
   },
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   collectCoverage: false,
+  testEnvironment: "jsdom",
   testMatch: ["<rootDir>/test/**/*.test.ts"],
 };

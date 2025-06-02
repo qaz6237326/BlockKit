@@ -29,8 +29,6 @@ export class LineState {
   protected leaves: LeafState[] = [];
   /** Ops 缓存 */
   protected _ops: Op[] | null = null;
-  /** Leaf 到 Index 映射 */
-  public _leafToIndex: WeakMap<LeafState, number>;
 
   constructor(
     /** Delta 数据 */
@@ -40,12 +38,11 @@ export class LineState {
     /** 父级 BlockState */
     public readonly parent: BlockState
   ) {
-    this.size = 0;
-    this.index = 0;
-    this.start = 0;
-    this.length = 0;
-    this.key = Key.getId(this);
-    this._leafToIndex = new WeakMap();
+    this.key = "";
+    this.size = -1;
+    this.start = -1;
+    this.index = -1;
+    this.length = -1;
     this._initFromDelta(delta);
     this.op = { insert: EOL, attributes };
     if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
@@ -68,7 +65,7 @@ export class LineState {
    * @param leaf
    * @param index
    */
-  public setLeaf(leaf: LeafState, index: number) {
+  public setLeaf(index: number, leaf: LeafState) {
     if (this.leaves[index] === leaf) {
       return this;
     }
@@ -77,7 +74,8 @@ export class LineState {
     if (this._ops) {
       this._ops[index] = leaf.op;
     }
-    this._leafToIndex.set(leaf, index);
+    leaf.index = index;
+    leaf.key = leaf.key || Key.getId(leaf);
     return this;
   }
 
@@ -116,11 +114,12 @@ export class LineState {
     let offset = 0;
     const ops: Op[] = [];
     this.leaves.forEach((leaf, index) => {
-      leaf.offset = offset;
-      offset = offset + leaf.length;
-      leaf.parent = this;
       ops.push(leaf.op);
-      this._leafToIndex.set(leaf, index);
+      leaf.offset = offset;
+      leaf.parent = this;
+      leaf.index = index;
+      offset = offset + leaf.length;
+      leaf.key = leaf.key || Key.getId(leaf);
     });
     this._ops = ops;
     this.length = offset;
@@ -233,8 +232,9 @@ export class LineState {
   public _appendLeaf(leaf: LeafState) {
     leaf.offset = this.length;
     this.leaves.push(leaf);
-    this._leafToIndex.set(leaf, this.size);
+    leaf.index = this.size;
     this.size++;
+    leaf.key = leaf.key || Key.getId(leaf);
     this.length = this.length + leaf.length;
   }
 
@@ -252,8 +252,10 @@ export class LineState {
         this.parent.editor.logger.warning("Invalid op in LineState", op);
         continue;
       }
-      const leaf = new LeafState(op, offset, this);
-      this._leafToIndex.set(leaf, this._ops.length);
+      const leaf = new LeafState(op, this);
+      leaf.offset = offset;
+      leaf.key = Key.getId(leaf);
+      leaf.index = this._ops.length;
       this.leaves.push(leaf);
       this._ops.push(op);
       offset = offset + op.insert.length;
@@ -263,7 +265,7 @@ export class LineState {
   }
 
   /**
-   * 更新内建 op
+   * 更新内建 Op 值, 认为即将并入 BlockState
    * - 仅应在 Mutate 中使用, 其余场景应保持 immutable
    * @internal 仅编辑器内部使用
    */
@@ -279,12 +281,11 @@ export class LineState {
   }
 
   /**
-   * 创建 LineState
-   * @param ops
-   * @param attributes
+   * 创建空的 LineState
    * @param block
+   * @internal 仅编辑器内部使用
    */
-  public static create(ops: Op[], attributes: AttributeMap, block: BlockState) {
-    return new LineState(new Delta(ops), attributes, block);
+  public static _create(block: BlockState) {
+    return new LineState(new Delta([]), {}, block);
   }
 }

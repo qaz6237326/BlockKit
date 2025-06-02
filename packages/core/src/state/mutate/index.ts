@@ -50,8 +50,8 @@ export class Mutate {
 
   /**
    * 在 LineState 插入 Leaf
-   * @param lineState
-   * @param newLeaf
+   * @param lineState 当前正在处理的 LineState
+   * @param newLeaf 即将准入的 LeafState
    */
   protected insert(lineState: LineState, newLeaf: LeafState): LineState {
     const leaves = lineState.getLeaves();
@@ -73,8 +73,8 @@ export class Mutate {
       const key = newLeaf.parent.key;
       this.newLines.push(lineState);
       // Other Leaf 是以新的 LineState 创建的, 因此 key 值相同
-      // key 值不相等, 那就说明是取得 This Leaf 的 key
-      if (lineState.key !== key) {
+      // ref/key 值不相等, 那就说明是取得 This Leaf 的 key
+      if (lineState !== newLeaf.parent) {
         // this.key => 复用 other.key => 更新
         lineState.updateKey(key);
         // 复用的 LineState 可以直接更新到 Model
@@ -84,7 +84,7 @@ export class Mutate {
       }
       lineState.updateLeaves();
       lineState._updateInternalOp(newOp);
-      return LineState.create([], {}, this.block);
+      return LineState._create(this.block);
     }
     if (
       isObject<Op>(lastOp) &&
@@ -99,7 +99,9 @@ export class Mutate {
       if (isObject<AttributeMap>(lastOp.attributes)) {
         op.attributes = lastOp.attributes;
       }
-      lineState.setLeaf(new LeafState(op, 0, lineState), index - 1);
+      const newLastLeaf = new LeafState(op, lineState);
+      newLastLeaf.updateKey(lastLeaf!.key);
+      lineState.setLeaf(index - 1, newLastLeaf);
       return lineState;
     }
     if (isInsertOp(newOp)) {
@@ -122,7 +124,7 @@ export class Mutate {
     const otherIter = new OpIterator(otherOps);
     const firstOther = otherIter.peek();
     // 当前处理的 LineState
-    let lineState = LineState.create([], {}, this.block);
+    let lineState = LineState._create(this.block);
     if (firstOther && isRetainOp(firstOther) && !firstOther.attributes) {
       let firstLeft = thisIter.firstRetain(firstOther.retain, this.newLines);
       while (thisIter.peekType() === OP_TYPES.INSERT && thisIter.peekLength() <= firstLeft) {
@@ -140,7 +142,7 @@ export class Mutate {
     }
     while (thisIter.hasNext() || otherIter.hasNext()) {
       if (otherIter.peekType() === OP_TYPES.INSERT) {
-        const leaf = new LeafState(otherIter.next(), 0, lineState);
+        const leaf = new LeafState(otherIter.next(), lineState);
         lineState = this.insert(lineState, leaf);
         this.inserts.push(leaf.op as InsertOp);
         continue;
@@ -158,10 +160,12 @@ export class Mutate {
           const attrs = composeAttributes(thisLeaf.op.attributes, otherOp.attributes);
           const newOp = cloneOp(thisLeaf.op);
           newOp.attributes = attrs;
-          newLeaf = LeafState.create(newOp, 0, thisLeaf.parent);
+          newLeaf = new LeafState(newOp, thisLeaf.parent);
+          thisLeaf.key && newLeaf.updateKey(thisLeaf.key);
           this.revises.push({ insert: newOp.insert!, attributes: otherOp.attributes });
         }
         lineState = this.insert(lineState, newLeaf);
+        // 如果 Other 已经到达末尾, 且不对数据造成影响, 处理剩余数据
         if (!otherIter.hasNext() && newLeaf === thisLeaf) {
           // 处理剩余的 Leaves 和 Lines
           const rest = thisIter.rest();
@@ -179,9 +183,9 @@ export class Mutate {
       }
     }
     // 当行状态存在值或者当前没有行时, 补齐行数据内容
-    // TODO: 这里需要注意会影响协同, 理论上需要避免操作末尾的 \n 符号
+    // WARN: 这里需要注意会影响协同, 理论上需要避免操作末尾的 \n 符号
     if (lineState.getLeaves().length || !this.newLines.length) {
-      this.insert(lineState, new LeafState(cloneOp(EOL_OP), 0, lineState));
+      this.insert(lineState, new LeafState(cloneOp(EOL_OP), lineState));
     }
     return this.newLines;
   }

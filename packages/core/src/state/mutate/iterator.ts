@@ -137,7 +137,10 @@ export class Iterator {
           retOp.attributes = nextLeaf.op.attributes;
         }
         retOp.insert = op.insert.substr(offset, length);
-        return new LeafState(retOp, 0, nextLeaf.parent);
+        const newLeaf = new LeafState(retOp, nextLeaf.parent);
+        // 若 offset 是 0, 则直接复用原始的 key 值
+        offset === 0 && newLeaf.updateKey(nextLeaf.key);
+        return newLeaf;
       }
       return nextLeaf;
     }

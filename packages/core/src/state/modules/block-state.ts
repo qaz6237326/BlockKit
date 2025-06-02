@@ -1,6 +1,7 @@
 import type { Op } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import { cloneOps } from "@block-kit/delta";
+import { ROOT_BLOCK } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { Key } from "../utils/key";
@@ -17,7 +18,7 @@ export class BlockState {
   protected lines: LineState[] = [];
 
   constructor(public editor: Editor, base: Delta) {
-    this.key = Key.getId(this);
+    this.key = ROOT_BLOCK;
     let offset = 0;
     this.lines = [];
     // 初始化创建 LineState
@@ -25,6 +26,7 @@ export class BlockState {
       const lineState = new LineState(delta, attributes, this);
       lineState.index = index;
       lineState.start = offset;
+      lineState.key = Key.getId(lineState);
       offset = offset + lineState.length;
       this.lines[index] = lineState;
     });
@@ -56,10 +58,11 @@ export class BlockState {
       this.lines = lines;
     }
     let offset = 0;
-    this.lines.forEach((state, index) => {
-      state.index = index;
-      state.start = offset;
-      const size = state.isDirty ? state.updateLeaves() : state.length;
+    this.lines.forEach((line, index) => {
+      line.index = index;
+      line.start = offset;
+      line.key = line.key || Key.getId(line);
+      const size = line.isDirty ? line.updateLeaves() : line.length;
       offset = offset + size;
     });
     this.length = offset;

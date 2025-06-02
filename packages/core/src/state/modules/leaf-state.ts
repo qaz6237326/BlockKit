@@ -1,13 +1,19 @@
 import type { Op } from "@block-kit/delta";
 import type { InsertOp } from "@block-kit/delta";
 import { EOL } from "@block-kit/delta";
-import { isNil } from "@block-kit/utils";
 
 import { Point } from "../../selection/modules/point";
 import { Range } from "../../selection/modules/range";
+import { Key } from "../utils/key";
 import type { LineState } from "./line-state";
 
 export class LeafState {
+  /** Op 所属 Line 的索引 */
+  public index: number;
+  /** Op 起始偏移量 */
+  public offset: number;
+  /** 唯一 key 值 */
+  public key: string;
   /** EOL 节点 */
   public readonly eol: boolean;
   /** Void 节点 */
@@ -22,12 +28,12 @@ export class LeafState {
   constructor(
     /** Op 引用 */
     public op: Op,
-    /** Op 起始偏移量 */
-    public offset: number,
     /** 父级 LineState */
     public parent: LineState
   ) {
-    this.eol = false;
+    this.key = "";
+    this.index = -1;
+    this.offset = -1;
     this.eol = op.insert === EOL;
     const editor = parent.parent.editor;
     this.void = editor.schema.isVoid(op);
@@ -53,8 +59,9 @@ export class LeafState {
    * @param span [?=true] 跨行
    */
   public prev(span = true) {
-    const index = this.parent._leafToIndex.get(this);
-    if (isNil(index)) return null;
+    const index = this.index;
+    if (index < 0) return null;
+    // 大于 0 则可以直接取前一个节点
     if (index > 0) {
       return this.parent.getLeaf(index - 1);
     }
@@ -69,8 +76,8 @@ export class LeafState {
    * @param span [?=true] 跨行
    */
   public next(span = true) {
-    const index = this.parent._leafToIndex.get(this);
-    if (isNil(index)) return null;
+    const index = this.index;
+    if (index < 0) return null;
     if (index < this.parent.size - 1) {
       return this.parent.getLeaf(index + 1);
     }
@@ -106,13 +113,11 @@ export class LeafState {
   }
 
   /**
-   * 创建 LeafState
-   * @param op
-   * @param index
-   * @param offset
-   * @param parent
+   * 强制刷新叶子 key
+   * @param key
    */
-  public static create(op: Op, offset: number, parent: LineState) {
-    return new LeafState(op, offset, parent);
+  public updateKey(key: string) {
+    this.key = key;
+    Key.update(this, key);
   }
 }

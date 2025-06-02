@@ -99,11 +99,20 @@ const BlockView: FC<{
    * 处理行节点
    */
   const elements = useMemo(() => {
+    // 开发模式严格检查数据准确性
+    if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+      for (const line of lines) {
+        if (line.length < 0 || line.size < 0 || line.index < 0 || line.start < 0 || !line.key) {
+          throw new Error("LineState index, size, start or length is not set");
+        }
+      }
+    }
     return lines.map((line, index) => {
       const node = (
         <LineModel key={line.key} editor={editor} lineState={line} index={index}></LineModel>
       );
       JSX_TO_STATE.set(node, line);
+
       return node;
     });
   }, [editor, lines]);

@@ -47,7 +47,6 @@ export class Input {
         break;
       }
       case "deleteWordBackward": {
-        // https://github.com/facebook/lexical/blob/af687fa/packages/lexical/src/LexicalSelection.ts#L1605
         const newRange = this.editor.selection.move(GRANULARITY.WORD, DIRECTION.BACKWARD);
         this.editor.perform.deleteBackward(Range.aggregate(newRange, sel) || sel);
         break;

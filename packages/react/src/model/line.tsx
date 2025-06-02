@@ -62,10 +62,19 @@ const LineView: FC<{
    * 处理行内的节点
    */
   const elements = useMemo(() => {
+    // 开发模式下严格检查数据准确性
+    if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+      const leaves = lineState.getLeaves();
+      for (const leaf of leaves) {
+        if (leaf.index === -1 || leaf.offset === -1 || !leaf.key) {
+          throw new Error("LeafState index or offset is not set");
+        }
+      }
+    }
     const leaves = lineState.getLeaves();
     const textLeaves = leaves.slice(0, -1);
     const nodes = textLeaves.map((n, i) => {
-      const node = <LeafModel key={i} editor={editor} index={i} leafState={n} />;
+      const node = <LeafModel key={n.key} editor={editor} index={i} leafState={n} />;
       JSX_TO_STATE.set(node, n);
       return node;
     });

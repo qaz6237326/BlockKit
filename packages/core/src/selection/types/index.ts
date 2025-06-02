@@ -1,15 +1,18 @@
 import type { Object } from "@block-kit/utils";
 
+/** 方向 */
 export const DIRECTION = {
   FORWARD: "forward",
   BACKWARD: "backward",
 } as const;
 
+/** 变更类型 */
 export const ALERT = {
   MOVE: "move",
-  EXTEND: "EXTEND",
+  EXTEND: "extend",
 } as const;
 
+/** 调整粒度 */
 export const GRANULARITY = {
   CHARACTER: "character",
   WORD: "word",

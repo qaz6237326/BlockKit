@@ -11,8 +11,8 @@ export class Key {
   /**
    * 构造函数
    */
-  constructor() {
-    this.id = `${Key.n++}`;
+  constructor(preset?: string) {
+    this.id = preset || `${Key.n++}`;
   }
 
   /**
@@ -44,10 +44,9 @@ export class Key {
    * @param id
    */
   public static update(node: Object.Any, id: string): string {
-    const key = NODE_TO_KEY.get(node);
-    if (key) {
-      key.id = id;
-    }
+    const key = NODE_TO_KEY.get(node) || new Key(id);
+    key.id = id;
+    NODE_TO_KEY.set(node, key);
     return id;
   }
 }

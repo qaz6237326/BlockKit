@@ -209,6 +209,7 @@ export class LineState {
    * @param key
    */
   public updateKey(key: string) {
+    if (!key) return key;
     this.key = key;
     return Key.update(this, key);
   }

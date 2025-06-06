@@ -15,9 +15,21 @@
     "lint:ts": "npm run build -- --noEmit",
     "lint:circular": "madge --extensions js --circular ./dist"
   },
-  "keywords": [],
-  "author": "",
+  "author": "WindRunnerMax",
   "license": "MIT",
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "rich-text"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
+  },
+  "homepage": "https://github.com/WindrunnerMax/BlockKit",
+  "bugs": {
+    "url": "https://github.com/WindrunnerMax/BlockKit/issues"
+  },
   "dependencies": {
     "fast-diff": "1.3.0",
     "@block-kit/utils": "workspace: *"

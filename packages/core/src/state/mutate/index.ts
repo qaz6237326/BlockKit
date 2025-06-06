@@ -99,6 +99,7 @@ export class Mutate {
       }
       const newLastLeaf = new LeafState(op, lineState);
       newLastLeaf.updateKey(lastLeaf!.key);
+      newLastLeaf.updateModel(lastLeaf!);
       lineState.setLeaf(index - 1, newLastLeaf);
       return lineState;
     }
@@ -159,7 +160,7 @@ export class Mutate {
           const newOp = cloneOp(thisLeaf.op);
           newOp.attributes = attrs;
           newLeaf = new LeafState(newOp, thisLeaf.parent);
-          thisLeaf.key && newLeaf.updateKey(thisLeaf.key) && newLeaf.updateModel(thisLeaf);
+          newLeaf.updateKey(thisLeaf.key) && newLeaf.updateModel(thisLeaf);
           this.revises.push({ insert: newOp.insert!, attributes: otherOp.attributes });
         }
         lineState = this.insert(lineState, newLeaf);

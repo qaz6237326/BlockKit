@@ -19,9 +19,21 @@
     "lint:ts": "tsc -p tsconfig.build.json --noEmit",
     "lint:circular": "madge --extensions js --circular ./dist"
   },
-  "keywords": [],
-  "author": "",
+  "author": "WindRunnerMax",
   "license": "MIT",
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "rich-text"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
+  },
+  "homepage": "https://github.com/WindrunnerMax/BlockKit",
+  "bugs": {
+    "url": "https://github.com/WindrunnerMax/BlockKit/issues"
+  },
   "peerDependencies": {
     "react": ">=16",
     "react-dom": ">=16"

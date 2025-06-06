@@ -167,7 +167,7 @@ describe("state key", () => {
     expect(newKey0).toBe(key0);
     expect(newKey1).toBe(key0 + 1);
     expect(Number(newLeaf1!.parent.key)).toBe(key0 + 2);
-    // [[te 0][xt 3][\n 1]2] => [[te 0][xt 4][\n 1]2]
+    // [[text 0][\n 1]2] => [[te 0][xt 4][\n 1]2]
     editor.state.apply(new Delta().retain(2).retain(2, { bold: "bold" }));
     const newNewLine0 = editor.state.block.getLine(0);
     const newNewLeaf0 = newNewLine0!.getLeaf(0);

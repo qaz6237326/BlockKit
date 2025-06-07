@@ -111,7 +111,7 @@ export class Selection {
    * @param force [?=false] 强制更新浏览器选区
    */
   public set(range: Range | null, force = false): void {
-    if (Range.isEqual(this.current, range)) {
+    if (Range.equals(this.current, range)) {
       this.current = range;
       // FIX: [cursor]\n 状态按右箭头 Model 校准, 但是 DOM 没有校准
       // 因此即使选区没有变化, 在 force 模式下也需要更新 DOM 选区

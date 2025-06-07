@@ -31,24 +31,24 @@ describe("collection", () => {
     expect(result).toEqual(new Set([1, 2, 3, 4]));
   });
 
-  it("intersection", () => {
+  it("intersect", () => {
     const a = new Set([1, 2, 3]);
     const b = new Set([2, 3, 4]);
-    const result = Collection.intersection(a, b);
+    const result = Collection.intersect(a, b);
     expect(result).toEqual(new Set([2, 3]));
   });
 
-  it("is-subset", () => {
+  it("subset", () => {
     const a = new Set([2, 3]);
     const b = new Set([1, 2, 3]);
-    const result = Collection.isSubset(a, b);
+    const result = Collection.subset(a, b);
     expect(result).toBeTruthy();
   });
 
-  it("is-superset", () => {
+  it("superset", () => {
     const a = new Set([1, 2, 3]);
     const b = new Set([2, 3]);
-    const result = Collection.isSuperset(a, b);
+    const result = Collection.superset(a, b);
     expect(result).toBeTruthy();
   });
 

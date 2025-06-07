@@ -44,20 +44,20 @@ export class Point {
 
   /**
    * 判断 Point 是否相等
-   * @param origin
-   * @param target
+   * @param point1
+   * @param point2
    */
-  public static isEqual(origin: Point | null, target: Point | null): boolean {
-    if (origin === target) return true;
-    if (!origin || !target) return false;
-    return origin.line === target.line && origin.offset === target.offset;
+  public static isEqual(point1: Point | null, point2: Point | null): boolean {
+    if (point1 === point2) return true;
+    if (!point1 || !point2) return false;
+    return point1.line === point2.line && point1.offset === point2.offset;
   }
 
   /**
    * 判断 Point1 是否在 Point2 之前
+   * - 即 < (p1 p2), 反之则 >= (p2 p1)
    * @param point1
    * @param point2
-   * @note 即 < (p1 p2), 反之则 >= (p2 p1)
    */
   public static isBefore(point1: Point | null, point2: Point | null): boolean {
     if (!point1 || !point2) return false;
@@ -69,9 +69,9 @@ export class Point {
 
   /**
    * 判断 Point1 是否在 Point2 之后
+   * - 即 > (p2 p1), 反之则 <= (p1 p2)
    * @param point1
    * @param point2
-   * @note 即 > (p2 p1), 反之则 <= (p1 p2)
    */
   public static isAfter(point1: Point | null, point2: Point | null): boolean {
     if (!point1 || !point2) return false;

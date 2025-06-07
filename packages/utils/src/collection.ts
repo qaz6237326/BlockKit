@@ -73,33 +73,35 @@ export class Collection {
   }
 
   /**
-   * Intersection 交集
+   * Intersect 交集
    * @param {Set<T> | T[]} a
    * @param {Set<T> | T[]} b
    */
-  public static intersection<T>(a: Set<T> | T[], b: Set<T> | T[]) {
+  public static intersect<T>(a: Set<T> | T[], b: Set<T> | T[]) {
     const prev = [...a];
     const next = b instanceof Set ? b : new Set(b);
     return new Set([...prev].filter(id => next.has(id)));
   }
 
   /**
-   * IsSubset 判断子集
+   * Subset 判断是否子集
+   * - a 是否是 b 的子集
    * @param {Set<T> | T[]} a
    * @param {Set<T> | T[]} b
    */
-  public static isSubset<T>(a: Set<T> | T[], b: Set<T> | T[]) {
+  public static subset<T>(a: Set<T> | T[], b: Set<T> | T[]) {
     const prev = [...a];
     const next = b instanceof Set ? b : new Set(b);
     return prev.every(id => next.has(id));
   }
 
   /**
-   * IsSuperset 判断超集
+   * Superset 判断是否超集
+   * - a 是否是 b 的超集
    * @param {Set<T> | T[]} a
    * @param {Set<T> | T[]} b
    */
-  public static isSuperset<T>(a: Set<T> | T[], b: Set<T> | T[]) {
+  public static superset<T>(a: Set<T> | T[], b: Set<T> | T[]) {
     const prev = a instanceof Set ? a : new Set(a);
     const next = [...b];
     return next.every(id => prev.has(id));
@@ -107,6 +109,7 @@ export class Collection {
 
   /**
    * Symmetric 对等差集
+   * - b 中存在而 a 中不存在的元素
    * @param {Set<T> | T[]} a
    * @param {Set<T> | T[]} b
    */

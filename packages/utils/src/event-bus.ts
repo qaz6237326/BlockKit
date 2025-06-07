@@ -3,101 +3,101 @@ import { DEFAULT_PRIORITY } from "./constant";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface EventBusType {}
 
-export type Handler<T extends EventKeys> = {
-  once: boolean;
-  priority: number;
-  listener: Listener<T>;
-};
-
 export type EventContext = {
   /** 事件名 */
-  key: string;
+  key: string | number | symbol;
   /** 已停止顺序执行 */
   stopped: boolean;
-  /** 已阻止编辑器默认行为 */
+  /** 已阻止默认行为 */
   prevented: boolean;
   /** 停止顺序执行 */
   stop: () => void;
-  /** 阻止编辑器默认行为 */
+  /** 阻止默认行为 */
   prevent: () => void;
 };
 
-export type EventFn<T extends EventKeys> = (
-  payload: EventBusType[T],
-  context: EventContext
-) => unknown;
+export type Handler<E, T extends EventKeys<E>> = {
+  once: boolean;
+  priority: number;
+  listener: Listener<E, T>;
+};
 
-export type EventKeys = keyof EventBusType;
-export type Listener<T extends EventKeys> = EventFn<T>;
-export type Listeners = { [T in EventKeys]?: Handler<T>[] };
+export type EventKeys<E> = keyof E;
+export type Listener<E, T extends EventKeys<E>> = EventFn<E, T>;
+export type Listeners<E> = { [T in EventKeys<E>]?: Handler<E, T>[] };
+export type EventFn<E, T extends EventKeys<E>> = (payload: E[T], context: EventContext) => unknown;
 
-export class EventBus {
+export class EventBus<E = EventBusType> {
   /**
    * 事件监听器
    */
-  private listeners: Listeners = {};
+  private listeners: Listeners<E> = {};
 
   /**
    * 监听事件
-   * @param {T} key
-   * @param {Listener<T>} listener
-   * @param {number} priority 默认为 100
+   * @param key
+   * @param listener
+   * @param priority 默认为 100
    */
-  public on<T extends EventKeys>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
+  public on<T extends EventKeys<E>>(key: T, listener: Listener<E, T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, false);
   }
 
   /**
    * 一次性事件监听
-   * @param {T} key
-   * @param {Listener<T>} listener
-   * @param {number} priority 默认为 100
+   * @param key
+   * @param listener
+   * @param priority 默认为 100
    */
-  public once<T extends EventKeys>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
+  public once<T extends EventKeys<E>>(
+    key: T,
+    listener: Listener<E, T>,
+    priority = DEFAULT_PRIORITY
+  ) {
     this.addEventListener(key, listener, priority, true);
   }
 
   /**
    * 添加事件监听
-   * @param {T} key
-   * @param {Listener<T>} listener
-   * @param {number} priority
-   * @param {boolean} once
+   * @param key
+   * @param listener
+   * @param priority
+   * @param once
    */
-  private addEventListener<T extends EventKeys>(
+  private addEventListener<T extends EventKeys<E>>(
     key: T,
-    listener: Listener<T>,
+    listener: Listener<E, T>,
     priority: number,
     once: boolean
   ) {
-    const handler: Handler<T>[] = this.listeners[key] || [];
+    const handler: Handler<E, T>[] = this.listeners[key] || [];
     if (!handler.some(item => item.listener === listener)) {
       handler.push({ listener, priority, once });
     }
     handler.sort((a, b) => a.priority - b.priority);
-    this.listeners[key] = <Listeners[T]>handler;
+    this.listeners[key] = <Handler<E, T>[]>handler;
   }
 
   /**
    * 移除事件监听
-   * @param {T} key
-   * @param {Listener<T>} listener
+   * @param key
+   * @param listener
    */
-  public off<T extends EventKeys>(key: T, listener: Listener<T>) {
+  public off<T extends EventKeys<E>>(key: T, listener: Listener<E, T>) {
     const handler = this.listeners[key];
     if (!handler) return void 0;
     // COMPAT: 不能直接`splice` 可能会导致`trigger`时打断`forEach`
     const next = handler.filter(item => item.listener !== listener);
-    this.listeners[key] = <Listeners[T]>next;
+    this.listeners[key] = <Handler<E, T>[]>next;
   }
 
   /**
    * 触发事件
-   * @param {T} key
-   * @param {Listener<T>} listener
-   * @returns {boolean} prevented
+   * @param key
+   * @param listener
+   * @returns prevented
    */
-  public emit<T extends EventKeys>(key: T, payload: EventBusType[T]): boolean {
+  public emit<T extends EventKeys<E>>(key: T, payload: E[T]): boolean {
     const handler = this.listeners[key];
     if (!handler) return false;
     const context: EventContext = {

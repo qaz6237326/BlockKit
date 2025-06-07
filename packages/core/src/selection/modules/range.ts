@@ -86,13 +86,13 @@ export class Range {
 
   /**
    * 判断 Range 是否相等
-   * @param origin
-   * @param target
+   * @param range1
+   * @param range2
    */
-  public static isEqual(origin: Range | null, target: Range | null): boolean {
-    if (origin === target) return true;
-    if (!origin || !target) return false;
-    return Point.isEqual(origin.start, target.start) && Point.isEqual(origin.end, target.end);
+  public static equals(range1: Range | null, range2: Range | null): boolean {
+    if (range1 === range2) return true;
+    if (!range1 || !range2) return false;
+    return Point.isEqual(range1.start, range2.start) && Point.isEqual(range1.end, range2.end);
   }
 
   /**
@@ -116,7 +116,7 @@ export class Range {
    * @param range1
    * @param range2
    */
-  public static intersection(range1: Range | null, range2: Range | null): boolean {
+  public static intersects(range1: Range | null, range2: Range | null): boolean {
     if (!range1 || !range2) return false;
     const { start: start1, end: end1 } = range1;
     const { start: start2, end: end2 } = range2;

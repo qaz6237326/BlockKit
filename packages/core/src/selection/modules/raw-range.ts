@@ -79,13 +79,13 @@ export class RawRange {
 
   /**
    * 判断 RawRange 是否相等
-   * @param origin
-   * @param target
+   * @param range1
+   * @param range2
    */
-  public static isEqual(origin: RawRange | null, target: RawRange | null): boolean {
-    if (origin === target) return true;
-    if (!origin || !target) return false;
-    return origin.start === target.start && origin.len === target.len;
+  public static equals(range1: RawRange | null, range2: RawRange | null): boolean {
+    if (range1 === range2) return true;
+    if (!range1 || !range2) return false;
+    return range1.start === range2.start && range1.len === range2.len;
   }
 
   /**
@@ -109,7 +109,7 @@ export class RawRange {
    * @param range1
    * @param range2
    */
-  public static intersection(range1: RawRange | null, range2: RawRange | null): boolean {
+  public static intersects(range1: RawRange | null, range2: RawRange | null): boolean {
     if (!range1 || !range2) return false;
     const { start: start1, end: end1 } = range1.toPoint();
     const { start: start2, end: end2 } = range2.toPoint();

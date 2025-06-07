@@ -1,16 +1,13 @@
-import DOMNodeType = globalThis.Node;
-import DOMTextType = globalThis.Text;
-import DOMElementType = globalThis.Element;
-
-const _global = typeof globalThis !== "undefined" ? globalThis : window;
-const DOMNode = _global.Node;
+import DOMNode = globalThis.Node;
+import DOMText = globalThis.Text;
+import DOMElement = globalThis.Element;
 
 /**
  * 检查 DOM 节点
  * @param {unknown} value
  * @returns {boolean}
  */
-export const isDOMNode = (value: unknown): value is DOMNodeType => {
+export const isDOMNode = (value: unknown): value is DOMNode => {
   return value instanceof Node;
 };
 
@@ -19,7 +16,7 @@ export const isDOMNode = (value: unknown): value is DOMNodeType => {
  * @param {unknown} value
  * @returns {boolean}
  */
-export const isDOMText = (value: unknown): value is DOMTextType => {
+export const isDOMText = (value: unknown): value is DOMText => {
   return isDOMNode(value) && value.nodeType === DOMNode.TEXT_NODE;
 };
 
@@ -28,7 +25,7 @@ export const isDOMText = (value: unknown): value is DOMTextType => {
  * @param {unknown} value
  * @returns {boolean}
  */
-export const isDOMElement = (value: unknown): value is DOMElementType => {
+export const isDOMElement = (value: unknown): value is DOMElement => {
   return isDOMNode(value) && value.nodeType === DOMNode.ELEMENT_NODE;
 };
 
@@ -52,7 +49,7 @@ export const isHTMLElement = (value: unknown): value is HTMLElement => {
 
 /**
  * 获取焦点元素
- * @returns {DOMElementType | null}
+ * @returns {DOMElement | null}
  */
 export const getActiveElement = () => {
   let activeElement = document.activeElement;

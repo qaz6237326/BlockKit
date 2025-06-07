@@ -41,4 +41,21 @@ describe("event-bus", () => {
     event.emit("test", null);
     expect(spy).toHaveBeenCalledTimes(0);
   });
+
+  it("standalone types", () => {
+    type E = {
+      test11: null;
+      test22: { a: 1 };
+    };
+    const event = new EventBus<E>();
+    const spy = jest.fn();
+    const spy2 = jest.fn();
+    event.on("test11", spy);
+    event.on("test22", spy);
+    event.on("test22", spy2);
+    event.emit("test11", null);
+    event.emit("test22", { a: 1 });
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy2).toHaveBeenCalledTimes(1);
+  });
 });

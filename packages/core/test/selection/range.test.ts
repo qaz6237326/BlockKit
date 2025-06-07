@@ -59,9 +59,9 @@ describe("selection range", () => {
     const range1 = new Range(new Point(0, 0), new Point(1, 0));
     const range2 = new Range(new Point(0, 0), new Point(1, 0));
     const range3 = new Range(new Point(0, 0), new Point(1, 1));
-    expect(Range.isEqual(range1, range2)).toBe(true);
-    expect(Range.isEqual(range1, range3)).toBe(false);
-    expect(Range.isEqual(range3.clone(), range3)).toBe(true);
+    expect(Range.equals(range1, range2)).toBe(true);
+    expect(Range.equals(range1, range3)).toBe(false);
+    expect(Range.equals(range3.clone(), range3)).toBe(true);
   });
 
   it("intersect-same-line", () => {
@@ -69,7 +69,7 @@ describe("selection range", () => {
     const start = new Point(1, 2);
     const end = new Point(1, 6);
     const range = new Range(start, end);
-    expect(Range.intersection(base, range)).toBe(true);
+    expect(Range.intersects(base, range)).toBe(true);
   });
 
   it("intersect-middle-line", () => {
@@ -77,7 +77,7 @@ describe("selection range", () => {
     const start = new Point(1, 3);
     const end = new Point(3, 2);
     const range = new Range(start, end);
-    expect(Range.intersection(base, range)).toBe(true);
+    expect(Range.intersects(base, range)).toBe(true);
   });
 
   it("intersect-start-line", () => {
@@ -85,13 +85,13 @@ describe("selection range", () => {
     const start = new Point(1, 3);
     const end = new Point(2, 0);
     const range = new Range(start, end);
-    expect(Range.intersection(base, range)).toBe(true);
+    expect(Range.intersects(base, range)).toBe(true);
     const start2 = new Point(1, 4);
     const range2 = new Range(start2, end);
-    expect(Range.intersection(base, range2)).toBe(true);
+    expect(Range.intersects(base, range2)).toBe(true);
     const start3 = new Point(1, 5);
     const range3 = new Range(start3, end);
-    expect(Range.intersection(base, range3)).toBe(false);
+    expect(Range.intersects(base, range3)).toBe(false);
   });
 
   it("intersect-end-line", () => {
@@ -99,13 +99,13 @@ describe("selection range", () => {
     const start = new Point(1, 3);
     const end = new Point(2, 3);
     const range = new Range(start, end);
-    expect(Range.intersection(base, range)).toBe(true);
+    expect(Range.intersects(base, range)).toBe(true);
     const end2 = new Point(2, 2);
     const range2 = new Range(start, end2);
-    expect(Range.intersection(base, range2)).toBe(true);
+    expect(Range.intersects(base, range2)).toBe(true);
     const end3 = new Point(2, 1);
     const range3 = new Range(start, end3);
-    expect(Range.intersection(base, range3)).toBe(false);
+    expect(Range.intersects(base, range3)).toBe(false);
   });
 
   it("includes", () => {

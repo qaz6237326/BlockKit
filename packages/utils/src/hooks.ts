@@ -2,7 +2,7 @@ import type { MutableRefObject, SetStateAction } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { IS_DOM_ENV } from "./env";
-import type { Func } from "./types";
+import type { F, Func, P } from "./types";
 
 /**
  * 当前组件挂载状态
@@ -130,8 +130,12 @@ export const useMemoFn = <T extends Func.Any>(fn: T) => {
  * 强制更新组件
  */
 export const useForceUpdate = () => {
-  const [index, setState] = useState(0);
-  const update = useCallback(() => setState(prev => prev + 1), []);
+  const [index, setState] = useState(1);
+
+  const update = useCallback(() => {
+    setState(prev => prev + 1);
+  }, []);
+
   return { index, update, forceUpdate: update };
 };
 
@@ -155,3 +159,21 @@ export const useIsFirstRender = () => {
  * Prevent warning on SSR by falling back to useEffect when DOM isn't available
  */
 export const useIsomorphicLayoutEffect = IS_DOM_ENV ? useLayoutEffect : useEffect;
+
+/**
+ * 带 re-render 前后值参数的 use-effect
+ * @param effect 副作用依赖
+ * @param deps 依赖 [1, "1"] as const
+ */
+export const usePreviousEffect = <T extends readonly unknown[]>(
+  effect: (prev: T | P.Undef, next: T) => F.Plain | void,
+  deps: T
+) => {
+  const prev = useRef<T>();
+
+  useEffect(() => {
+    const cleanup = effect(prev.current, deps);
+    prev.current = deps;
+    return cleanup;
+  }, deps);
+};

@@ -66,6 +66,7 @@ export {
   isUndefined,
 } from "./is";
 export { TSON } from "./json";
+export { Literal } from "./literal";
 export { sleep, to } from "./native";
 export { RegExec } from "./regexp";
 export type { Rect, ResizeCallback } from "./resize";

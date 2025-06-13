@@ -35,7 +35,7 @@ export class Literal {
    * - 类似于 Hash, 但不处理 Hash 冲突
    * @param str
    */
-  public numberify(str: string): number {
+  public static numberify(str: string): number {
     let num = 0;
     for (let i = 0; i < str.length; i++) {
       num = num + str.charCodeAt(i);

@@ -1,4 +1,5 @@
 import { isNil } from "./is";
+import type { O } from "./types";
 
 export class URI {
   /** 锚点 */
@@ -28,7 +29,7 @@ export class URI {
 
   /**
    * 主机
-   * @returns {string} hostname + port
+   * @returns hostname + port
    */
   public get host(): string {
     const port = this.port ? ":" + this.port : "";
@@ -37,7 +38,7 @@ export class URI {
 
   /**
    * 来源
-   * @returns {string} protocol + hostname + port
+   * @returns protocol + hostname + port
    */
   public get origin(): string {
     const protocol = this.protocol ? this.protocol + "//" : "";
@@ -46,7 +47,7 @@ export class URI {
 
   /**
    * 查询参数
-   * @returns {string} ?key=value&key=value
+   * @returns ?key=value&key=value
    */
   public get search(): string {
     const nodes: string[] = [];
@@ -59,7 +60,7 @@ export class URI {
 
   /**
    * 链接
-   * @returns {string} protocol + hostname + port + path + search + hash
+   * @returns protocol + hostname + port + path + search + hash
    */
   public get href(): string {
     return this.format();
@@ -67,8 +68,7 @@ export class URI {
 
   /**
    * 设置协议
-   * @param {string} protocol
-   * @returns {this}
+   * @param protocol
    */
   public setProtocol(protocol: string): this {
     this.protocol = protocol.endsWith(":") ? protocol : protocol + ":";
@@ -77,8 +77,7 @@ export class URI {
 
   /**
    * 设置主机名
-   * @param {string} hostname
-   * @returns {this}
+   * @param hostname
    */
   public setHostname(hostname: string): this {
     this.hostname = hostname.endsWith("/") ? hostname.slice(0, -1) : hostname;
@@ -87,8 +86,7 @@ export class URI {
 
   /**
    * 设置端口
-   * @param {string} port
-   * @returns {this}
+   * @param port
    */
   public setPort(port: string): this {
     this.port = port;
@@ -97,8 +95,7 @@ export class URI {
 
   /**
    * 设置路径
-   * @param {string} path
-   * @returns {this}
+   * @param path
    */
   public setPath(path: string): this {
     this.path = path.startsWith("/") ? path : "/" + path;
@@ -107,8 +104,7 @@ export class URI {
 
   /**
    * 设置锚点
-   * @param {string} hash
-   * @returns {this}
+   * @param hash
    */
   public setHash(hash: string): this {
     if (!hash || hash === "#") {
@@ -121,8 +117,7 @@ export class URI {
 
   /**
    * 获取查询参数
-   * @param {string} key
-   * @returns {string | null}
+   * @param key
    */
   public pick(key: string): string | null {
     const value = this._search[key];
@@ -131,8 +126,7 @@ export class URI {
 
   /**
    * 获取所有查询参数
-   * @param {string} key
-   * @returns {string[]}
+   * @param key
    */
   public pickAll(key: string): string[] {
     const value = this._search[key];
@@ -141,9 +135,8 @@ export class URI {
 
   /**
    * 分配查询参数
-   * @param {string} key
-   * @param {string} value
-   * @returns {this}
+   * @param key
+   * @param value
    */
   public assign(key: string, value: string): this {
     if (!key || isNil(value)) {
@@ -155,9 +148,8 @@ export class URI {
 
   /**
    * 追加查询参数
-   * @param {string} key
-   * @param {string} value
-   * @returns {this}
+   * @param key
+   * @param value
    */
   public append(key: string, value: string): this {
     if (!key || isNil(value)) {
@@ -172,8 +164,7 @@ export class URI {
 
   /**
    * 删除查询参数
-   * @param {string} key
-   * @returns {this}
+   * @param key
    */
   public omit(key: string): this {
     delete this._search[key];
@@ -182,7 +173,6 @@ export class URI {
 
   /**
    * 输出格式化链接
-   * @returns {string}
    */
   public format(): string {
     return this.origin + this.path + this.search + this.hash;
@@ -190,8 +180,7 @@ export class URI {
 
   /**
    * 从 Location 解析
-   * @param {Location} location
-   * @returns {URI}
+   * @param location
    */
   public static from(location: Location): URI {
     const instance = URI.parseParams(location.search);
@@ -207,7 +196,6 @@ export class URI {
    * 解析完整链接
    * @param uri
    * @param baseUrl
-   * @returns {URI}
    * @example https://www.google.com:333/search?q=1&q=2&w=3#world
    */
   public static parse(this: typeof URI, uri: string, baseUrl?: string): URI {
@@ -226,8 +214,7 @@ export class URI {
 
   /**
    * 解析查询参数
-   * @param {ConstructorParameters<typeof URLSearchParams>["0"]} query
-   * @returns {URI}
+   * @param query
    * @example ?q=1&w=3
    */
   public static parseParams(query: ConstructorParameters<typeof URLSearchParams>["0"]): URI {
@@ -241,9 +228,8 @@ export class URI {
 
   /**
    * 从路径解析数据
-   * @param {string} path
-   * @param {string} template
-   * @returns {Record<string, string>}
+   * @param path
+   * @param template
    * @example ("/user/123", "/user/:id") => { id: "123" }
    */
   public static parsePathParams(path: string, template: string): Record<string, string> {
@@ -267,5 +253,20 @@ export class URI {
       }
     }
     return result;
+  }
+
+  /**
+   * 生成 URI Search 参数
+   * @param params
+   * @example {} => ""
+   * @example { q: "1", w: "2" } => "?q=1&w=2"
+   */
+  public static stringifyParams(params: O.Map<string | number>): string {
+    const init: O.Map<string> = {};
+    for (const [key, value] of Object.entries(params)) {
+      init[key] = String(value);
+    }
+    const search = new URLSearchParams(init).toString();
+    return search ? "?" + search : "";
   }
 }

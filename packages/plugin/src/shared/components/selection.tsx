@@ -70,9 +70,8 @@ export class SelectionHOC extends React.PureComponent<Props, State> {
           if (React.isValidElement(child)) {
             const { props } = child;
             return React.cloneElement(child, { ...props, selected: selected });
-          } else {
-            return child;
           }
+          return child;
         })}
       </div>
     );

@@ -5,7 +5,7 @@ import { EDITOR_EVENT } from "@block-kit/core";
 import { useEditorStatic, useReadonly } from "@block-kit/react";
 import { MountNode } from "@block-kit/react";
 import { cs } from "@block-kit/utils";
-import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
+import { useForceUpdate, useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
@@ -37,12 +37,14 @@ export const FloatToolbar: FC<{
   const { editor } = useEditorStatic();
   const { readonly } = useReadonly();
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const { index, forceUpdate } = useForceUpdate();
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const onWeakUp = useMemoFn((wakeUp: boolean) => {
-    if (editor.state.isFocused() && wakeUp) {
+  const onCaretWeakUp = useMemoFn((wakeUp: boolean) => {
+    if (!readonly && editor.state.isFocused() && wakeUp) {
       setVisible(true);
+      !isMouseDown && forceUpdate();
     } else {
       setVisible(false);
     }
@@ -61,7 +63,7 @@ export const FloatToolbar: FC<{
     const onSelectionChange = (e: SelectionChangeEvent) => {
       const { current } = e;
       const isWakeUp = current ? !current.isCollapsed : false;
-      onWeakUp(isWakeUp);
+      onCaretWeakUp(isWakeUp);
     };
     document.addEventListener(EDITOR_EVENT.MOUSE_UP, onMouseUp);
     document.addEventListener(EDITOR_EVENT.MOUSE_DOWN, onMouseDown);
@@ -71,15 +73,14 @@ export const FloatToolbar: FC<{
       document.removeEventListener(EDITOR_EVENT.MOUSE_DOWN, onMouseDown);
       editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, onSelectionChange);
     };
-  }, [editor, onWeakUp, readonly]);
+  }, [editor, onCaretWeakUp, readonly]);
 
-  const overridePosition = useRef(props.overridePosition);
   const { left, top } = useMemo(() => {
     if (!readonly && visible && !isMouseDown) {
-      if (overridePosition.current) {
-        return overridePosition.current(); // overlay
+      if (props.overridePosition) {
+        return props.overridePosition(); // overlay
       }
-      const rect = editor.rect.getSelectionRect();
+      const rect = editor.rect.getCaretRect();
       if (rect) {
         const topOffset = props.offsetTop || 0;
         const leftOffset = props.offsetLeft || 0;
@@ -89,7 +90,8 @@ export const FloatToolbar: FC<{
       }
     }
     return { top: -999999, left: -999999 };
-  }, [editor.rect, readonly, visible, isMouseDown, props.offsetLeft, props.offsetTop]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, readonly, visible, isMouseDown]);
 
   // 只读状态 / 不可见 / 鼠标按下 时隐藏
   return readonly || !visible || isMouseDown

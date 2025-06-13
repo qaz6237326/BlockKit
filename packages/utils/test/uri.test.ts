@@ -66,4 +66,14 @@ describe("uri", () => {
     const uri2 = URI2.parse("https://www.google.com/");
     expect(uri2.format()).toBe("https://www.google.com/#mock");
   });
+
+  it("uri stringify params", () => {
+    const search = URI.stringifyParams({ a: 1, b: "2" });
+    expect(search).toBe("?a=1&b=2");
+  });
+
+  it("uri stringify empty params", () => {
+    const search = URI.stringifyParams({});
+    expect(search).toBe("");
+  });
 });

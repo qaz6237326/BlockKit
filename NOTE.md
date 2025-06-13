@@ -846,7 +846,7 @@ for (let i = 0; i < leaves.length; i++) {
 return { node: null, offset: 0 };
 ```
 
-而在先前我们处理`Embed`节点的时候其实能够很明显地发现由于此时我们需要按行查找内容，那么实际要处理的文本前存在的零宽字符都会被记入偏移序列，这样就让我们很难把这件事情处理好，每次都迭代一遍`Leaf`的`Offset`来查找也并不太现实。但其实话又说回来了，这样做的实际上就很像是`slate`的数据结构了，只不过我们将其简化为`3`级，而不是像`slate`一样可以无限层即嵌套下去。
+而在先前我们处理`Embed`节点的时候其实能够很明显地发现由于此时我们需要按行查找内容，那么实际要处理的文本前存在的零宽字符都会被记入偏移序列，这样就让我们需要处理大量`Case`来适配，每次都迭代一遍`Leaf`的`Offset`来查找也并不太现实。但其实话又说回来了，这样做的实际上就很像是`slate`的数据结构了，只不过我们将其简化为`3`级，而不是像`slate`一样可以无限层即嵌套下去。
 
 ```js
 export class Point {
@@ -854,7 +854,7 @@ export class Point {
     /** 行索引 */
     public line: number,
     /** 节点索引 */
-    public offset: number,
+    public index: number,
     /** 节点内偏移 */
     public offset: number
   ) {}

@@ -15,7 +15,7 @@ describe("literal", () => {
   });
 
   it("numberify", () => {
-    const result = new Literal().numberify("abc");
+    const result = Literal.numberify("abc");
     expect(result).toEqual(294);
   });
 });

@@ -48,6 +48,20 @@ export class Rect {
   }
 
   /**
+   * 获取浏览器原始选区的 Rect
+   * - 相对屏幕 (0, 0) 的位置
+   * - 基于 Selection API 实现
+   */
+  public getRawSelectionRect(): RectType | null {
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return null;
+    const range = selection.getRangeAt(0);
+    if (!range) return null;
+    const clientRect = range.getBoundingClientRect();
+    return fromDOMRect(clientRect);
+  }
+
+  /**
    * 获取编辑器位置
    */
   public getEditorRect(): RectType {
@@ -92,29 +106,14 @@ export class Rect {
   }
 
   /**
-   * 获取原始选区的 Rect
-   * - 相对屏幕 (0, 0) 的位置
-   */
-  public getRawSelectionRect(): RectType | null {
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return null;
-    const range = selection.getRangeAt(0);
-    if (!range) return null;
-    const clientRect = range.getBoundingClientRect();
-    return fromDOMRect(clientRect);
-  }
-
-  /**
-   * 获取编辑器选区的 Rect
+   * 获取浏览器选区的 Rect
    * - 相对编辑器 (0, 0) 的位置
+   * - 基于 Selection API 实现
    */
   public getSelectionRect(): RectType | null {
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return null;
-    const range = selection.getRangeAt(0);
-    if (!range) return null;
-    const clientRect = range.getBoundingClientRect();
+    const rawRect = this.getRawSelectionRect();
+    if (!rawRect) return null;
     const editorRect = this.getEditorRect();
-    return relativeTo(clientRect, editorRect);
+    return relativeTo(rawRect, editorRect);
   }
 }

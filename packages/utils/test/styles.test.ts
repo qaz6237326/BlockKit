@@ -1,4 +1,4 @@
-import { cs, cx, Styles } from "../src/styles";
+import { cs, cx, Facade } from "../src/styles";
 
 describe("styles", () => {
   it("cs", () => {
@@ -17,23 +17,23 @@ describe("styles", () => {
   });
 
   it("pixelate", () => {
-    expect(Styles.pixelate("0px")).toBe("0px");
-    expect(Styles.pixelate("1px")).toBe("1px");
-    expect(Styles.pixelate("1%")).toBe(null);
-    expect(Styles.pixelate("1")).toBe("1px");
-    expect(Styles.pixelate("a")).toBe(null);
-    expect(Styles.pixelate("")).toBe(null);
-    expect(Styles.pixelate(0)).toBe("0px");
-    expect(Styles.pixelate(null)).toBe(null);
+    expect(Facade.pixelate("0px")).toBe("0px");
+    expect(Facade.pixelate("1px")).toBe("1px");
+    expect(Facade.pixelate("1%")).toBe(null);
+    expect(Facade.pixelate("1")).toBe("1px");
+    expect(Facade.pixelate("a")).toBe(null);
+    expect(Facade.pixelate("")).toBe(null);
+    expect(Facade.pixelate(0)).toBe("0px");
+    expect(Facade.pixelate(null)).toBe(null);
   });
 
   it("digitize", () => {
-    expect(Styles.digitize("0px")).toBe(0);
-    expect(Styles.digitize("1px")).toBe(1);
-    expect(Styles.digitize("1%")).toBe(0.01);
-    expect(Styles.digitize("1")).toBe(1);
-    expect(Styles.digitize("a")).toBe(null);
-    expect(Styles.digitize("")).toBe(null);
-    expect(Styles.digitize(null)).toBe(null);
+    expect(Facade.digitize("0px")).toBe(0);
+    expect(Facade.digitize("1px")).toBe(1);
+    expect(Facade.digitize("1%")).toBe(0.01);
+    expect(Facade.digitize("1")).toBe(1);
+    expect(Facade.digitize("a")).toBe(null);
+    expect(Facade.digitize("")).toBe(null);
+    expect(Facade.digitize(null)).toBe(null);
   });
 });

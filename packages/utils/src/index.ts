@@ -42,7 +42,7 @@ export {
   IS_WEBKIT,
   IS_WINDOWS,
 } from "./env";
-export type { EventBusType, EventContext, EventFn, EventKeys, Listener } from "./event-bus";
+export type { EventBusType, EventContext, EventKeys, Listener, Listeners } from "./event-bus";
 export { EventBus } from "./event-bus";
 export { Extract } from "./extract";
 export { Format } from "./format";
@@ -75,7 +75,7 @@ export type { Invoke, Task } from "./schedule";
 export { Schedule } from "./schedule";
 export { Scroll } from "./scroll";
 export { Storage } from "./storage";
-export { cs, Styles } from "./styles";
+export { cs, Facade } from "./styles";
 export { throttle } from "./throttle";
 export type { Func, Primitive, Reflex } from "./types";
 export { Array, Object, String } from "./types";

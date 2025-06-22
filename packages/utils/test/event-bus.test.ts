@@ -58,4 +58,39 @@ describe("event-bus", () => {
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy2).toHaveBeenCalledTimes(1);
   });
+
+  it("stop event", () => {
+    type E = {
+      test11: null;
+    };
+    const event = new EventBus<E>();
+    const spy = jest.fn();
+    const spy1 = jest.fn();
+    event.on("test11", spy);
+    event.on("test11", (_, context) => {
+      context.stop();
+    });
+    event.on("test11", spy1);
+    event.emit("test11", null);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledTimes(0);
+  });
+
+  it("prevent event", () => {
+    type E = {
+      test11: null;
+      test22: { a: 1 };
+    };
+    const event = new EventBus<E>();
+    const spy = jest.fn();
+    event.on("test11", spy);
+    event.on("test11", (_, context) => {
+      context.prevent();
+    });
+    const prevented1 = event.emit("test11", null);
+    const prevented2 = event.emit("test22", { a: 1 });
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(prevented1).toBe(true);
+    expect(prevented2).toBe(false);
+  });
 });

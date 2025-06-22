@@ -84,3 +84,12 @@ export const preventNativeEvent = (
   event.stopPropagation();
   event.stopImmediatePropagation && event.stopImmediatePropagation();
 };
+
+/**
+ * 检查是否为特定键码
+ * @param event
+ * @param code
+ */
+export const isKeyCode = (event: KeyboardEvent, code: number) => {
+  return event.keyCode === code;
+};

@@ -72,7 +72,7 @@ export class BlockState {
 
   /**
    * 转换为 Delta
-   * @param deep 深拷贝
+   * @param deep [?=undef] 深拷贝
    */
   public toDelta(deep?: boolean) {
     const ops: Op[] = [];

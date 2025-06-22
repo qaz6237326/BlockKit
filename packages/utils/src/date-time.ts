@@ -46,7 +46,8 @@ export class DateTime extends Date {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
     // https://stackoverflow.com/questions/55176208/inconsistent-behavior-of-javascript-date-function-in-ios
     if (isString(p1)) {
-      // ISO 时间格式则直接解析 2024-12-12T13:53:51.829Z
+      // ISO/RFC 时间格式则直接解析
+      // 2024-12-12T13:53:51.829Z / Sat Jun 21 2025 20:05:06 GMT+0800
       if (p1.indexOf("T") > -1) {
         super(p1);
         return this;
@@ -60,8 +61,8 @@ export class DateTime extends Date {
 
   /**
    * 格式化时间日期
-   * @param fmt string? - yyyy-MM-dd
-   * @desc yyyy 年 MM 月 dd 日 hh 小时 mm 分 ss 秒 S 毫秒
+   * - yyyy 年 MM 月 dd 日 hh 小时 mm 分 ss 秒 S 毫秒
+   * @param fmt [?=yyyy-MM-dd]
    */
   public format(fmt = "yyyy-MM-dd"): string {
     const preset: O.Map<string | number> = {
@@ -88,9 +89,9 @@ export class DateTime extends Date {
 
   /**
    * 调整时间
-   * @param {number} years 年
-   * @param {number} months 月
-   * @param {number} days 日
+   * @param years 年
+   * @param months 月
+   * @param days 日
    */
   public add(years: number = 0, months: number = 0, days: number = 0): DateTime {
     if (days) this.setDate(this.getDate() + days);
@@ -103,7 +104,7 @@ export class DateTime extends Date {
    * 精确的时间差 取绝对值
    * - years / months / days 累计计算
    * - hours / minutes / seconds 独立计算
-   * @param {DateTime} newDate
+   * @param newDate
    */
   public diff(newDate: DateTime) {
     // 先转为秒
@@ -119,7 +120,7 @@ export class DateTime extends Date {
 
   /**
    * 延后到第 N 个月的 1 号
-   * @param {number} n
+   * @param n
    */
   public nextMonth(n: number = 1) {
     this.setMonth(this.getMonth() + n);
@@ -130,7 +131,7 @@ export class DateTime extends Date {
 
   /**
    * 延后到第 N 天的 0 点
-   * @param {number} n
+   * @param n
    */
   public nextDay(n: number = 1) {
     this.setDate(this.getDate() + n);
@@ -140,7 +141,7 @@ export class DateTime extends Date {
 
   /**
    * 延后到第 N 小时的 0 分钟
-   * @param {number} n
+   * @param n
    */
   public nextHour(n: number = 1) {
     this.setHours(this.getHours() + n);
@@ -150,7 +151,7 @@ export class DateTime extends Date {
 
   /**
    * 延后到第 N 分钟的 0 秒
-   * @param {number} n
+   * @param n
    */
   public nextMinute(n: number = 1) {
     this.setMinutes(this.getMinutes() + n);
@@ -160,7 +161,7 @@ export class DateTime extends Date {
 
   /**
    * 延后 N 个月
-   * @param {number} n
+   * @param n
    */
   public deferMonth(n: number = 1) {
     this.setMonth(this.getMonth() + n);
@@ -169,7 +170,7 @@ export class DateTime extends Date {
 
   /**
    * 延后 N 天
-   * @param {number} n
+   * @param n
    */
   public deferDay(n: number = 1) {
     this.setDate(this.getDate() + n);
@@ -178,7 +179,7 @@ export class DateTime extends Date {
 
   /**
    * 延后 N 小时
-   * @param {number} n
+   * @param n
    */
   public deferHour(n: number = 1) {
     this.setHours(this.getHours() + n);
@@ -187,7 +188,7 @@ export class DateTime extends Date {
 
   /**
    * 延后 N 分钟
-   * @param {number} n
+   * @param n
    */
   public deferMinute(n: number = 1) {
     this.setMinutes(this.getMinutes() + n);
@@ -196,7 +197,6 @@ export class DateTime extends Date {
 
   /**
    * 克隆当前时间日期
-   * @returns {DateTime}
    */
   public clone(): DateTime {
     return new DateTime(this.getTime());

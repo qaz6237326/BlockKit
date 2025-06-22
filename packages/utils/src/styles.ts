@@ -1,7 +1,10 @@
 import { isNil, isObject, isPlainNumber, isString } from "./is";
 import type { Primitive } from "./types";
 
-export class Styles {
+/**
+ * 样式表工具类
+ */
+export class Facade {
   /**
    * 转换为像素值
    * @param {string | number | Primitive.Nil} value
@@ -106,11 +109,11 @@ export class Styles {
  * @param {Array<unknown>} values
  * @returns {string}
  */
-export const cs = Styles.classes;
+export const cs = Facade.classes;
 
 /**
  * 组合计算 class-name complex
  * @param {Array<unknown>} values
  * @returns {string}
  */
-export const cx = Styles.cx;
+export const cx = Facade.cx;

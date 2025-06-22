@@ -5,7 +5,7 @@ set -e # -x
 dir=$(pwd)
 bash_args="$@"
 prefix="@block-kit/"
-packages=(delta utils core react plugin vue)
+packages=(delta utils core react plugin)
 # npm version patch --no-git-tag-version
 version=$(echo "console.log(require(\"./package.json\").version)" | node)
 export BUILD_VERSION=$version

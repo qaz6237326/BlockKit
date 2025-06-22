@@ -14,32 +14,35 @@ export class TextType {
   public readonly name = "text0";
 
   public create(initial: string) {
-    if (typeof initial !== "string") {
+    if (!isNil(initial) && typeof initial !== "string") {
       throw new Error("Initial data must be a string");
     }
     return initial || "";
   }
 
   public compose(op1: TextOp[], op2: TextOp[]) {
-    this.checkValidOps(op1);
-    this.checkValidOps(op2);
+    const text0 = TextType.prototype;
+    text0.checkValidOps(op1);
+    text0.checkValidOps(op2);
     const newOp = op1.slice();
     for (let i = 0; i < op2.length; i++) {
-      this.append(newOp, op2[i]);
+      text0.append(newOp, op2[i]);
     }
     return newOp;
   }
 
   public invert(ops: TextOp[]) {
+    const text0 = TextType.prototype;
     // Shallow copy & reverse that sucka.
     ops = ops.slice().reverse();
     for (let i = 0; i < ops.length; i++) {
-      ops[i] = this.invertComponent(ops[i]);
+      ops[i] = text0.invertComponent(ops[i]);
     }
     return ops;
   }
 
   public apply(snapshot: string, ops: TextOp[]) {
+    const text0 = TextType.prototype;
     let deleted;
 
     const type = typeof snapshot;
@@ -47,11 +50,11 @@ export class TextType {
       throw new Error("text0 operations cannot be applied to type: " + type);
     }
 
-    this.checkValidOps(ops);
+    text0.checkValidOps(ops);
     for (let i = 0; i < ops.length; i++) {
       const component = ops[i];
       if (!isNil(component.i)) {
-        snapshot = this.strInject(snapshot, component.p, component.i);
+        snapshot = text0.strInject(snapshot, component.p, component.i);
       } else {
         deleted = snapshot.slice(component.p, component.p + component.d!.length);
         if (component.d !== deleted) {
@@ -73,17 +76,18 @@ export class TextType {
     otherOp: TextOp | TextOp[],
     side?: Side
   ): TextOp | TextOp[] | P.Undef {
+    const text0 = TextType.prototype;
     if (isArray(op) && isArray(otherOp)) {
       if (otherOp.length === 0) return op;
       if (op.length === 1 && otherOp.length === 1)
-        return this.transformComponent([], op[0], otherOp[0], side);
+        return text0.transformComponent([], op[0], otherOp[0], side);
       if (side === SIDE.LEFT) {
-        return this.transformX(op, otherOp)[0];
+        return text0.transformX(op, otherOp)[0];
       } else {
-        return this.transformX(otherOp, op)[1];
+        return text0.transformX(otherOp, op)[1];
       }
     }
-    const dest = this.transformComponent([], op as TextOp, otherOp as TextOp, side);
+    const dest = text0.transformComponent([], op as TextOp, otherOp as TextOp, side);
     return dest[0];
   }
 
@@ -93,12 +97,32 @@ export class TextType {
    * whether the cursor position is pushed after an insert (true) or before it
    * (false).
    */
-  public transformCursor(position: number, ops: TextOp[], side: Side) {
+  public transformCursor(position: number, ops: TextOp[], side?: Side) {
+    const text0 = TextType.prototype;
     const insertAfter = side === "right";
     for (let i = 0; i < ops.length; i++) {
-      position = this.transformPosition(position, ops[i], insertAfter);
+      position = text0.transformPosition(position, ops[i], insertAfter);
     }
     return position;
+  }
+
+  public normalize(op: TextOp[] | TextOp) {
+    const text0 = TextType.prototype;
+    const newOp: TextOp[] = [];
+    // Normalize should allow ops which are a single (unwrapped) component:
+    // {i:'asdf', p:23}.
+    // There's no good way to test if something is an array:
+    // http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+    // so this is probably the least bad solution.
+    const ops = isArray(op) ? op : [op];
+
+    for (let i = 0; i < ops.length; i++) {
+      const c = ops[i];
+      if (isNil(c.p)) c.p = 0;
+      text0.append(newOp, c);
+    }
+
+    return newOp;
   }
 
   /**

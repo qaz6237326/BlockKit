@@ -19,32 +19,39 @@ export class JSONType {
     subtypes[subtype.name] = subtype;
   }
 
+  public unregisterSubtype(subtype: Subtype) {
+    delete subtypes[subtype.name];
+  }
+
   public create(data: Snapshot): Snapshot {
     // Null instead of undefined if you don't pass an argument.
     return data === undefined ? null : clone(data);
   }
 
   public compose(ops1: Op[], ops2: Op[]) {
-    this.checkValidOps(ops1);
-    this.checkValidOps(ops2);
+    const json0 = JSONType.prototype;
+    json0.checkValidOps(ops1);
+    json0.checkValidOps(ops2);
     const newOp = clone(ops1);
     for (let i = 0; i < ops2.length; i++) {
-      this.append(newOp, ops2[i]);
+      json0.append(newOp, ops2[i]);
     }
     return newOp;
   }
 
   public invert(ops: Op[]) {
+    const json0 = JSONType.prototype;
     const op_ = ops.slice().reverse();
     const iop = [];
     for (let i = 0; i < op_.length; i++) {
-      iop.push(this.invertComponent(op_[i]));
+      iop.push(json0.invertComponent(op_[i]));
     }
     return iop;
   }
 
   public apply(snapshot: Snapshot, ops: Op[]) {
-    this.checkValidOps(ops);
+    const json0 = JSONType.prototype;
+    json0.checkValidOps(ops);
     ops = clone(ops);
 
     const container = { data: snapshot };
@@ -52,7 +59,7 @@ export class JSONType {
     for (let i = 0; i < ops.length; i++) {
       const c = ops[i];
       // convert old string ops to use subtype for backwards compatibility
-      if (!isNil(c.si) || !isNil(c.sd)) this.convertFromText(c);
+      if (!isNil(c.si) || !isNil(c.sd)) json0.convertFromText(c);
 
       let parent: Snapshot = null;
       let elem: O.Any = container;
@@ -65,13 +72,15 @@ export class JSONType {
         elem = elem[key];
         key = p;
 
-        if (isArray(elem) && typeof key !== "number")
+        if (isArray(elem) && typeof key !== "number") {
           throw new Error("List index must be a number");
-
-        if (isObject(elem) && typeof key !== "string")
+        }
+        if (isObject(elem) && typeof key !== "string") {
           throw new Error("Object key must be a string");
-
-        if (isNil(parent)) throw new Error("Path invalid");
+        }
+        if (isNil(parent)) {
+          throw new Error("Path invalid");
+        }
       }
 
       if (c.t && c.o !== void 0 && subtypes[c.t]) {
@@ -84,22 +93,24 @@ export class JSONType {
         elem[key] += c.na;
       } else if (c.li !== void 0 && c.ld !== void 0) {
         // List replace
-        this.checkList(elem);
+        json0.checkList(elem);
         // Should check the list element matches c.ld
         elem[key] = c.li;
       } else if (c.li !== void 0) {
         // List insert
-        this.checkList(elem);
+        json0.checkList(elem);
         elem.splice(key, 0, c.li);
       } else if (c.ld !== void 0) {
         // List delete
-        this.checkList(elem);
+        json0.checkList(elem);
         // Should check the list element matches c.ld here too.
         elem.splice(key, 1);
       } else if (c.lm !== void 0) {
         // List move
-        if (typeof c.lm !== "number") throw new Error("List move target index must be a number");
-        this.checkList(elem);
+        if (typeof c.lm !== "number") {
+          throw new Error("List move target index must be a number");
+        }
+        json0.checkList(elem);
         if (c.lm != key) {
           const e = elem[key];
           // Remove it...
@@ -109,12 +120,12 @@ export class JSONType {
         }
       } else if (c.oi !== void 0) {
         // Object insert / replace
-        this.checkObj(elem);
+        json0.checkObj(elem);
         // Should check that elem[key] == c.od
         elem[key] = c.oi;
       } else if (c.od !== void 0) {
         // Object delete
-        this.checkObj(elem);
+        json0.checkObj(elem);
         // Should check that elem[key] == c.od
         delete elem[key];
       } else {
@@ -127,17 +138,18 @@ export class JSONType {
   public transform(op: Op, otherOp: Op, side?: Side): Op | P.Undef;
   public transform(op: Op[], otherOp: Op[], side?: Side): Op[] | P.Undef;
   public transform(op: Op | Op[], otherOp: Op | Op[], side?: Side): Op | Op[] | P.Undef {
+    const json0 = JSONType.prototype;
     if (isArray(op) && isArray(otherOp)) {
       if (otherOp.length === 0) return op;
       if (op.length === 1 && otherOp.length === 1)
-        return this.transformComponent([], op[0], otherOp[0], side);
+        return json0.transformComponent([], op[0], otherOp[0], side);
       if (side === SIDE.LEFT) {
-        return this.transformX(op, otherOp)[0];
+        return json0.transformX(op, otherOp)[0];
       } else {
-        return this.transformX(otherOp, op)[1];
+        return json0.transformX(otherOp, op)[1];
       }
     }
-    const dest = this.transformComponent([], op as Op, otherOp as Op, side);
+    const dest = json0.transformComponent([], op as Op, otherOp as Op, side);
     return dest[0];
   }
 
@@ -212,6 +224,17 @@ export class JSONType {
       c_.p = c.p.slice(0, c.p.length - 1).concat([c.lm]);
     }
     return c_;
+  }
+
+  /**
+   * Helper to break an operation up into a bunch of small ops.
+   */
+  private shatter(ops: Op[]) {
+    const results: Op[][] = [];
+    for (let i = 0; i < ops.length; i++) {
+      results.push([ops[i]]);
+    }
+    return results;
   }
 
   private append(dest: Op[], c: Op) {

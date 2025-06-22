@@ -2,6 +2,7 @@ packages:
   - "packages/utils"
   - "packages/tools"
   - "packages/delta"
+  - "packages/ot-json"
   - "packages/core"
   - "packages/react"
   - "packages/plugin"

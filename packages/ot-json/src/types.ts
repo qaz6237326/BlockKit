@@ -1,6 +1,5 @@
-import type { O } from "@block-kit/utils/dist/es/types";
+import type { P } from "@block-kit/utils/dist/es/types";
 
-export type Ops = Op[];
 export type Side = "left" | "right";
 export type Path = Array<string | number>;
 
@@ -110,7 +109,7 @@ export type Op = {
   // oi?: Snapshot;
   /** - applies the subtype op o of type t to the object at [path] */
   t?: string;
-  o?: O.Any;
+  o?: P.Any;
   /** - inserts the string s at offset offset into the string at [path] (uses subtypes internally). */
   si?: string;
   /** - deletes the string s at offset offset from the string at [path] (uses subtypes internally). */

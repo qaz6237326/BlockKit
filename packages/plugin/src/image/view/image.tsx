@@ -7,7 +7,7 @@ import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
 import { Void } from "@block-kit/react";
-import { Styles } from "@block-kit/utils";
+import { Facade } from "@block-kit/utils";
 import type { FC } from "react";
 
 import { SelectionHOC } from "../../shared/components/selection";
@@ -65,8 +65,8 @@ export const ImageView: FC<{
             className="block-kit-image"
             src={src}
             onLoad={onImageLoad}
-            width={Styles.pixelate(width)}
-            height={Styles.pixelate(height)}
+            width={Facade.pixelate(width)}
+            height={Facade.pixelate(height)}
           ></img>
         </ImageWrapper>
       </SelectionHOC>

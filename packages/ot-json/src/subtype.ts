@@ -1,13 +1,13 @@
 import type { O, P } from "@block-kit/utils/dist/es/types";
 
-import type { Path, Side, Snapshot } from "./types";
+import type { Path, Side } from "./types";
 
 export type Subtype = {
   name: string;
-  uri: string;
+  uri?: string;
   invert: (o: P.Any) => O.Any;
   compose: (a: P.Any, b: P.Any) => P.Any;
-  apply: (elem: Snapshot, op: P.Any) => void;
+  apply: (elem: P.Any, op: P.Any) => void;
   transform: (a: P.Any, b: P.Any, side?: Side) => P.Any;
 };
 

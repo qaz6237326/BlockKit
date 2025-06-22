@@ -1,5 +1,5 @@
 {
-  "name": "@block-kit/utils",
+  "name": "@block-kit/ot-json",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/lib/index.js",
@@ -12,8 +12,7 @@
   "scripts": {
     "build:es": "tsc -p tsconfig.build.json",
     "build:lib": "tsc -p tsconfig.lib.json",
-    "build:style": "mkdir -p dist/style && cp src/*.*ss dist/style",
-    "build": "npm run build:es && npm run build:lib && npm run build:style",
+    "build": "npm run build:es && npm run build:lib",
     "test": "jest",
     "lint:ts": "tsc -p tsconfig.build.json --noEmit",
     "lint:circular": "madge --extensions js --circular ./dist"
@@ -34,7 +33,7 @@
     "url": "https://github.com/WindrunnerMax/BlockKit/issues"
   },
   "dependencies": {
-    "laser-utils": "0.0.5-alpha.22"
+    "@block-kit/utils": "workspace: *"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

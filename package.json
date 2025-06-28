@@ -1,7 +1,7 @@
 {
   "name": "blocks-kit",
   "description": "WYSIWYG Editor Widget",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "scripts": {
     "bootstrap": "pnpm install --frozen-lockfile",
     "dev": "pnpm run --filter ./website dev",
@@ -18,11 +18,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
+    "url": "git+https://github.com/WindRunnerMax/BlockKit.git"
   },
-  "homepage": "https://github.com/WindrunnerMax/BlockKit",
+  "homepage": "https://github.com/WindRunnerMax/BlockKit",
   "bugs": {
-    "url": "https://github.com/WindrunnerMax/BlockKit/issues"
+    "url": "https://github.com/WindRunnerMax/BlockKit/issues"
   },
   "devDependencies": {
     "@types/jest": "29.4.0",

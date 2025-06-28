@@ -3,6 +3,7 @@ import { isDOMText, TEXT_PLAIN } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { CALLER_TYPE } from "../../plugin/types";
+import { normalizeDelta } from "../../state/utils/normalize";
 import type { DeserializeContext, PasteContext } from "../types";
 
 export class Paste {
@@ -13,7 +14,7 @@ export class Paste {
   public constructor(protected editor: Editor) {}
 
   /**
-   * 处理剪贴板 Delta
+   * 应用剪贴板 Delta
    * @param delta
    */
   public applyDelta(delta: Delta) {
@@ -34,8 +35,8 @@ export class Paste {
    */
   public applyPlainText(transfer: DataTransfer) {
     const text = transfer.getData(TEXT_PLAIN) || "";
-    const sel = this.editor.selection.get();
-    sel && this.editor.perform.insertText(sel, text);
+    const delta = normalizeDelta(this.editor, new Delta().insert(text));
+    this.applyDelta(delta);
   }
 
   /**

@@ -4,6 +4,7 @@
         "COMPAT",
         "CRDT",
         "Indexify",
+        "numberify",
         "pako",
         "pnpm",
         "redoable",

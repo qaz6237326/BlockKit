@@ -27,11 +27,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WindrunnerMax/BlockKit.git"
+    "url": "git+https://github.com/WindRunnerMax/BlockKit.git"
   },
-  "homepage": "https://github.com/WindrunnerMax/BlockKit",
+  "homepage": "https://github.com/WindRunnerMax/BlockKit",
   "bugs": {
-    "url": "https://github.com/WindrunnerMax/BlockKit/issues"
+    "url": "https://github.com/WindRunnerMax/BlockKit/issues"
   },
   "peerDependencies": {
     "react": ">=16",

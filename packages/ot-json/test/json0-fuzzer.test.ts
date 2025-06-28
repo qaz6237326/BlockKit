@@ -130,7 +130,6 @@ const genRandomOp = (data: P.Any) => {
     } else if (typeof operand === "string") {
       // String. This code is adapted from the text op generator.
       let c;
-      console.log("3333 :>> ", JSON.stringify(operand), path, key);
       if (randomReal() > 0.5 || operand.length === 0) {
         // Insert
         const pos = randomInt(operand.length + 1);
@@ -208,8 +207,6 @@ const genRandomOp = (data: P.Any) => {
       }
     }
   }
-
-  console.log("op, :>> ", JSON.stringify(op), JSON.stringify(container.data));
 
   return [op, container.data];
 };

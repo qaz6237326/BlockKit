@@ -48,5 +48,5 @@ export abstract class CorePlugin {
   /**
    * 粘贴的内容即将应用到编辑器
    */
-  public willApplyPasteNodes?(context: PasteContext): PasteContext;
+  public willApplyPasteDelta?(context: PasteContext): PasteContext;
 }

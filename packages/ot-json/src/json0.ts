@@ -49,7 +49,7 @@ export class JSONType {
     return iop;
   }
 
-  public apply(snapshot: Snapshot, ops: Op[]) {
+  public apply<T extends Snapshot>(snapshot: T, ops: Op[]): T {
     const json0 = JSONType.prototype;
     json0.checkValidOps(ops);
     ops = clone(ops);
@@ -136,21 +136,25 @@ export class JSONType {
   }
 
   public transform(op: Op, otherOp: Op, side?: Side): Op | P.Undef;
-  public transform(op: Op[], otherOp: Op[], side?: Side): Op[] | P.Undef;
-  public transform(op: Op | Op[], otherOp: Op | Op[], side?: Side): Op | Op[] | P.Undef {
+  public transform(ops: Op[], otherOps: Op[], side?: Side): Op[];
+  public transform(ops: Op | Op[], otherOps: Op | Op[], side?: Side): Op | Op[] | P.Undef {
     const json0 = JSONType.prototype;
-    if (isArray(op) && isArray(otherOp)) {
-      if (otherOp.length === 0) return op;
-      if (op.length === 1 && otherOp.length === 1)
-        return json0.transformComponent([], op[0], otherOp[0], side);
-      if (side === SIDE.LEFT) {
-        return json0.transformX(op, otherOp)[0];
-      } else {
-        return json0.transformX(otherOp, op)[1];
-      }
+    if (!isArray(ops) && !isArray(otherOps)) {
+      return json0.transformComponent([], ops, otherOps, side)[0];
     }
-    const dest = json0.transformComponent([], op as Op, otherOp as Op, side);
-    return dest[0];
+    const thisOps = isArray(ops) ? ops : [ops];
+    const othersOps = isArray(otherOps) ? otherOps : [otherOps];
+    if (othersOps.length === 0) {
+      return ops;
+    }
+    if (thisOps.length === 1 && othersOps.length === 1) {
+      return json0.transformComponent([], thisOps[0], othersOps[0], side);
+    }
+    if (side === SIDE.LEFT) {
+      return json0.transformX(thisOps, othersOps)[0];
+    } else {
+      return json0.transformX(othersOps, thisOps)[1];
+    }
   }
 
   /**
@@ -224,17 +228,6 @@ export class JSONType {
       c_.p = c.p.slice(0, c.p.length - 1).concat([c.lm]);
     }
     return c_;
-  }
-
-  /**
-   * Helper to break an operation up into a bunch of small ops.
-   */
-  private shatter(ops: Op[]) {
-    const results: Op[][] = [];
-    for (let i = 0; i < ops.length; i++) {
-      results.push([ops[i]]);
-    }
-    return results;
   }
 
   private append(dest: Op[], c: Op) {

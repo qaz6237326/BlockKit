@@ -34,7 +34,7 @@
     "url": "https://github.com/WindrunnerMax/BlockKit/issues"
   },
   "dependencies": {
-    "laser-utils": "0.0.5-alpha.22"
+    "laser-utils": "*"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

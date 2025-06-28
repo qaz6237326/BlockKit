@@ -2,7 +2,7 @@
  * @usage global singleton global.css;
  *
  * ```jsx
- * import "laser-utils/dist/style/views.css";
+ * import "<root>/node_modules/<package>/dist/style/views.css";
  * <div className="frame-box"></div>
  * ```
  */

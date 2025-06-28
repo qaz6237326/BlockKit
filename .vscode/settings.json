@@ -3,6 +3,7 @@
         "arcoblue",
         "COMPAT",
         "CRDT",
+        "Indexify",
         "pako",
         "pnpm",
         "redoable",

@@ -102,12 +102,6 @@ export namespace Object {
    */
   export type Never = Record<Key, never>;
   /**
-   * Map
-   * @example Map<number> => Record<string, number>
-   * @example Map<string> => Record<string, string>
-   */
-  export type Map<T> = Record<string, T>;
-  /**
    * Mixed
    * @example Record<string, unknown>
    */
@@ -128,10 +122,22 @@ export namespace Object {
    */
   export type Nested = { [key: Key]: string | Nested };
   /**
+   * Map
+   * @example Map<number> => Record<string, number>
+   * @example Map<string> => Record<string, string>
+   * @example Map<string, number> => Record<number, string>
+   */
+  export type Map<T, K extends Key = string> = Record<K, T>;
+  /**
    * Keys
    * @example Keys<{ a: A; b: B }> => "a" | "b"
    */
-  export type Keys<T extends Record<Object.Key, unknown>> = keyof T;
+  export type Keys<T extends Record<Key, unknown>> = keyof T;
+  /**
+   * Values
+   * @example Values<{ a: A; b: B }> => A | B
+   */
+  export type Values<T extends Record<Key, unknown>> = T[keyof T];
   /**
    * Pick
    * @example Pick<{ a: A; b: B }, "c"> => {}
@@ -140,17 +146,18 @@ export namespace Object {
    */
   export type Pick<T extends Any, K extends keyof T> = { [P in K]: T[P] };
   /**
-   * Values
-   * @example Values<{ a: A; b: B }> => A | B
-   */
-  export type Values<T extends Record<Object.Key, unknown>> = T[keyof T];
-  /**
    * Omit
    * @example Omit<{ a: A; b: B }, "a"> => { b: B }
    * @example Omit<{ a: A; b: B }, "a" | "b"> => {}
    * @example Omit<{ a: A; b: B }, "c"> => { a: A; b: B }
    */
   export type Omit<T extends Any, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+  /**
+   * Indexify
+   * @example Indexify<{ a: A; b: B }> => Record<string, A | B>
+   * @example Indexify<{ a: A; b: B }, number> => Record<number, A | B>
+   */
+  export type Indexify<T extends O.Any, K extends Key = string> = Record<K, O.Values<T>>;
   /**
    * Merge
    * @example Merge<{ a: A; c: C }, { b: B }> => { a: A; c: C; b: B }
@@ -174,7 +181,7 @@ export namespace Object {
    * @example DeepMerge<{ a: A; c: { d: D } }, { b: B }> => { a: A; c: { d: D; }; b: B; }
    */
   export type DeepMerge<T extends Unknown, R extends Unknown> = Merge<
-    // FIX: 不能合并为 P in keyof T | keyof R  会导致 ? 标识符消失
+    // 不能合并为 P in keyof T | keyof R  会导致 ? 标识符消失
     { [K in keyof T]: K extends keyof R ? _Pipe<K, T, R> : T[K] },
     { [K in keyof R]: K extends keyof T ? _Pipe<K, T, R> : R[K] }
   >;
@@ -385,10 +392,11 @@ export namespace Reflex {
   };
 }
 
-import A = Array;
 import F = Func;
+import A = Array;
 import O = Object;
-import P = Primitive;
 import R = Reflex;
 import S = String;
+import P = Primitive;
+
 export type { A, F, O, P, R, S };

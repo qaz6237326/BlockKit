@@ -63,7 +63,7 @@ export {
   isPlainObject,
   isString,
   isTruly,
-  isUndefined,
+  isUndef,
 } from "./is";
 export { TSON } from "./json";
 export { Literal } from "./literal";

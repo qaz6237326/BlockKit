@@ -11,7 +11,7 @@ export const opt = Object.prototype.toString;
  * @param {unknown} value
  * @returns {boolean}
  */
-export const isUndefined = (value: unknown): value is undefined => {
+export const isUndef = (value: unknown): value is undefined => {
   return typeof value === "undefined";
 };
 
@@ -41,7 +41,9 @@ export const isNil = (value: unknown): value is undefined | null => {
  * 检查 object
  * - {} => true
  * - [] => false
+ * - (new class {}) => true
  * - Object.create(null) => true
+ * - (new function (){}) => true
  * @param {unknown} value
  * @returns {boolean}
  */
@@ -99,7 +101,7 @@ export const isString = (value: unknown): value is string => {
 /**
  * 检查 function
  * - () => {} => true
- * - class {} => true
+ * - (class {}) => true
  * - function() {} => true
  * - new Function() => true
  * @param {unknown} value
@@ -113,7 +115,9 @@ export const isFunction = (value: unknown): value is (...args: never[]) => unkno
  * 检查 plain object
  * - {} => true
  * - [] => false
+ * - (new class {}) => false
  * - Object.create(null) => true
+ * - (new function (){}) => false
  * @param {unknown} value
  * @returns {boolean}
  */
@@ -143,6 +147,9 @@ export const isBoolean = (value: unknown): value is boolean => {
  * 检查 object like
  * - {} => true
  * - [] => true
+ * - null => false
+ * - (class {}) => false
+ * - (function() {}) => false
  * - Object.create(null) => true
  * @param {unknown} value
  * @returns {boolean}

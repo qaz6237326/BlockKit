@@ -327,8 +327,8 @@ importers:
   packages/utils:
     dependencies:
       laser-utils:
-        specifier: 0.0.5-alpha.22
-        version: 0.0.5-alpha.22
+        specifier: '*'
+        version: 0.0.5-alpha.27
     devDependencies:
       '@babel/core':
         specifier: 7.20.12
@@ -7107,8 +7107,8 @@ packages:
     resolution: {integrity: sha512-RTSoaUAfLvpR357vWzAz/50Q/BmHfmE6ETSWfutT0AJiw10e6CmcdYRQJlLRd95B53D0Y2aD1jSxD3V3ySF+PA==}
     dev: true
 
-  /laser-utils@0.0.5-alpha.22:
-    resolution: {integrity: sha512-LtHzkd0IhrqPGcG5bGP0jxtRQXxCBcuXNdBGTyx7i0hjKCjivvztyYCirEb4hdjHXvpZ2NkAI29iPIbFhsKabA==}
+  /laser-utils@0.0.5-alpha.27:
+    resolution: {integrity: sha512-zjgE8owsOsKK+bHPoMk7zF666JmSWj4sfJgkzAUs/1VvlmUXquGgDKZKmSfy4PNdvNvpwwG7SyacN9fjUYRehA==}
     dev: false
 
   /launch-editor@2.9.1:

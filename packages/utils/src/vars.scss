@@ -2,7 +2,7 @@
  * @usage *.scss;
  *
  * ```scss
- * @import "laser-utils/dist/style/vars.scss";
+ * @import "<root>/node_modules/<package>/dist/style/vars.scss";
  * .className {
  *   @include mixinName;
  * }

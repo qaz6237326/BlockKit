@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import type { O, P } from "@block-kit/utils/dist/es/types";
 
+import type { Op } from "../src";
 import { json as json0, text } from "../src";
 import { clone } from "../src/utils";
 
@@ -89,7 +90,7 @@ const genRandomOp = (data: P.Any) => {
   const { randomReal, randomInt, randomWord } = require("ot-fuzzer");
   let pct = 0.95;
   const container = { data: clone(data) };
-  const op = [];
+  const op: Op[] = [];
 
   while (randomReal() < pct) {
     pct *= 0.6;

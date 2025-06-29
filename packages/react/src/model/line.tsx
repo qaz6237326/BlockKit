@@ -2,15 +2,16 @@ import type { Editor, LineState } from "@block-kit/core";
 import type { LeafState } from "@block-kit/core";
 import { NODE_KEY, PLUGIN_TYPE } from "@block-kit/core";
 import { EOL, EOL_OP } from "@block-kit/delta";
-import { cs, isDOMText } from "@block-kit/utils";
+import { cs } from "@block-kit/utils";
 import { useUpdateLayoutEffect } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 
 import { EDITOR_TO_WRAP_LEAF_KEYS, EDITOR_TO_WRAP_LEAF_PLUGINS } from "../plugin/modules/wrap";
 import type { ReactLineContext, ReactWrapLeafContext } from "../plugin/types";
+import { updateDirtyLeaf, updateDirtyText } from "../utils/dirty-dom";
 import { JSX_TO_STATE, LEAF_TO_TEXT } from "../utils/weak-map";
-import { getWrapSymbol } from "../utils/wrapper";
+import { getWrapSymbol } from "../utils/wrapper-node";
 import { EOLModel } from "./eol";
 import { LeafModel } from "./leaf";
 
@@ -41,20 +42,10 @@ const LineView: FC<{
   useUpdateLayoutEffect(() => {
     const leaves = lineState.getLeaves();
     for (const leaf of leaves) {
-      const dom = LEAF_TO_TEXT.get(leaf);
-      if (!dom) continue;
-      const text = leaf.getText();
       // 避免 React 非受控与 IME 造成的 DOM 内容问题
-      if (text === dom.textContent) continue;
-      editor.logger.debug("Correct Text Node", dom);
-      const nodes = dom.childNodes;
-      for (let i = 1; i < nodes.length; ++i) {
-        const node = nodes[i];
-        node && node.remove();
-      }
-      if (isDOMText(dom.firstChild)) {
-        dom.firstChild.nodeValue = text;
-      }
+      updateDirtyLeaf(editor, leaf);
+      const dom = LEAF_TO_TEXT.get(leaf);
+      dom && updateDirtyText(dom, leaf.getText());
     }
   }, [lineState]);
 

@@ -70,8 +70,15 @@ export class Clipboard {
     event.stopPropagation();
     const sel = this.editor.selection.get();
     if (!sel) return void 0;
-    !sel.isCollapsed && this.editor.perform.deleteFragment(sel);
     this.onCopy(event);
+    if (sel.isCollapsed) {
+      const leaf = this.editor.lookup.getLeafAtPoint(sel.start);
+      if (leaf && this.editor.schema.isVoid(leaf.op)) {
+        this.editor.perform.deleteFragment(leaf.toRange());
+      }
+    } else {
+      this.editor.perform.deleteFragment(sel);
+    }
   }
 
   /**

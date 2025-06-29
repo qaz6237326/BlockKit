@@ -5,6 +5,7 @@ import {
   BLOCK_KEY,
   EDITOR_EVENT,
   EDITOR_STATE,
+  isEmptyLine,
   PLACEHOLDER_KEY,
 } from "@block-kit/core";
 import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
@@ -13,9 +14,8 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "re
 
 import { EDITOR_TO_WRAP_LINE_KEYS, EDITOR_TO_WRAP_LINE_PLUGINS } from "../plugin/modules/wrap";
 import type { ReactWrapLineContext } from "../plugin/types";
-import { isStrictEmptyLine } from "../utils/is";
 import { JSX_TO_STATE } from "../utils/weak-map";
-import { getWrapSymbol } from "../utils/wrapper";
+import { getWrapSymbol } from "../utils/wrapper-node";
 import { LineModel } from "./line";
 
 /**
@@ -167,7 +167,7 @@ const BlockView: FC<{
 
   return (
     <div {...{ [BLOCK_KEY]: true, [BLOCK_ID_KEY]: state.key }} ref={setModel}>
-      {props.placeholder && lines.length === 1 && isStrictEmptyLine(lines[0]) && (
+      {props.placeholder && lines.length === 1 && isEmptyLine(lines[0], true) && (
         <div
           {...{ [PLACEHOLDER_KEY]: true }}
           style={{

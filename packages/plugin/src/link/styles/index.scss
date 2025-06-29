@@ -3,3 +3,10 @@
   cursor: pointer;
   text-decoration: none;
 }
+
+.block-kit-hyper-link-wrap:hover {
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--link-6));
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.1em;
+}

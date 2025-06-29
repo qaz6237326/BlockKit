@@ -7,6 +7,7 @@ export const schema: EditorSchema = {
   "strike": { mark: true },
   "inline-code": { mark: true, inline: true },
   "link": { mark: true, inline: true },
+  "link-blank": { mark: true, inline: true },
   "color": { mark: true },
   "font-size": { mark: true },
   "background": { mark: true },

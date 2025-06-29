@@ -37,6 +37,7 @@ for item in "${packages[@]}"; do
   cd $path
   rm -rf dist
   npm run lint:ts
+  npm run test
   npm run build
 done
 

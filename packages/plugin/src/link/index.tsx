@@ -61,18 +61,15 @@ export class LinkPlugin extends EditorPlugin {
 
   @InjectWrapKeys(LINK_KEY)
   public wrapLeaf(context: ReactWrapLeafContext): React.ReactNode {
-    const state = context.leafState;
-    const attrs = state.op.attributes || {};
-    const href = attrs[LINK_KEY];
-    if (!href) return context.children;
-    return <A attrs={attrs}>{context.children}</A>;
+    return <span className="block-kit-hyper-link-wrap">{context.children}</span>;
   }
 
   public renderLeaf(context: ReactLeafContext): React.ReactNode {
     const attrs = context.attributes;
-    if (attrs && attrs[LINK_TEMP_KEY]) {
+    if (!attrs) return context.children;
+    if (attrs[LINK_TEMP_KEY]) {
       context.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
     }
-    return context.children;
+    return <A attrs={attrs}>{context.children}</A>;
   }
 }

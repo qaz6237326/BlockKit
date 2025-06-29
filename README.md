@@ -32,4 +32,12 @@
 
 - 编辑器的模块可能是硬编码的，不容易对格式进行自定义。因此明确核心界限与插件优先架构的架构非常重要，核心实现和自定义模块之间的界限需要更加清晰，这就意味着任何富文本格式都应该通过插件的方式来实现。
 
+## Npm
+可以直接引入相关包来实现快速构建富文本编辑器，编辑器本身也实现了插件化设计以支持扩展，参考如下示例:
 
+- [Website](./website/src): 编辑器部署的在线演示项目。
+- [CanvasEditor](https://github.com/WindRunnerMax/CanvasEditor): 基于`Canvas`实现的简历编辑器。
+
+```bash
+pnpm add -E @block-kit/core @block-kit/delta @block-kit/react @block-kit/plugin @block-kit/utils
+```

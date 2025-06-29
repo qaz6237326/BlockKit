@@ -35,9 +35,11 @@
 ## Npm
 可以直接引入相关包来实现快速构建富文本编辑器，编辑器本身也实现了插件化设计以支持扩展，参考如下示例:
 
-- [Website](./website/src): 编辑器部署的在线演示项目。
+- [Website](./website): 编辑器部署的在线演示项目。
 - [CanvasEditor](https://github.com/WindRunnerMax/CanvasEditor): 基于`Canvas`实现的简历编辑器。
 
 ```bash
-pnpm add -E @block-kit/core @block-kit/delta @block-kit/react @block-kit/plugin @block-kit/utils
+npm install -g pnpm
+pnpm add -E @block-kit/core @block-kit/delta \
+     @block-kit/react @block-kit/plugin @block-kit/utils
 ```

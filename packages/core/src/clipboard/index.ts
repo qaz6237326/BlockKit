@@ -1,5 +1,5 @@
 import type { Op } from "@block-kit/delta";
-import { Delta } from "@block-kit/delta";
+import { Delta, EOL_OP } from "@block-kit/delta";
 import { Bind, TEXT_HTML, TEXT_PLAIN, TSON } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
@@ -55,6 +55,11 @@ export class Clipboard {
     } else {
       const fragment = this.editor.lookup.getFragment();
       fragment && delta.ops.push(...fragment);
+      // 如果选区跨行, 则需要将结束行的行格式也添加到复制内容中
+      if (sel.start.line !== sel.end.line) {
+        const endLine = this.editor.state.block.getLine(sel.end.line);
+        endLine && delta.push({ ...EOL_OP, attributes: endLine.attributes });
+      }
     }
     if (!delta.ops.length) return void 0;
     this.copyModule.copy(delta, event);

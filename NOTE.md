@@ -2146,3 +2146,61 @@ newRange && this.set(newRange);
 
 总结起来，使用`selection.modify`方法直接利用了浏览器引擎自身对选区计算的内置、高度优化的逻辑，浏览器如何分词自然是浏览器本身最熟知。此外，这次还发现`beforeInput`事件的诸多方法，诸如`drop`的相关事件其实也可以用`getTargetRanges + dataTransfer`来实现。
 
+## 粘贴时数据处理
+最近在简历编辑器中使用编辑器处理富文本时，发现粘贴时的表现有些问题。具体表现是，假如此时复制了列表的多行内容，然后将其粘贴到空行时，单论文本上是没有什么问题的，然而其行格式上的表现是粘贴首行的格式是列表首行格式，末尾行的内容则是普通文本格式。
+
+```js
+// 剪贴板内容
+[ { insert: "123" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "456" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "789" } ]
+
+// 原始内容
+[ { insert: "abc{caret}def" }, { insert: "\n", attributes: { quote: "true" } } ]
+
+// 粘贴后内容
+[ { insert: "abc123" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "456" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "789def" }, { insert: "\n", attributes: { quote: "true" } } ]
+```
+
+这个表现的根本原因是，我们的行属性是在末尾标记的，而不是在行首标记的，因此看起来表现是我们会把原始行格式挤到后边去。因此看起来非常合理的样子，而在`Quill`的表现中则是看起来是剪贴板中末尾多了个`\n`标记，即使选区复制时并未选到末尾。
+
+```js
+// 剪贴板内容
+[ { insert: "123" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "456" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "789" }, { insert: "\n", attributes: { list: "bullet" } } ]
+
+// 原始内容
+[ { insert: "abc{caret}def" }, { insert: "\n", attributes: { quote: "true" } } ]
+
+// 粘贴后内容
+[ { insert: "abc123" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "456" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "789" }, { insert: "\n", attributes: { list: "bullet" } },
+  { insert: "def" }, { insert: "\n", attributes: { quote: "true" } } ]
+```
+
+当然在这里的表现是由于`Quill`的实现是复制时必然序列化`HTML`内容，而且并不会像我们的编辑器一样将`ops`的`fragment`写入剪贴板中。因此看起来这个数据结构像是在末尾补充了行格式，而如果是复制的是单行内容则在剪贴板中并不会有这个表现。
+
+同样是扁平的数据格式，在`EtherPad`中的表现其实也是类似的，剪贴板的实现也是基于`HTML`序列化反序列化的实现，但是细节上的实现是剪贴板的首尾都会是携带`\n`的换行表现。其实这个表现是因为`EtherPad`的实现是将行格式放于行首的，可以转换成类似`delta`的数据结构。
+
+```js
+[ 
+  { insert: "*", attributes: { list: "bullet", lmkr: "true" } }, { insert: "123" }, { insert: "\n" },
+  { insert: "*", attributes: { list: "bullet", lmkr: "true" } }, { insert: "789" }, { insert: "\n" }
+]
+```
+
+这里我在想为什么`EtherPad`控制行格式的实现是放在行首，而不是将行格式应用到`\n`上，毕竟这种情况下还需要额外处理很多问题。其实这里很多表现是与渲染相关的，因为无论是列表、引用等行格式的`DOM`渲染都是在行首的，这样看起来行首放置额外的节点来表现是更合适的样子。
+
+实际上如果额外放置了这个节点，是需要很多额外逻辑处理的，因为行格式本质上是需要和行节点一致控制的，那么就会出现节点不匹配/不一致的问题。此外，此时的行节点文本也会因为出现额外的节点，导致需要判断是否存在该节点来处理`offset`以及文本内容的计算问题。
+
+```js
+// 正常情况
+[ { insert: "*", attributes: { lmkr: "true" } }, /* ... */, { insert: "\n" } ]
+// 需要在应用变更时处理的情况
+[ { insert: "*", attributes: { lmkr: "true" } }, { insert: "*", attributes: { lmkr: "true" } } ]
+[ { insert: "text" }, { insert: "*", attributes: { lmkr: "true" } } ]
+```

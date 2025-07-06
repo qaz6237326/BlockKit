@@ -151,7 +151,7 @@ export class LineState {
   /**
    * 获取行属性
    */
-  public getAttributes() {
+  public getLineAttrs() {
     return this.attributes;
   }
 

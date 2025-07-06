@@ -1,16 +1,17 @@
 import { isString } from "./is";
+import type { O } from "./types";
 
 /** 纯文本 */
 export const TEXT_PLAIN = "text/plain";
 /** HTML 文本 */
 export const TEXT_HTML = "text/html";
 
-export type ClipboardTransfer = {
+export type ClipboardTransfer = O.Map<string> & {
   /** 纯文本 */
   "text/plain": string;
   /** HTML 文本 */
   "text/html"?: string;
-} & Record<string, string>;
+};
 
 export class Clipboard {
   /** 纯文本 */
@@ -20,7 +21,7 @@ export class Clipboard {
 
   /**
    * 执行复制命令 [兼容性方案]
-   * @param {ClipboardTransfer} data
+   * @param data
    */
   public static execCopyCommand(data: ClipboardTransfer) {
     const textarea = document.createElement("textarea");
@@ -48,7 +49,7 @@ export class Clipboard {
 
   /**
    * 写入剪贴板
-   * @param {ClipboardTransfer | string} data
+   * @param data
    */
   public static write(data: ClipboardTransfer | string): boolean {
     const params: ClipboardTransfer = isString(data) ? { [TEXT_PLAIN]: data } : data;
@@ -71,7 +72,7 @@ export class Clipboard {
 
   /**
    * 将纯文本写入剪贴板
-   * @param {string} text
+   * @param text
    */
   public static writeText(text: string): boolean {
     if (!text) return false;

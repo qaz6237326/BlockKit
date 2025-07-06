@@ -112,11 +112,7 @@ export class Clipboard {
       return this.pasteModule.applyFiles(files);
     }
     if (transferHTMLText) {
-      const parser = new DOMParser();
-      const html = parser.parseFromString(transferHTMLText, TEXT_HTML);
-      if (!html.body || !html.body.hasChildNodes()) return void 0;
-      const delta = this.pasteModule.deserialize(html.body);
-      return this.pasteModule.applyDelta(delta);
+      return this.pasteModule.applyHTMLText(transferHTMLText);
     }
     if (transferPlainText) {
       return this.pasteModule.applyPlainText(transfer);

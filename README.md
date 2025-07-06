@@ -40,6 +40,6 @@
 
 ```bash
 npm install -g pnpm
-pnpm add -E @block-kit/core @block-kit/delta \
-     @block-kit/react @block-kit/plugin @block-kit/utils
+pnpm add -E @block-kit/core @block-kit/delta @block-kit/utils # 控制器 数据结构 工具库 
+pnpm add -E @block-kit/react @block-kit/plugin # React 适配器 插件集合
 ```

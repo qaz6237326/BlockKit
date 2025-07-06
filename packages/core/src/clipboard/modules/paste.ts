@@ -1,5 +1,5 @@
 import { Delta } from "@block-kit/delta";
-import { isDOMText, TEXT_PLAIN } from "@block-kit/utils";
+import { isDOMText, TEXT_HTML, TEXT_PLAIN } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import { CALLER_TYPE } from "../../plugin/types";
@@ -48,6 +48,18 @@ export class Paste {
     const context: DeserializeContext = { html: root, delta: new Delta(), files };
     this.editor.plugin.call(CALLER_TYPE.DESERIALIZE, context);
     this.applyDelta(context.delta);
+  }
+
+  /**
+   * 处理 HTML 数据
+   * @param htmlText
+   */
+  public applyHTMLText(transferHTMLText: string) {
+    const parser = new DOMParser();
+    const html = parser.parseFromString(transferHTMLText, TEXT_HTML);
+    if (!html.body || !html.body.hasChildNodes()) return void 0;
+    const delta = this.deserialize(html.body);
+    return this.applyDelta(delta);
   }
 
   /**

@@ -10,7 +10,7 @@ export const CALLER_TYPE = {
   SERIALIZE: "serialize",
   DESERIALIZE: "deserialize",
   WILL_SET_CLIPBOARD: "willSetToClipboard",
-  WILL_PASTE_NODES: "willApplyPasteDelta",
+  WILL_PASTE_DELTAS: "willApplyPasteDelta",
 } as const;
 
 export const PLUGIN_TYPE = {

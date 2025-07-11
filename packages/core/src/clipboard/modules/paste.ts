@@ -17,9 +17,9 @@ export class Paste {
    * 应用剪贴板 Delta
    * @param delta
    */
-  public applyDelta(delta: Delta) {
-    const context: PasteContext = { delta };
-    this.editor.plugin.call(CALLER_TYPE.WILL_PASTE_NODES, context);
+  public applyDelta(delta: Delta, event: ClipboardEvent) {
+    const context: PasteContext = { delta, event };
+    this.editor.plugin.call(CALLER_TYPE.WILL_PASTE_DELTAS, context);
     this.editor.logger.info("Editor Will Apply:", context.delta);
     try {
       const sel = this.editor.selection.get();
@@ -33,33 +33,33 @@ export class Paste {
    * 处理剪贴板纯文本
    * @param transfer
    */
-  public applyPlainText(transfer: DataTransfer) {
+  public applyPlainText(transfer: DataTransfer, event: ClipboardEvent) {
     const text = transfer.getData(TEXT_PLAIN) || "";
     const delta = normalizeDelta(this.editor, new Delta().insert(text));
-    this.applyDelta(delta);
+    this.applyDelta(delta, event);
   }
 
   /**
    * 处理文件数据
    * @param files
    */
-  public applyFiles(files: File[]) {
+  public applyFiles(files: File[], event: ClipboardEvent) {
     const root = document.createDocumentFragment();
     const context: DeserializeContext = { html: root, delta: new Delta(), files };
     this.editor.plugin.call(CALLER_TYPE.DESERIALIZE, context);
-    this.applyDelta(context.delta);
+    this.applyDelta(context.delta, event);
   }
 
   /**
    * 处理 HTML 数据
    * @param htmlText
    */
-  public applyHTMLText(transferHTMLText: string) {
+  public applyHTMLText(transferHTMLText: string, event: ClipboardEvent) {
     const parser = new DOMParser();
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);
     if (!html.body || !html.body.hasChildNodes()) return void 0;
     const delta = this.deserialize(html.body);
-    return this.applyDelta(delta);
+    return this.applyDelta(delta, event);
   }
 
   /**

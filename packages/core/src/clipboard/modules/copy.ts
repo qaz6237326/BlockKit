@@ -1,6 +1,7 @@
 import type { Delta } from "@block-kit/delta";
 import type { Op } from "@block-kit/delta";
 import { EOL, isEOLOp, normalizeEOL } from "@block-kit/delta";
+import type { ClipboardTransfer } from "@block-kit/utils";
 import { Clipboard, TEXT_HTML, TEXT_PLAIN } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
@@ -29,10 +30,11 @@ export class Copy {
     const plainText = getFragmentText(context.html);
     const htmlText = serializeHTML(context.html);
     const editorText = JSON.stringify(delta.ops);
-    const dataTransfer = {
+    const dataTransfer: ClipboardTransfer = {
       [TEXT_PLAIN]: plainText,
       [TEXT_HTML]: htmlText,
       [TEXT_DOC]: editorText,
+      ...context.extra,
     };
     this.editor.logger.info("Set Clipboard Data:", dataTransfer);
     if (event) {

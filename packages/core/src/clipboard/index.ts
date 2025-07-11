@@ -111,16 +111,16 @@ export class Clipboard {
     if (transferDocText) {
       const ops = TSON.parse<Op[]>(transferDocText);
       const delta = ops && new Delta(ops);
-      return delta && this.pasteModule.applyDelta(delta);
+      return delta && this.pasteModule.applyDelta(delta, event);
     }
     if (files.length) {
-      return this.pasteModule.applyFiles(files);
+      return this.pasteModule.applyFiles(files, event);
     }
     if (transferHTMLText) {
-      return this.pasteModule.applyHTMLText(transferHTMLText);
+      return this.pasteModule.applyHTMLText(transferHTMLText, event);
     }
     if (transferPlainText) {
-      return this.pasteModule.applyPlainText(transfer);
+      return this.pasteModule.applyPlainText(transfer, event);
     }
   }
 }

@@ -1,4 +1,5 @@
 import type { Delta, Op } from "@block-kit/delta";
+import type { O } from "@block-kit/utils/dist/es/types";
 
 export const TEXT_DOC = "application/x-block-kit";
 
@@ -16,6 +17,8 @@ export type CopyContext = {
   delta: Delta;
   /** HTML 目标 */
   html: Node;
+  /** 额外内容 */
+  extra?: O.Map<string>;
 };
 
 /** HTML => Fragment(Delta)  */
@@ -32,4 +35,6 @@ export type DeserializeContext = {
 export type PasteContext = {
   /** Delta 基准 */
   delta: Delta;
+  /** 粘贴事件 */
+  event: ClipboardEvent;
 };

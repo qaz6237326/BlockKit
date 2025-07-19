@@ -90,7 +90,7 @@ const LineView: FC<{
   }, [editor, lineState]);
 
   /**
-   * 将行内节点包装组合 O(N)
+   * 将行内叶子节点包装组合 O(N)
    */
   const children = useMemo(() => {
     const wrapped: JSX.Element[] = [];

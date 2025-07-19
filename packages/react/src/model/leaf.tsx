@@ -18,12 +18,18 @@ const LeafView: FC<{
 }> = props => {
   const { editor, leafState } = props;
 
+  /**
+   * 设置叶子 DOM 节点
+   */
   const setModel = (ref: HTMLSpanElement | null) => {
     if (ref) {
       editor.model.setLeafModel(ref, leafState);
     }
   };
 
+  /**
+   * 处理叶子节点的渲染
+   */
   const runtime = useMemo(() => {
     const text = leafState.getText();
     const context: ReactLeafContext = {

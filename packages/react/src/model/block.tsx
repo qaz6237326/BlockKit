@@ -117,7 +117,7 @@ const BlockView: FC<{
   }, [editor, lines]);
 
   /**
-   * 将行包装组合 O(N)
+   * 将行节点包装组合 O(N)
    */
   const children = useMemo(() => {
     const wrapped: JSX.Element[] = [];

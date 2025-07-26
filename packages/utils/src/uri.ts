@@ -68,7 +68,7 @@ export class URI {
 
   /**
    * 设置协议
-   * @param protocol
+   * @param protocol https
    */
   public setProtocol(protocol: string): this {
     this.protocol = protocol.endsWith(":") ? protocol : protocol + ":";
@@ -77,7 +77,7 @@ export class URI {
 
   /**
    * 设置主机名
-   * @param hostname
+   * @param hostname www.example.com
    */
   public setHostname(hostname: string): this {
     this.hostname = hostname.endsWith("/") ? hostname.slice(0, -1) : hostname;
@@ -86,16 +86,16 @@ export class URI {
 
   /**
    * 设置端口
-   * @param port
+   * @param port 80
    */
-  public setPort(port: string): this {
-    this.port = port;
+  public setPort(port: string | number): this {
+    this.port = port.toString();
     return this;
   }
 
   /**
    * 设置路径
-   * @param path
+   * @param path /get/email
    */
   public setPath(path: string): this {
     this.path = path.startsWith("/") ? path : "/" + path;
@@ -104,7 +104,7 @@ export class URI {
 
   /**
    * 设置锚点
-   * @param hash
+   * @param hash #heading
    */
   public setHash(hash: string): this {
     if (!hash || hash === "#") {
@@ -119,7 +119,7 @@ export class URI {
    * 获取查询参数
    * @param key
    */
-  public pick(key: string): string | null {
+  public get(key: string): string | null {
     const value = this._search[key];
     return value && value.length ? value[0] : null;
   }
@@ -128,7 +128,7 @@ export class URI {
    * 获取所有查询参数
    * @param key
    */
-  public pickAll(key: string): string[] {
+  public getAll(key: string): string[] {
     const value = this._search[key];
     return value || [];
   }
@@ -163,7 +163,7 @@ export class URI {
   }
 
   /**
-   * 删除查询参数
+   * 删除完整查询参数
    * @param key
    */
   public omit(key: string): this {
@@ -176,6 +176,22 @@ export class URI {
    */
   public format(): string {
     return this.origin + this.path + this.search + this.hash;
+  }
+
+  /**
+   * 克隆 URI 实例
+   */
+  public clone(): URI {
+    const instance = new URI();
+    instance.setProtocol(this.protocol);
+    instance.setHostname(this.hostname);
+    instance.setPort(this.port);
+    instance.setPath(this.path);
+    instance.setHash(this.hash);
+    for (const [key, value] of Object.entries(this._search)) {
+      value.forEach(v => instance.append(key, v));
+    }
+    return instance;
   }
 
   /**

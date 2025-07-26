@@ -9,8 +9,8 @@ describe("uri", () => {
     expect(url.path).toBe("/search");
     expect(url.host).toBe("www.google.com:333");
     expect(url.origin).toBe("https://www.google.com:333");
-    expect(url.pick("q")).toBe("1");
-    expect(url.pickAll("q")).toEqual(["1", "2"]);
+    expect(url.get("q")).toBe("1");
+    expect(url.getAll("q")).toEqual(["1", "2"]);
     expect(url.search).toBe("?q=1&q=2&w=3");
     expect(url.hash).toBe("#world");
     expect(url.href).toBe("https://www.google.com:333/search?q=1&q=2&w=3#world");
@@ -32,8 +32,8 @@ describe("uri", () => {
 
   it("query parse", () => {
     const url = URI.parseParams("?q=1&q=2&w=3");
-    expect(url.pick("q")).toBe("1");
-    expect(url.pickAll("q")).toEqual(["1", "2"]);
+    expect(url.get("q")).toBe("1");
+    expect(url.getAll("q")).toEqual(["1", "2"]);
     expect(url.search).toBe("?q=1&q=2&w=3");
   });
 
@@ -75,5 +75,11 @@ describe("uri", () => {
   it("uri stringify empty params", () => {
     const search = URI.stringifyParams({});
     expect(search).toBe("");
+  });
+
+  it("uri clone", () => {
+    const uri = URI.parse("https://www.google.com:333/search?q=1&q=2&w=3#world");
+    const clone = uri.clone();
+    expect(clone.format()).toBe(uri.format());
   });
 });

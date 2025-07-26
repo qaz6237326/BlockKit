@@ -1,7 +1,6 @@
 /**
  * 异步延迟 [非精准]
- * @param {number} ms
- * @returns {Promise<NodeJS.Timeout>}
+ * @param ms 毫秒
  */
 export const sleep = (ms: number): Promise<NodeJS.Timeout> => {
   return new Promise(resolve => {
@@ -12,8 +11,7 @@ export const sleep = (ms: number): Promise<NodeJS.Timeout> => {
 
 /**
  * Go-Style 异步异常处理
- * @param { Promise } promise
- * @return { Promise }
+ * @param promise
  */
 export const to = <T, U extends Error>(
   promise: Promise<T>

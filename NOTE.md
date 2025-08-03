@@ -550,17 +550,16 @@ if (isVoidZero && offset !== 1) {
 ```js
 ({
   xxx: {
-    ops: [ { insert: "abc" } ]
+    ops: [{ insert: "abc" }]
   },
   yyy: {
-    ops: [ { insert: "123" } ]
+    ops: [{ insert: "123" }]
   },
   ROOT: {
     ops: [
       { insert: " ", attributes: { blockId: "xxx" } },
       { insert: " ", attributes: { blockId: "yyy" } },
-    ]
-  }
+    ]}
 })
 ```
 

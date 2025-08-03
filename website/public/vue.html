@@ -7,22 +7,21 @@
     <title>Block Kit</title>
   </head>
   <body>
-  
     <% if (process.env.NODE_ENV === "production") { %>
-      <script
-        src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue/3.2.31/vue.global.prod.min.js"
-        type="application/javascript"
-        referrerpolicy="no-referrer"
-        crossorigin
-      ></script>
-      <% } else { %>
-      <script
-        src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/vue/3.2.31/vue.global.js"
-        type="application/javascript"
-        referrerpolicy="no-referrer"
-        crossorigin
-      ></script>
-      <% } %>
+    <script
+      src="https://unpkg.com/vue@3.2.31/dist/vue.global.prod.js"
+      type="application/javascript"
+      referrerpolicy="no-referrer"
+      crossorigin
+    ></script>
+    <% } else { %>
+    <script
+      src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"
+      type="application/javascript"
+      referrerpolicy="no-referrer"
+      crossorigin
+    ></script>
+    <% } %>
     <div id="root" class="root"></div>
   </body>
 </html>

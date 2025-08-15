@@ -66,6 +66,37 @@ importers:
         specifier: 5.3.2
         version: 5.3.2
 
+  examples/variable:
+    dependencies:
+      '@block-kit/core':
+        specifier: 'workspace: *'
+        version: link:../../packages/core
+      '@block-kit/delta':
+        specifier: 'workspace: *'
+        version: link:../../packages/delta
+      '@block-kit/react':
+        specifier: 'workspace: *'
+        version: link:../../packages/react
+      '@block-kit/utils':
+        specifier: 'workspace: *'
+        version: link:../../packages/utils
+      react:
+        specifier: '>=16'
+        version: 17.0.2
+      react-dom:
+        specifier: '>=16'
+        version: 17.0.2(react@17.0.2)
+    devDependencies:
+      '@types/react':
+        specifier: 17.0.2
+        version: 17.0.2
+      '@types/react-dom':
+        specifier: 17.0.2
+        version: 17.0.2
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
+
   examples/website:
     dependencies:
       '@arco-design/web-react':
@@ -86,6 +117,9 @@ importers:
       '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../../packages/utils
+      '@block-kit/variable':
+        specifier: 'workspace: *'
+        version: link:../variable
       '@block-kit/vue':
         specifier: 'workspace: *'
         version: link:../../packages/vue

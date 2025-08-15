@@ -21,6 +21,7 @@ const config: Configuration = {
   entry: {
     index: "./src/react/index.tsx",
     vue: "./src/vue/index.ts",
+    variable: "./src/variable/index.tsx",
   },
   externals: {
     "react": "React",
@@ -38,6 +39,11 @@ const config: Configuration = {
       filename: "vue.html",
       template: "./public/vue.html",
       chunks: ["vue"],
+    }),
+    new HtmlPlugin({
+      filename: "variable.html",
+      template: "./public/index.html",
+      chunks: ["variable"],
     }),
   ],
   resolve: {

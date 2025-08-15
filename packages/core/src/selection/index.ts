@@ -4,6 +4,8 @@ import type { O } from "@block-kit/utils/dist/es/types";
 import type { Editor } from "../editor";
 import { EDITOR_EVENT } from "../event/bus/types";
 import { isArrowLeft, isArrowRight } from "../input/utils/hot-key";
+import { ISOLATED_KEY } from "../model/types";
+import { isClosestTo } from "../model/utils/dom";
 import { EDITOR_STATE } from "../state/types";
 import { Point } from "./modules/point";
 import { Range } from "./modules/range";
@@ -98,6 +100,12 @@ export class Selection {
       return void 0;
     }
     if (!collapsed && !root.contains(endContainer)) {
+      return void 0;
+    }
+    if (isClosestTo(startContainer, `[${ISOLATED_KEY}]`)) {
+      return void 0;
+    }
+    if (!collapsed && isClosestTo(endContainer, `[${ISOLATED_KEY}]`)) {
       return void 0;
     }
     const backward = isBackwardDOMRange(sel, staticSel);

@@ -1,7 +1,7 @@
+import { ISOLATED_KEY } from "@block-kit/core";
+import { stopNativeEvent } from "@block-kit/utils";
 import type { FC, PropsWithChildren } from "react";
 import React from "react";
-
-import { preventReactEvent } from "../utils/event";
 
 export type IsolateProps = PropsWithChildren<{
   className?: string;
@@ -14,13 +14,22 @@ export type IsolateProps = PropsWithChildren<{
  * @param props
  */
 export const Isolate: FC<IsolateProps> = props => {
+  const onRef = (ref: HTMLSpanElement | null) => {
+    if (!ref) return void 0;
+    ref.onbeforeinput = stopNativeEvent;
+    ref.onmousedown = stopNativeEvent;
+    ref.oncopy = stopNativeEvent;
+    ref.onkeydown = stopNativeEvent;
+    ref.onpaste = stopNativeEvent;
+  };
+
   return (
     <span
+      ref={onRef}
+      {...{ [ISOLATED_KEY]: true }}
       className={props.className}
       style={{ userSelect: "none", ...props.style }}
       contentEditable={false}
-      onMouseDown={preventReactEvent}
-      onCopy={preventReactEvent}
     >
       {props.children}
     </span>

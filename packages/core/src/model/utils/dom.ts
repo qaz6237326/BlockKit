@@ -20,3 +20,16 @@ export const getLineNode = (node: Node | null): HTMLElement | null => {
   }
   return element.closest(`[${NODE_KEY}]`);
 };
+
+export const isClosestTo = (node: Node | null, selector: string): boolean => {
+  if (!node) {
+    return false;
+  }
+  if (node instanceof HTMLElement) {
+    return node.closest(selector) !== null;
+  }
+  if (node.parentElement instanceof HTMLElement) {
+    return node.parentElement.closest(selector) !== null;
+  }
+  return false;
+};

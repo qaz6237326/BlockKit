@@ -59,7 +59,8 @@ export class Perform {
   }
 
   /**
-   * 向前删除字符
+   * 向后删除字符
+   * - 这里的后指的是 CARET 位置左侧的内容
    * @param sel
    */
   public deleteBackward(sel: Range) {
@@ -118,7 +119,8 @@ export class Perform {
   }
 
   /**
-   * 向后删除字符
+   * 向前删除字符
+   * - 这里的前指的是 CARET 位置右侧的内容
    * @param sel
    */
   public deleteForward(sel: Range) {

@@ -1,4 +1,4 @@
-import { isString } from "../packages/utils/node_modules/laser-utils";
+import { isString } from "../../packages/utils/node_modules/laser-utils/dist/es";
 import type { Line, Op } from "./delta-set";
 import DeltaSet from "./delta-set";
 const { CODE_BLOCK_KEY, ops, opsToDeltaSet, ROOT_ZONE } = DeltaSet;
@@ -60,37 +60,37 @@ const parseZoneContent = async (
     // 先处理行内容 // 需要先处理行格式
     for (const linePlugin of LINE_PLUGINS) {
       if (!linePlugin.match(currentLine)) continue;
-      const result = await linePlugin.processor({
+      const lineResult = await linePlugin.processor({
         prev: prevLine,
         current: currentLine,
         next: nextLine,
         tag: tag,
       });
-      if (!result) continue;
-      result.prefix && prefixLineGroup.push(result.prefix);
-      result.suffix && suffixLineGroup.push(result.suffix);
+      if (!lineResult) continue;
+      lineResult.prefix && prefixLineGroup.push(lineResult.prefix);
+      lineResult.suffix && suffixLineGroup.push(lineResult.suffix);
     }
-    const ops = currentLine.ops;
+    const lineOps = currentLine.ops;
     // 处理节点内容
-    for (let k = 0; k < ops.length; ++k) {
-      const prevOp = ops[k - 1] || null;
-      const currentOp = ops[k];
-      const nextOp = ops[k + 1] || null;
+    for (let k = 0; k < lineOps.length; ++k) {
+      const prevOp = lineOps[k - 1] || null;
+      const currentOp = lineOps[k];
+      const nextOp = lineOps[k + 1] || null;
       const prefixOpGroup: string[] = [];
       const suffixOpGroup: string[] = [];
       let last = false;
       for (const leafPlugin of LEAF_PLUGINS) {
         if (!leafPlugin.match(currentOp)) continue;
-        const result = await leafPlugin.processor({
+        const leafResult = await leafPlugin.processor({
           prev: prevOp,
           current: currentOp,
           next: nextOp,
           tag: { ...tag },
         });
-        if (!result) continue;
-        result.prefix && prefixOpGroup.push(result.prefix);
-        result.suffix && suffixOpGroup.unshift(result.suffix);
-        if (result.last) {
+        if (!leafResult) continue;
+        leafResult.prefix && prefixOpGroup.push(leafResult.prefix);
+        leafResult.suffix && suffixOpGroup.unshift(leafResult.suffix);
+        if (leafResult.last) {
           last = true;
           break;
         }

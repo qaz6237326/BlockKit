@@ -7,4 +7,4 @@ packages:
   - "packages/react"
   - "packages/plugin"
   - "packages/vue"
-  - "website"
+  - "examples/website"

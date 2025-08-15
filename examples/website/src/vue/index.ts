@@ -1,12 +1,12 @@
-import "./styles/index.scss";
+import "../react/styles/index.scss";
 
 import { Editor, LOG_LEVEL } from "@block-kit/core";
 import { Delta } from "@block-kit/delta";
 import { BlockKit, Editable } from "@block-kit/vue";
 import { computed, createApp, defineComponent, h, onMounted, ref } from "vue";
 
-import { INIT } from "./config/block";
-import { schema } from "./config/schema";
+import { INIT } from "../react/config/block";
+import { schema } from "../react/config/schema";
 
 const App = defineComponent({
   name: "App",

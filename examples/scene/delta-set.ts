@@ -1,8 +1,8 @@
-import Delta from "../packages/tools/node_modules/quill-delta/dist/Delta";
-import type Op from "../packages/tools/node_modules/quill-delta/dist/Op";
-import { getUniqueId } from "../packages/utils/node_modules/laser-utils";
+import Delta from "../../packages/tools/node_modules/quill-delta/dist/Delta";
+import type Op from "../../packages/tools/node_modules/quill-delta/dist/Op";
+import { getUniqueId } from "../../packages/utils/node_modules/laser-utils/dist/es";
 
-const ops = [
+const originOps = [
   { insert: "标题" },
   {
     insert: "\n",
@@ -125,4 +125,4 @@ const opsToDeltaSet = (ops: Op[]) => {
 // console.log(JSON.stringify(opsToDeltaSet(ops)));
 
 export type { Line, Op };
-export default { CODE_BLOCK_KEY, ROOT_ZONE, opsToDeltaSet, ops };
+export default { CODE_BLOCK_KEY, ROOT_ZONE, opsToDeltaSet, ops: originOps };

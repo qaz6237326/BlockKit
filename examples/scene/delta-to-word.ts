@@ -11,7 +11,7 @@ import type {
   ITableOptions,
   ITableRowOptions,
   Run,
-} from "../packages/tools/node_modules/docx";
+} from "../../packages/tools/node_modules/docx/build";
 import {
   BorderStyle,
   Document,
@@ -36,9 +36,9 @@ import {
   TabStopType,
   TextRun,
   WidthType,
-} from "../packages/tools/node_modules/docx";
-import imageSize from "../packages/tools/node_modules/image-size";
-import { isString } from "../packages/utils/node_modules/laser-utils";
+} from "../../packages/tools/node_modules/docx/build";
+import imageSize from "../../packages/tools/node_modules/image-size/dist";
+import { isString } from "../../packages/utils/node_modules/laser-utils/dist/es";
 import type { Line, Op } from "./delta-set";
 import DeltaSet from "./delta-set";
 const { CODE_BLOCK_KEY, ops, opsToDeltaSet, ROOT_ZONE } = DeltaSet;

@@ -19,8 +19,8 @@ const vue = path.resolve(__dirname, "../packages/vue/src");
 const config: Configuration = {
   context: __dirname,
   entry: {
-    index: "./src/index.tsx",
-    vue: "./src/vue.ts",
+    index: "./src/react/index.tsx",
+    vue: "./src/vue/index.ts",
   },
   externals: {
     "react": "React",

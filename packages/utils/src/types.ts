@@ -328,6 +328,15 @@ export namespace Func {
   export type Constructor<T extends AnyClass> = T extends abstract new (...args: infer P) => any
     ? P
     : never;
+  /**
+   * Parameters
+   * @example Parameters<() => void> => []
+   * @example Parameters<(a: A, b: B) => void> => [a: A, b: B]
+   * @example Parameters<(a: A, b: B, ...rest: C[]) => void> => [a: A, b: B, ...rest: C[]]
+   */
+  export type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any
+    ? P
+    : never;
 }
 
 /**

@@ -2,7 +2,7 @@
 const pdfMake = require("../packages/tools/node_modules/pdfmake");
 import fs from "fs";
 
-import type PDF from "../packages/tools/node_modules/@types/pdfmake";
+import type PDF from "../../packages/tools/node_modules/@types/pdfmake";
 import type {
   Content,
   ContentImage,
@@ -12,8 +12,8 @@ import type {
   StyleDictionary,
   TableCell,
   TDocumentDefinitions,
-} from "../packages/tools/node_modules/@types/pdfmake/interfaces";
-import { isString } from "../packages/utils/node_modules/laser-utils";
+} from "../../packages/tools/node_modules/@types/pdfmake/interfaces";
+import { isString } from "../../packages/utils/node_modules/laser-utils/dist/es";
 import type { Line, Op } from "./delta-set";
 import DeltaSet from "./delta-set";
 const PdfPrinter = pdfMake as typeof PDF;

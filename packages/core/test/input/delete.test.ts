@@ -19,10 +19,9 @@ describe("input delete", () => {
       inputType: "deleteWordBackward",
     });
     container.dispatchEvent(event);
-    expect(editor.state.toBlockSet()).toEqual(
-      new Delta({
-        ops: [{ insert: "text1  text3" }, { insert: "\n" }],
-      })
-    );
+    const newDelta = new Delta({
+      ops: [{ insert: "text1  text3" }, { insert: "\n" }],
+    });
+    expect(editor.state.toBlockSet()).toEqual(newDelta);
   });
 });

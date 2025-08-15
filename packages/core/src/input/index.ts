@@ -31,13 +31,13 @@ export class Input {
   @Bind
   protected onBeforeInput(event: InputEvent) {
     if (this.editor.state.get(EDITOR_STATE.COMPOSING)) {
-      return null;
+      return void 0;
     }
     event.preventDefault();
     const { inputType, data = "" } = event;
     const sel = this.editor.selection.get();
     if (!sel) {
-      return null;
+      return void 0;
     }
     switch (inputType) {
       // case "deleteByDrag":
@@ -51,6 +51,7 @@ export class Input {
         this.editor.perform.deleteBackward(Range.aggregate(newRange, sel) || sel);
         break;
       }
+      case "deleteContent":
       case "deleteContentBackward": {
         this.editor.perform.deleteBackward(sel);
         break;
@@ -60,7 +61,6 @@ export class Input {
         this.editor.perform.deleteBackward(Range.aggregate(newRange, sel) || sel);
         break;
       }
-      case "deleteContent":
       case "deleteContentForward": {
         this.editor.perform.deleteForward(sel);
         break;
@@ -89,9 +89,9 @@ export class Input {
    */
   @Bind
   protected onCompositionEnd(event: CompositionEvent) {
+    event.preventDefault();
     const data = event.data;
     const sel = this.editor.selection.get();
     data && sel && this.editor.perform.insertText(sel, data);
-    event.preventDefault();
   }
 }

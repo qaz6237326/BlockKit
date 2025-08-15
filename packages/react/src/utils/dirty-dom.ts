@@ -35,13 +35,13 @@ export const updateDirtyLeaf = (editor: Editor, leaf: LeafState) => {
   const dom = editor.model.getLeafNode(leaf);
   const nodes = dom && dom.childNodes;
   if (!nodes || nodes.length <= 1) return false;
-  // data-leaf 节点内部仅应该存在一个节点, 需要移除额外节点
+  // data-leaf 节点内部仅应该存在非文本节点, 文本类型单节点, 嵌入类型双节点
   // Case1: a 标签内的 IME 输入会导致同级的额外文本节点类型插入
-  for (let i = 1; i < nodes.length; ++i) {
+  for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
-    node && node.remove();
-    if (process.env.NODE_ENV === "development") {
-      console.log("Remove Leaf Child", dom);
+    isDOMText(node) && node.remove();
+    if (process.env.NODE_ENV === "development" && isDOMText(node)) {
+      console.log("Remove Leaf Child", dom, node);
     }
   }
   return true;

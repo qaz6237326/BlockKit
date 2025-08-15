@@ -5,12 +5,12 @@ import CopyPlugin from "copy-webpack-plugin";
 import path from "path";
 
 const isDev = process.env.NODE_ENV === "development";
-const core = path.resolve(__dirname, "../packages/core/src");
-const delta = path.resolve(__dirname, "../packages/delta/src");
-const react = path.resolve(__dirname, "../packages/react/src");
-const utils = path.resolve(__dirname, "../packages/utils/src");
-const plugin = path.resolve(__dirname, "../packages/plugin/src");
-const vue = path.resolve(__dirname, "../packages/vue/src");
+const core = path.resolve(__dirname, "../../packages/core/src");
+const delta = path.resolve(__dirname, "../../packages/delta/src");
+const react = path.resolve(__dirname, "../../packages/react/src");
+const utils = path.resolve(__dirname, "../../packages/utils/src");
+const plugin = path.resolve(__dirname, "../../packages/plugin/src");
+const vue = path.resolve(__dirname, "../../packages/vue/src");
 
 /**
  * @type {import("@rspack/cli").Configuration}

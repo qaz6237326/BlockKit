@@ -163,12 +163,12 @@ const parseZoneContent = async (
     // 不能影响外部传递的`Tag`
     const tag: Tag = { ...defaultZoneTag };
     // 处理节点内容
-    const ops = currentLine.ops;
+    const leafOps = currentLine.ops;
     const leaves: LeafBlock[] = [];
-    for (let k = 0; k < ops.length; ++k) {
-      const prevOp = ops[k - 1] || null;
-      const currentOp = ops[k];
-      const nextOp = ops[k + 1] || null;
+    for (let k = 0; k < leafOps.length; ++k) {
+      const prevOp = leafOps[k - 1] || null;
+      const currentOp = leafOps[k];
+      const nextOp = leafOps[k + 1] || null;
       const hit = LEAF_PLUGINS.find(leafPlugin => leafPlugin.match(currentOp));
       if (hit) {
         const result = await hit.processor({

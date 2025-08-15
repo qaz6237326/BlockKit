@@ -71,7 +71,7 @@ const main = async () => {
   });
   pdfDoc.end();
 
-  const pdf = await PDFDocument.load(buffer);
+  const pdf = await PDFDocument.load(buffer as unknown as ArrayBuffer);
   const context = pdf.context;
 
   const root = context.nextRef();

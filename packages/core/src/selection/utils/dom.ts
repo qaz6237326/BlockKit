@@ -2,6 +2,7 @@ import { isDOMComment, isDOMElement, isDOMText } from "@block-kit/utils";
 
 import {
   EDITABLE,
+  ISOLATED_KEY,
   ZERO_EMBED_KEY,
   ZERO_ENTER_KEY,
   ZERO_SPACE_KEY,
@@ -199,4 +200,18 @@ export const isNotEditableNode = (node: Node | null) => {
   return node instanceof HTMLElement
     ? node.getAttribute(EDITABLE) === "false"
     : node.parentElement.getAttribute(EDITABLE) === "false";
+};
+
+export const isNeedIgnoreRangeDOM = (node: DOMNode, root: HTMLDivElement) => {
+  for (let n: DOMNode | null = node; n && n !== root; n = n.parentNode) {
+    // node 节点向上查找到 body, 说明 node 并非在 root 下, 忽略选区变更
+    if (n === document.body || n === document.documentElement) {
+      return true;
+    }
+    // 如果是 ISOLATED_KEY 的元素, 则忽略选区变更
+    if (isDOMElement(n) && n.hasAttribute(ISOLATED_KEY)) {
+      return true;
+    }
+  }
+  return false;
 };

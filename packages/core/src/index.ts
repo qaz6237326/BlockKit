@@ -54,6 +54,7 @@ export {
   ZERO_SYMBOL,
   ZERO_VOID_KEY,
 } from "./model/types";
+export { getLeafNode, getLineNode } from "./model/utils/dom";
 export { Perform } from "./perform";
 export { Plugin } from "./plugin";
 export { CorePlugin } from "./plugin/modules/implement";

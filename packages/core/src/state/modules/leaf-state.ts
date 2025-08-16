@@ -4,6 +4,7 @@ import { EOL } from "@block-kit/delta";
 
 import { Point } from "../../selection/modules/point";
 import { Range } from "../../selection/modules/range";
+import { RawRange } from "../../selection/modules/raw-range";
 import { Key } from "../utils/key";
 import type { LineState } from "./line-state";
 
@@ -130,5 +131,14 @@ export class LeafState {
     const start = new Point(this.parent.index, this.offset);
     const end = new Point(this.parent.index, this.offset + this.length);
     return new Range(start, end);
+  }
+
+  /**
+   * 将 LeafState 转换为 RawRange
+   */
+  public toRawRange() {
+    const range = this.toRange();
+    const rawRange = RawRange.fromRange(this.parent.parent.editor, range);
+    return rawRange;
   }
 }

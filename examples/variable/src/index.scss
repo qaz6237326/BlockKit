@@ -9,4 +9,12 @@
 .block-kit-editable-text {
   display: inline-block;
   outline: none;
+
+  &::after {
+    content: attr(data-placeholder);
+    cursor: text;
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
 }

@@ -4,15 +4,19 @@ import type { O } from "@block-kit/utils/dist/es/types";
 import type { Editor } from "../editor";
 import { EDITOR_EVENT } from "../event/bus/types";
 import { isArrowLeft, isArrowRight } from "../input/utils/hot-key";
-import { ISOLATED_KEY } from "../model/types";
-import { isClosestTo } from "../model/utils/dom";
 import { EDITOR_STATE } from "../state/types";
 import { Point } from "./modules/point";
 import { Range } from "./modules/range";
 import { RawRange } from "./modules/raw-range";
 import type { GRANULARITY } from "./types";
 import { ALERT, DIRECTION } from "./types";
-import { getRootSelection, getStaticSelection, isEmbedZeroNode, isVoidZeroNode } from "./utils/dom";
+import {
+  getRootSelection,
+  getStaticSelection,
+  isEmbedZeroNode,
+  isNeedIgnoreRangeDOM,
+  isVoidZeroNode,
+} from "./utils/dom";
 import { isBackwardDOMRange } from "./utils/dom";
 import { toModelRange } from "./utils/model";
 import { isEqualDOMRange, toDOMRange } from "./utils/native";
@@ -96,16 +100,10 @@ export class Selection {
     }
     // 选区必然是从 startContainer 到 endContainer
     const { startContainer, endContainer, collapsed } = staticSel;
-    if (!root.contains(startContainer)) {
+    if (isNeedIgnoreRangeDOM(startContainer, root)) {
       return void 0;
     }
-    if (!collapsed && !root.contains(endContainer)) {
-      return void 0;
-    }
-    if (isClosestTo(startContainer, `[${ISOLATED_KEY}]`)) {
-      return void 0;
-    }
-    if (!collapsed && isClosestTo(endContainer, `[${ISOLATED_KEY}]`)) {
+    if (!collapsed && isNeedIgnoreRangeDOM(endContainer, root)) {
       return void 0;
     }
     const backward = isBackwardDOMRange(sel, staticSel);
@@ -242,7 +240,7 @@ export class Selection {
       newFocus = new Point(nextLine.index, 0);
     }
     // 右键且在嵌入节点时 将光标放在嵌入节点后
-    if (rightArrow && sel && isEmbedZeroNode(sel.focusNode)) {
+    if (rightArrow && sel && sel.isCollapsed && isEmbedZeroNode(sel.focusNode)) {
       const line = newFocus ? newFocus.line : focus.line;
       const offset = newFocus ? newFocus.offset : focus.offset;
       newFocus = new Point(line, offset + 1);

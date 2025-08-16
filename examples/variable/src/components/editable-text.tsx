@@ -1,9 +1,12 @@
+import { EDITOR_EVENT } from "@block-kit/core";
 import { Isolate } from "@block-kit/react";
 import { isKeyCode, isNil, KEY_CODE, NOOP, preventNativeEvent, TEXT_PLAIN } from "@block-kit/utils";
 import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { O } from "@block-kit/utils/dist/es/types";
 import type { FC } from "react";
 import React, { useEffect } from "react";
+
+import { DATA_EDITABLE_KEY } from "../utils/constant";
 
 export const EditableText: FC<{
   value: string;
@@ -13,13 +16,21 @@ export const EditableText: FC<{
   style?: React.CSSProperties;
   onRef?: (ref: HTMLDivElement | null) => void;
 }> = props => {
-  const { onChange = NOOP, value } = props;
+  const { onChange = NOOP, value, placeholder } = props;
   const [refState, setRefState] = React.useState<HTMLDivElement | null>(null);
 
   const onEditableRef = (ref: HTMLDivElement | null) => {
     props.onRef && props.onRef(ref);
     setRefState(ref);
   };
+
+  useEffect(() => {
+    if (!refState) return void 0;
+    const innerText = refState.textContent || "";
+    if (innerText !== props.value) {
+      refState.innerText = props.value;
+    }
+  }, [props.value, refState]);
 
   const onInput = useMemoFn((e: Event) => {
     if ((e as unknown as O.Map<unknown>).isComposing || isNil(refState)) {
@@ -43,31 +54,40 @@ export const EditableText: FC<{
     }
   });
 
+  const onMouseDown = useMemoFn((e: MouseEvent) => {
+    if (!props.value && e.detail > 1) {
+      preventNativeEvent(e);
+    }
+  });
+
   useEffect(() => {
     const el = refState;
     if (!el) return void 0;
-    el.addEventListener("input", onInput);
-    el.addEventListener("compositionend", onInput);
-    el.addEventListener("paste", onPaste);
-    el.addEventListener("keydown", onKeyDown);
+    const { INPUT, COMPOSITION_END, PASTE, KEY_DOWN, MOUSE_DOWN } = EDITOR_EVENT;
+    el.addEventListener(INPUT, onInput);
+    el.addEventListener(COMPOSITION_END, onInput);
+    el.addEventListener(PASTE, onPaste);
+    el.addEventListener(KEY_DOWN, onKeyDown);
+    el.addEventListener(MOUSE_DOWN, onMouseDown);
     return () => {
-      el.removeEventListener("input", onInput);
-      el.removeEventListener("compositionend", onInput);
-      el.removeEventListener("paste", onPaste);
-      el.removeEventListener("keydown", onKeyDown);
+      el.removeEventListener(INPUT, onInput);
+      el.removeEventListener(COMPOSITION_END, onInput);
+      el.removeEventListener(PASTE, onPaste);
+      el.removeEventListener(KEY_DOWN, onKeyDown);
+      el.removeEventListener(MOUSE_DOWN, onMouseDown);
     };
-  }, [onInput, onKeyDown, onPaste, refState]);
+  }, [onInput, onKeyDown, onMouseDown, onPaste, refState]);
 
   return (
     <Isolate className={props.className} style={props.style}>
       <div
+        {...{ [DATA_EDITABLE_KEY]: true }}
         className="block-kit-editable-text"
         ref={onEditableRef}
+        data-placeholder={!value && placeholder ? placeholder : void 0}
         contentEditable
         suppressContentEditableWarning
-      >
-        {value}
-      </div>
+      ></div>
     </Isolate>
   );
 };

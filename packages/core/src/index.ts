@@ -81,6 +81,13 @@ export type {
   DOMText,
 } from "./selection/types/index";
 export { ALERT, DIRECTION, GRANULARITY } from "./selection/types/index";
+export {
+  isEmbedZeroNode,
+  isEnterZeroNode,
+  isNotEditableNode,
+  isVoidZeroNode,
+  isZeroNode,
+} from "./selection/utils/dom";
 export { EditorState } from "./state";
 export { BlockState } from "./state/modules/block-state";
 export { LeafState } from "./state/modules/leaf-state";

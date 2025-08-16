@@ -1,7 +1,9 @@
+import "@block-kit/variable/dist/style/index.css";
+
 import { Editor, LOG_LEVEL } from "@block-kit/core";
 import { Delta } from "@block-kit/delta";
 import { BlockKit, Editable } from "@block-kit/react";
-import { EmbedPlugin } from "@block-kit/variable";
+import { EmbedTextPlugin } from "@block-kit/variable";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
@@ -12,8 +14,8 @@ import { schema } from "./schema";
 const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
-    const instance = new Editor({ delta: INIT_DELTA, logLevel: LOG_LEVEL.DEBUG, schema });
-    instance.plugin.register(new EmbedPlugin(instance));
+    const instance = new Editor({ schema, delta: INIT_DELTA, logLevel: LOG_LEVEL.DEBUG });
+    instance.plugin.register(new EmbedTextPlugin(instance));
     return instance;
   }, []);
 

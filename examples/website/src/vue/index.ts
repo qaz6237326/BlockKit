@@ -13,7 +13,7 @@ const App = defineComponent({
   setup() {
     const readonly = ref(false);
     const editor = computed(() => {
-      const instance = new Editor({ delta: INIT, logLevel: LOG_LEVEL.DEBUG, schema });
+      const instance = new Editor({ schema, delta: INIT, logLevel: LOG_LEVEL.DEBUG });
       return instance;
     });
 

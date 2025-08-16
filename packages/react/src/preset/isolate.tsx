@@ -28,7 +28,7 @@ export const Isolate: FC<IsolateProps> = props => {
       ref={onRef}
       {...{ [ISOLATED_KEY]: true }}
       className={props.className}
-      style={{ userSelect: "none", ...props.style }}
+      style={props.style}
       contentEditable={false}
     >
       {props.children}

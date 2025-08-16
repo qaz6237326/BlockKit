@@ -28,7 +28,7 @@ jobs:
 
       - name: build project
         run: |
-          pnpm run --filter ./examples/website build
+          pnpm run --filter "./examples/*" build
 
       - name: deploy project
         uses: JamesIves/github-pages-deploy-action@releases/v3

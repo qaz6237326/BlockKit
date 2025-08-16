@@ -42,7 +42,7 @@ import { schema } from "./config/schema";
 const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
-    const instance = new Editor({ delta: INIT, logLevel: LOG_LEVEL.DEBUG, schema });
+    const instance = new Editor({ schema, delta: INIT, logLevel: LOG_LEVEL.DEBUG });
     instance.plugin.register(
       new BoldPlugin(instance),
       new ItalicPlugin(instance),

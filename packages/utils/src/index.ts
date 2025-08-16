@@ -21,6 +21,7 @@ export {
   isDOMNode,
   isDOMText,
   isHTMLElement,
+  isKeyCode,
   preventNativeEvent,
   stopNativeEvent,
 } from "./dom";

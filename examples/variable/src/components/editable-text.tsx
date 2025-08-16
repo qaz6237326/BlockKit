@@ -17,6 +17,7 @@ export const EditableText: FC<{
   onRef?: (ref: HTMLDivElement | null) => void;
 }> = props => {
   const { onChange = NOOP, value, placeholder } = props;
+  const [isComposing, setIsComposing] = React.useState(false);
   const [refState, setRefState] = React.useState<HTMLDivElement | null>(null);
 
   const onEditableRef = (ref: HTMLDivElement | null) => {
@@ -60,23 +61,34 @@ export const EditableText: FC<{
     }
   });
 
+  const onCompositionStart = useMemoFn(() => {
+    setIsComposing(true);
+  });
+
+  const onCompositionEnd = useMemoFn((e: CompositionEvent) => {
+    setIsComposing(false);
+    onInput(e);
+  });
+
   useEffect(() => {
     const el = refState;
     if (!el) return void 0;
-    const { INPUT, COMPOSITION_END, PASTE, KEY_DOWN, MOUSE_DOWN } = EDITOR_EVENT;
+    const { INPUT, COMPOSITION_END, PASTE, KEY_DOWN, MOUSE_DOWN, COMPOSITION_START } = EDITOR_EVENT;
     el.addEventListener(INPUT, onInput);
-    el.addEventListener(COMPOSITION_END, onInput);
     el.addEventListener(PASTE, onPaste);
     el.addEventListener(KEY_DOWN, onKeyDown);
     el.addEventListener(MOUSE_DOWN, onMouseDown);
+    el.addEventListener(COMPOSITION_START, onCompositionStart);
+    el.addEventListener(COMPOSITION_END, onCompositionEnd);
     return () => {
       el.removeEventListener(INPUT, onInput);
-      el.removeEventListener(COMPOSITION_END, onInput);
       el.removeEventListener(PASTE, onPaste);
       el.removeEventListener(KEY_DOWN, onKeyDown);
       el.removeEventListener(MOUSE_DOWN, onMouseDown);
+      el.removeEventListener(COMPOSITION_START, onCompositionStart);
+      el.removeEventListener(COMPOSITION_END, onCompositionEnd);
     };
-  }, [onInput, onKeyDown, onMouseDown, onPaste, refState]);
+  }, [onCompositionEnd, onCompositionStart, onInput, onKeyDown, onMouseDown, onPaste, refState]);
 
   return (
     <Isolate className={props.className} style={props.style}>
@@ -84,7 +96,7 @@ export const EditableText: FC<{
         {...{ [DATA_EDITABLE_KEY]: true }}
         className="block-kit-editable-text"
         ref={onEditableRef}
-        data-placeholder={!value && placeholder ? placeholder : void 0}
+        data-placeholder={!value && placeholder && !isComposing ? placeholder : void 0}
         contentEditable
         suppressContentEditableWarning
       ></div>

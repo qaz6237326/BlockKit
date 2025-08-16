@@ -203,9 +203,9 @@ export const isNotEditableNode = (node: Node | null) => {
 };
 
 export const isNeedIgnoreRangeDOM = (node: DOMNode, root: HTMLDivElement) => {
-  for (let n: DOMNode | null = node; n && n !== root; n = n.parentNode) {
+  for (let n: DOMNode | null = node; n !== root; n = n.parentNode) {
     // node 节点向上查找到 body, 说明 node 并非在 root 下, 忽略选区变更
-    if (n === document.body || n === document.documentElement) {
+    if (!n || n === document.body || n === document.documentElement) {
       return true;
     }
     // 如果是 ISOLATED_KEY 的元素, 则忽略选区变更

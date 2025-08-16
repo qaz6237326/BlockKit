@@ -1,7 +1,12 @@
-import { Delta } from "@block-kit/delta";
+import type { EditorSchema } from "@block-kit/variable";
+import { Delta } from "@block-kit/variable";
 import { VARIABLE_KEY, VARS_PLACEHOLDER_KEY, VARS_VALUE_KEY } from "@block-kit/variable";
 
-export const INIT_DELTA = new Delta()
+export const schema: EditorSchema = {
+  [VARIABLE_KEY]: { void: true, inline: true },
+};
+
+export const init = new Delta()
   .insert("帮我写一篇关于")
   .insert(" ", {
     [VARIABLE_KEY]: "theme",

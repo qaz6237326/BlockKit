@@ -21,12 +21,15 @@ import {
   VARS_PLACEHOLDER_KEY,
   VARS_VALUE_KEY,
 } from "../utils/constant";
+import type { EmbedTextOptions } from "../utils/types";
 
 export class EmbedTextPlugin extends EditorPlugin {
   public key = VARIABLE_KEY;
+  public options: EmbedTextOptions;
 
-  constructor(protected editor: Editor) {
+  constructor(protected editor: Editor, options?: EmbedTextOptions) {
     super();
+    this.options = options || {};
     editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, DEFAULT_PRIORITY - 10);
   }
 

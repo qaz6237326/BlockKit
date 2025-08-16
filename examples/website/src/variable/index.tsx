@@ -1,20 +1,22 @@
+import "./index.scss";
 import "@block-kit/variable/dist/style/index.css";
+import "@arco-design/web-react/es/style/index.less";
 
-import { Editor, LOG_LEVEL } from "@block-kit/core";
-import { Delta } from "@block-kit/delta";
-import { BlockKit, Editable } from "@block-kit/react";
+import { IconArrowUp } from "@arco-design/web-react/icon";
+import { Editor, LOG_LEVEL } from "@block-kit/variable";
+import { Delta } from "@block-kit/variable";
+import { BlockKit, Editable } from "@block-kit/variable";
 import { EmbedTextPlugin } from "@block-kit/variable";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { INIT_DELTA } from "./constant";
-import { schema } from "./schema";
+import { init, schema } from "./constant";
 
 const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
-    const instance = new Editor({ schema, delta: INIT_DELTA, logLevel: LOG_LEVEL.DEBUG });
+    const instance = new Editor({ schema, delta: init, logLevel: LOG_LEVEL.DEBUG });
     instance.plugin.register(new EmbedTextPlugin(instance));
     return instance;
   }, []);
@@ -27,9 +29,19 @@ const App: FC = () => {
   }, [editor]);
 
   return (
-    <BlockKit editor={editor} readonly={readonly}>
-      <Editable className="block-kit-editable"></Editable>
-    </BlockKit>
+    <div className="vars-input-container-wrapper">
+      <div className="vars-input-title">变量模版输入框</div>
+      <div className="vars-input-container">
+        <BlockKit editor={editor} readonly={readonly}>
+          <Editable className="block-kit-editable" placeholder="描述你要创作的内容..."></Editable>
+        </BlockKit>
+        <div className="vars-input-footer">
+          <div className="vars-input-send">
+            <IconArrowUp />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,9 +1,17 @@
+/* stylelint-disable selector-no-qualifying-type */
 .editable-vars {
   background: rgba(0, 102, 255, 0.06);
   border-radius: 4px;
   color: #06f;
+  cursor: text;
+  font-weight: bold;
   margin: 0 3px;
-  padding: 3px 5px;
+  padding: 2px 5px;
+}
+
+.block-kit-editable div[data-node],
+.block-kit-editable div[data-placeholder] {
+  line-height: 1.8;
 }
 
 .block-kit-editable-text {

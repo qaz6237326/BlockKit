@@ -1,3 +1,5 @@
+import type { O } from "@block-kit/utils/dist/es/types";
+
 export type SchemaRule = {
   /**
    * 块级节点
@@ -24,4 +26,4 @@ export type SchemaRule = {
   mark?: boolean;
 };
 
-export type EditorSchema = Record<string, SchemaRule>;
+export type EditorSchema = O.Map<SchemaRule>;

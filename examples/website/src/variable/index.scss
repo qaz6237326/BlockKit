@@ -8,6 +8,7 @@
     margin: 0 auto;
     margin-bottom: 30px;
     text-align: center;
+    user-select: none;
   }
 }
 
@@ -19,9 +20,9 @@
   font-size: 16px;
   justify-content: space-between;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 750px;
   min-height: 100px;
-  padding: 12px;
+  padding: 13px 15px;
 }
 
 .vars-input-footer {
@@ -42,13 +43,16 @@
     transition: all 0.1s ease-in-out;
     width: 30px;
 
-    :global(.arco-icon) {
-      margin-left: -1px;
-      margin-top: 2px;
-    }
-
     &:hover {
       background-color: rgb(var(--arcoblue-7));
     }
   }
+}
+
+.github-link {
+  color: var(--color-text-1);
+  font-size: 23px;
+  position: fixed;
+  right: 12px;
+  top: 6px;
 }

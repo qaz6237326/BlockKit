@@ -1,5 +1,4 @@
-export const VARIABLE_KEY = "variable";
-export const VARS_VALUE_KEY = "variable-value";
-export const CLS_PREFIX = "prompt-variable";
-export const VARS_PLACEHOLDER_KEY = "placeholder";
+export const VARS_KEY = "var-key";
+export const VARS_VALUE_KEY = "var-value";
+export const CLS_PREFIX = "editable-vars";
 export const DATA_EDITABLE_KEY = "data-editable";

@@ -41,38 +41,34 @@ export const EditableText: FC<{
     newValue !== value && onChange(newValue);
   });
 
-  const onPaste = useMemoFn((e: ClipboardEvent) => {
-    preventNativeEvent(e);
-    const clipboardData = e.clipboardData;
-    if (!clipboardData) return void 0;
-    const text = clipboardData.getData(TEXT_PLAIN) || "";
-    document.execCommand("insertText", false, text.replace(/\n/g, " "));
-  });
-
-  const onKeyDown = useMemoFn((e: KeyboardEvent) => {
-    if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
-      preventNativeEvent(e);
-    }
-  });
-
   const onMouseDown = useMemoFn((e: MouseEvent) => {
     if (!props.value && e.detail > 1) {
       preventNativeEvent(e);
     }
   });
 
-  const onCompositionStart = useMemoFn(() => {
-    setIsComposing(true);
-  });
-
-  const onCompositionEnd = useMemoFn((e: CompositionEvent) => {
-    setIsComposing(false);
-    onInput(e);
-  });
-
   useEffect(() => {
     const el = refState;
     if (!el) return void 0;
+    const onCompositionStart = () => {
+      setIsComposing(true);
+    };
+    const onCompositionEnd = (e: CompositionEvent) => {
+      setIsComposing(false);
+      onInput(e);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
+        preventNativeEvent(e);
+      }
+    };
+    const onPaste = (e: ClipboardEvent) => {
+      preventNativeEvent(e);
+      const clipboardData = e.clipboardData;
+      if (!clipboardData) return void 0;
+      const text = clipboardData.getData(TEXT_PLAIN) || "";
+      document.execCommand("insertText", false, text.replace(/\n/g, " "));
+    };
     const { INPUT, COMPOSITION_END, PASTE, KEY_DOWN, MOUSE_DOWN, COMPOSITION_START } = EDITOR_EVENT;
     el.addEventListener(INPUT, onInput);
     el.addEventListener(PASTE, onPaste);
@@ -88,7 +84,7 @@ export const EditableText: FC<{
       el.removeEventListener(COMPOSITION_START, onCompositionStart);
       el.removeEventListener(COMPOSITION_END, onCompositionEnd);
     };
-  }, [onCompositionEnd, onCompositionStart, onInput, onKeyDown, onMouseDown, onPaste, refState]);
+  }, [onInput, onMouseDown, refState]);
 
   return (
     <Isolate className={props.className} style={props.style}>

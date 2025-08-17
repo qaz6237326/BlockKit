@@ -1,3 +1,5 @@
+import type { O } from "@block-kit/utils/dist/es/types";
+
 export type EmbedTextOptions = {
-  preventDelete?: boolean;
+  placeholders?: O.Map<string>;
 };

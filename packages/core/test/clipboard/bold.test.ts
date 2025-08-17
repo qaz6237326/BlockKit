@@ -9,7 +9,9 @@ import type { CorePlugin } from "../../src/plugin/modules/implement";
 describe("clipboard bold", () => {
   const editor = new Editor();
   const getMockedPlugin = (props: Pick<CorePlugin, "deserialize" | "serialize">): CorePlugin => {
+    // @ts-expect-error private constructor
     return {
+      editor,
       key: "",
       destroy: () => {},
       match: () => true,

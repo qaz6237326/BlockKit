@@ -1,7 +1,15 @@
-export { EditableText } from "./components/editable-text";
-export { EmbedTextPlugin } from "./modules/text-plugin";
-export { CLS_PREFIX, VARS_KEY, VARS_VALUE_KEY } from "./utils/constant";
-export type { EmbedTextOptions } from "./utils/types";
+export { EditableTextInput } from "./components/editable-input";
+export { EditableInputPlugin } from "./modules/editable-plugin";
+export { SelectorInputPlugin } from "./modules/selector-plugin";
+export {
+  SEL_CLS_PREFIX,
+  SEL_KEY,
+  SEL_VALUE_KEY,
+  VARS_CLS_PREFIX,
+  VARS_KEY,
+  VARS_VALUE_KEY,
+} from "./utils/constant";
+export type { EditablePluginOptions } from "./utils/types";
 export type { EditorSchema } from "@block-kit/core";
 export { Editor, LOG_LEVEL } from "@block-kit/core";
 export { Delta } from "@block-kit/delta";

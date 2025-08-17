@@ -4,11 +4,15 @@ const concat = require("gulp-concat");
 const scss = require("gulp-sass")(require("sass"));
 
 function build() {
-  return src(["./src/index.scss"])
-    .pipe(scss())
-    .pipe(concat("index.css"))
-    .pipe(cleanCSS({ compatibility: "*" }))
-    .pipe(dest("dist/style"));
+  try {
+    return src(["./src/index.scss"])
+      .pipe(scss())
+      .pipe(concat("index.css"))
+      .pipe(cleanCSS({ compatibility: "*" }))
+      .pipe(dest("dist/style"));
+  } catch (error) {
+    console.log("Compile Error :", error);
+  }
 }
 
 function watchFiles() {

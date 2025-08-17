@@ -18,5 +18,4 @@ npm run dev
 
 ## Example
 
-<img width="681" height="31" alt="image" src="https://github.com/user-attachments/assets/43b27ef7-ffbc-485b-bf67-2904fd6d4a67" />
-
+<img width="1808" height="588" alt="image" src="https://github.com/user-attachments/assets/d5644d50-7f26-434f-959e-ccec6b4fdaab" />

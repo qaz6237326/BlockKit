@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 
 import { DATA_EDITABLE_KEY } from "../utils/constant";
 
-export const EditableText: FC<{
+export const EditableTextInput: FC<{
   value: string;
   placeholder?: string;
   onChange?: (value: string) => void;

@@ -8,15 +8,15 @@ import type { EventContext } from "@block-kit/utils";
 import { cs } from "@block-kit/utils";
 import { Bind, DEFAULT_PRIORITY, isDOMText } from "@block-kit/utils";
 
-import { EditableText } from "../components/editable-text";
-import { CLS_PREFIX, DATA_EDITABLE_KEY, VARS_KEY, VARS_VALUE_KEY } from "../utils/constant";
-import type { EmbedTextOptions } from "../utils/types";
+import { EditableTextInput } from "../components/editable-input";
+import { DATA_EDITABLE_KEY, VARS_CLS_PREFIX, VARS_KEY, VARS_VALUE_KEY } from "../utils/constant";
+import type { EditablePluginOptions as EditableInputOptions } from "../utils/types";
 
-export class EmbedTextPlugin extends EditorPlugin {
+export class EditableInputPlugin extends EditorPlugin {
   public key = VARS_KEY;
-  public options: EmbedTextOptions;
+  public options: EditableInputOptions;
 
-  constructor(options?: EmbedTextOptions) {
+  constructor(options?: EditableInputOptions) {
     super();
     this.options = options || {};
     this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, DEFAULT_PRIORITY - 10);
@@ -66,12 +66,12 @@ export class EmbedTextPlugin extends EditorPlugin {
     const placeholders = this.options.placeholders || {};
     return (
       <Embed context={context}>
-        <EditableText
-          className={cs(CLS_PREFIX, `${CLS_PREFIX}-${varKey}`)}
+        <EditableTextInput
+          className={cs(VARS_CLS_PREFIX, `${VARS_CLS_PREFIX}-${varKey}`)}
           value={attrs[VARS_VALUE_KEY] || ""}
           placeholder={placeholders[varKey]}
           onChange={v => this.onTextChange(context.leafState, v)}
-        ></EditableText>
+        ></EditableTextInput>
       </Embed>
     );
   }

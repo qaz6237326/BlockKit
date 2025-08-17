@@ -4,21 +4,24 @@ import "@arco-design/web-react/es/style/index.less";
 
 import { IconArrowUp, IconGithub } from "@arco-design/web-react/icon";
 import { cs, preventNativeEvent } from "@block-kit/utils";
-import { Editor, LOG_LEVEL } from "@block-kit/variable";
+import { Editor, LOG_LEVEL, SelectorInputPlugin } from "@block-kit/variable";
 import { Delta } from "@block-kit/variable";
 import { BlockKit, Editable } from "@block-kit/variable";
-import { EmbedTextPlugin } from "@block-kit/variable";
+import { EditableInputPlugin } from "@block-kit/variable";
 import type { FC } from "react";
 import { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom";
 
-import { DELTA, PLACEHOLDERS, SCHEMA } from "./constant";
+import { DELTA, PLACEHOLDERS, SCHEMA, SELECTOR } from "./constant";
 
 const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
     const instance = new Editor({ schema: SCHEMA, delta: DELTA, logLevel: LOG_LEVEL.DEBUG });
-    instance.plugin.register([new EmbedTextPlugin({ placeholders: PLACEHOLDERS })]);
+    instance.plugin.register([
+      new EditableInputPlugin({ placeholders: PLACEHOLDERS }),
+      new SelectorInputPlugin({ selector: SELECTOR }),
+    ]);
     return instance;
   }, []);
 

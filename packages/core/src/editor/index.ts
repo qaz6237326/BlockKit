@@ -10,6 +10,7 @@ import { Lookup } from "../lookup";
 import { Model } from "../model";
 import { Perform } from "../perform";
 import { Plugin } from "../plugin";
+import { CorePlugin } from "../plugin/modules/implement";
 import { Rect } from "../rect";
 import { Schema } from "../schema";
 import { Selection } from "../selection";
@@ -116,6 +117,9 @@ export class Editor {
    * 销毁编辑器
    */
   public destroy(this: Editor) {
+    if (CorePlugin.editor === this) {
+      CorePlugin.editor = null;
+    }
     this.event.unbind();
     this.input.destroy();
     this.model.destroy();

@@ -14,7 +14,7 @@ export abstract class CorePlugin {
   /** 插件注册编辑器容器 */
   public static editor: Editor | null = null;
   /** 自动注入编辑器实例 */
-  protected editor: Editor;
+  protected editor!: Editor;
 
   constructor() {
     if (!CorePlugin.editor) {

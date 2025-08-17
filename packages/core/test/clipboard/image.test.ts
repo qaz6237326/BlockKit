@@ -29,7 +29,7 @@ describe("clipboard image", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const delta = new Delta().insert(" ", {
       image: "true",
       src: "https://example.com/image.png",
@@ -55,7 +55,7 @@ describe("clipboard image", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const parser = new DOMParser();
     const transferHTMLText = `<img src="https://example.com/image.png"></img>`;
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);

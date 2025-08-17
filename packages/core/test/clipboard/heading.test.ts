@@ -29,7 +29,7 @@ describe("clipboard heading", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const delta = new MutateDelta().insert("Hello").insert("\n", { heading: "h1" });
     const root = editor.clipboard.copyModule.serialize(delta);
     const plainText = getFragmentText(root);
@@ -49,7 +49,7 @@ describe("clipboard heading", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const parser = new DOMParser();
     const transferHTMLText = `<div><h1>Hello</h1><h2>World</h2></div>`;
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);

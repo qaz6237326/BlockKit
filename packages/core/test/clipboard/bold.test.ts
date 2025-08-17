@@ -28,7 +28,7 @@ describe("clipboard bold", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const delta = new Delta().insert("Hello", { bold: "true" }).insert("World");
     const root = editor.clipboard.copyModule.serialize(delta);
     const plainText = getFragmentText(root);
@@ -52,7 +52,7 @@ describe("clipboard bold", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const parser = new DOMParser();
     const transferHTMLText = `<div><strong>Hello</strong>World</div>`;
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);

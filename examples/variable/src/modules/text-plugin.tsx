@@ -1,5 +1,4 @@
 import type { LeafState } from "@block-kit/core";
-import type { Editor } from "@block-kit/core";
 import { EDITOR_EVENT, getLeafNode, isArrowRight, isEmbedZeroNode } from "@block-kit/core";
 import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
@@ -17,10 +16,10 @@ export class EmbedTextPlugin extends EditorPlugin {
   public key = VARS_KEY;
   public options: EmbedTextOptions;
 
-  constructor(protected editor: Editor, options?: EmbedTextOptions) {
+  constructor(options?: EmbedTextOptions) {
     super();
     this.options = options || {};
-    editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, DEFAULT_PRIORITY - 10);
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, DEFAULT_PRIORITY - 10);
   }
 
   public destroy(): void {

@@ -32,7 +32,7 @@ describe("clipboard block", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const delta = new Delta().insert(" ", { _ref: "id" });
     const root = editor.clipboard.copyModule.serialize(delta);
     const plainText = getFragmentText(root);
@@ -57,7 +57,7 @@ describe("clipboard block", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const parser = new DOMParser();
     const transferHTMLText = `<div data-node="true"><div data-block="id"><div data-node="true">inside</div></div></div>`;
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);

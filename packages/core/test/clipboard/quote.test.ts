@@ -29,7 +29,7 @@ describe("clipboard quote", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const delta = new MutateDelta().insert("Hello").insert("\n", { quote: "true" });
     const root = editor.clipboard.copyModule.serialize(delta);
     const plainText = getFragmentText(root);
@@ -52,7 +52,7 @@ describe("clipboard quote", () => {
         return context;
       },
     });
-    editor.plugin.register(plugin);
+    editor.plugin.register([plugin]);
     const parser = new DOMParser();
     const transferHTMLText = `<div><blockquote><p>Hello</p><p>World</p></blockquote></div>`;
     const html = parser.parseFromString(transferHTMLText, TEXT_HTML);

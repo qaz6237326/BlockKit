@@ -43,9 +43,9 @@ const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
     const instance = new Editor({ schema, delta: INIT, logLevel: LOG_LEVEL.DEBUG });
-    instance.plugin.register(
-      new BoldPlugin(instance),
-      new ItalicPlugin(instance),
+    instance.plugin.register([
+      new BoldPlugin(),
+      new ItalicPlugin(),
       new UnderlinePlugin(instance),
       new StrikePlugin(instance),
       new ImagePlugin(instance),
@@ -64,8 +64,8 @@ const App: FC = () => {
       new QuotePlugin(instance),
       new EmojiPlugin(instance),
       new MentionPlugin(instance),
-      new Shortcut(instance)
-    );
+      new Shortcut(instance),
+    ]);
     return instance;
   }, []);
 

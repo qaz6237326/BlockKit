@@ -26,7 +26,7 @@ describe("plugin priority", () => {
   }
 
   const editor = new Editor();
-  editor.plugin.register(new Plugin1(), new Plugin2());
+  editor.plugin.register([new Plugin1(), new Plugin2()]);
   const renderPlugins = editor.plugin.getPriorityPlugins("renderLeaf");
   const renderLinePlugins = editor.plugin.getPriorityPlugins("renderLine");
 

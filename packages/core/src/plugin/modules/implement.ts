@@ -7,9 +7,21 @@ import type {
   PasteContext,
   SerializeContext,
 } from "../../clipboard/types";
+import type { Editor } from "../../editor";
 import type { LeafContext, LineContext } from "../types/context";
 
 export abstract class CorePlugin {
+  /** 插件注册编辑器容器 */
+  public static editor: Editor | null = null;
+  /** 自动注入编辑器实例 */
+  protected editor: Editor;
+
+  constructor() {
+    if (!CorePlugin.editor) {
+      throw new Error(`${this} - Miss Editor Container`);
+    }
+    this.editor = CorePlugin.editor;
+  }
   /**
    * 插件唯一标识
    */

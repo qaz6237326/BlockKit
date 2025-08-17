@@ -1,5 +1,4 @@
 import type { DeserializeContext, SerializeContext } from "@block-kit/core";
-import type { Editor } from "@block-kit/core";
 import { applyMarker, isMatchHTMLTag } from "@block-kit/core";
 import type { AttributeMap } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
@@ -13,8 +12,9 @@ export class ItalicPlugin extends EditorPlugin {
   public key = ITALIC_KEY;
   public destroy(): void {}
 
-  constructor(editor: Editor) {
+  constructor() {
     super();
+    const editor = this.editor;
     editor.command.register(ITALIC_KEY, context => {
       const sel = editor.selection.get();
       sel && editor.perform.applyMarks(sel, { [ITALIC_KEY]: context.value });

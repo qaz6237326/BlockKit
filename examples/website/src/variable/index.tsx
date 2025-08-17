@@ -18,11 +18,7 @@ const App: FC = () => {
   const [readonly] = useState(false);
   const editor = useMemo(() => {
     const instance = new Editor({ schema: SCHEMA, delta: DELTA, logLevel: LOG_LEVEL.DEBUG });
-    instance.plugin.register(
-      new EmbedTextPlugin(instance, {
-        placeholders: PLACEHOLDERS,
-      })
-    );
+    instance.plugin.register([new EmbedTextPlugin({ placeholders: PLACEHOLDERS })]);
     return instance;
   }, []);
 

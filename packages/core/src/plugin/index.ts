@@ -1,7 +1,7 @@
 import { isFunction } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import type { CorePlugin } from "./modules/implement";
+import { CorePlugin } from "./modules/implement";
 import { getPluginPriority } from "./modules/priority";
 import type { CallerMap, CallerType, PluginFuncKeys, PluginRequiredKeyFunc } from "./types";
 
@@ -32,17 +32,30 @@ export class Plugin {
   }
 
   /**
-   * 批量注册插件
-   * @param plugins
-   * @note 支持单次批量注册
+   * 对外的插件注册方法
+   * - 会在注册插件时进行 Hook
    */
-  public register(...plugins: CorePlugin[]) {
-    this.destroy();
-    const map: Record<string, CorePlugin> = {};
-    for (const plugin of plugins) {
-      map[plugin.key] = plugin;
+  public get register() {
+    CorePlugin.editor = this.editor;
+    /**
+     * 批量注册插件
+     * @param plugins
+     * @note 支持单次批量注册
+     */
+    function _register(this: Plugin, plugins: CorePlugin[]) {
+      this.destroy();
+      const map: Record<string, CorePlugin> = {};
+      for (const plugin of plugins) {
+        map[plugin.key] = plugin;
+        // @ts-expect-error private property
+        if (process.env.NODE_ENV === "development" && plugin.editor !== this.editor) {
+          throw new TypeError(`Editor Instance Mismatch: ${plugin.key}`);
+        }
+      }
+      this.current = Object.values(map);
+      CorePlugin.editor = null;
     }
-    this.current = Object.values(map);
+    return _register;
   }
 
   /**

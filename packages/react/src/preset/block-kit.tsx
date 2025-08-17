@@ -1,5 +1,6 @@
 import type { Editor } from "@block-kit/core";
 import { EDITOR_STATE } from "@block-kit/core";
+import type { ReactNode } from "react";
 import { useMemo } from "react";
 
 import { BlockKitContext } from "../hooks/use-editor";
@@ -7,7 +8,13 @@ import { ReadonlyContext } from "../hooks/use-readonly";
 import { PortalModel } from "../model/portal";
 import { initWrapPlugins } from "../plugin/modules/wrap";
 
-export const BlockKit: React.FC<{ editor: Editor; readonly?: boolean }> = props => {
+export type BlockKitProps = {
+  editor: Editor;
+  readonly?: boolean;
+  children?: ReactNode;
+};
+
+export const BlockKit: React.FC<BlockKitProps> = props => {
   const { editor, readonly, children } = props;
 
   if (editor.state.get(EDITOR_STATE.READONLY) !== readonly) {

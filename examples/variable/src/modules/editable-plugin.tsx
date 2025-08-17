@@ -1,12 +1,13 @@
 import type { LeafState } from "@block-kit/core";
-import { EDITOR_EVENT, getLeafNode, isArrowRight, isEmbedZeroNode } from "@block-kit/core";
+import { EDITOR_EVENT, isArrowRight } from "@block-kit/core";
+import { isArrowLeft } from "@block-kit/core";
 import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
 import { EditorPlugin, Embed } from "@block-kit/react";
 import type { EventContext } from "@block-kit/utils";
 import { cs } from "@block-kit/utils";
-import { Bind, DEFAULT_PRIORITY, isDOMText } from "@block-kit/utils";
+import { Bind, isDOMText } from "@block-kit/utils";
 
 import { EditableTextInput } from "../components/editable-input";
 import { DATA_EDITABLE_KEY, VARS_CLS_PREFIX, VARS_KEY, VARS_VALUE_KEY } from "../utils/constant";
@@ -19,7 +20,7 @@ export class EditableInputPlugin extends EditorPlugin {
   constructor(options?: EditableInputOptions) {
     super();
     this.options = options || {};
-    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, DEFAULT_PRIORITY - 10);
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown, 10);
   }
 
   public destroy(): void {
@@ -32,20 +33,48 @@ export class EditableInputPlugin extends EditorPlugin {
 
   @Bind
   public onKeyDown(event: KeyboardEvent, context: EventContext) {
-    let sel: Selection | null = null;
+    const sel = this.editor.selection.get();
+    const selection = window.getSelection();
+    if (!sel || !sel.isCollapsed || !selection) {
+      return void 0;
+    }
+    if (!isArrowRight(event) && !isArrowLeft(event)) {
+      return void 0;
+    }
+    const leaf = this.editor.lookup.getLeafAtPoint(sel.start);
+    const nextLeaf = leaf && leaf.next();
     if (
       isArrowRight(event) &&
-      (sel = getSelection()) &&
-      sel.isCollapsed &&
-      isEmbedZeroNode(sel.focusNode)
+      nextLeaf &&
+      nextLeaf.embed &&
+      leaf &&
+      sel.start.offset === leaf.offset + leaf.length &&
+      nextLeaf.op.attributes &&
+      nextLeaf.op.attributes[VARS_KEY]
     ) {
-      const leafNode = getLeafNode(sel.focusNode);
-      const editableNode = leafNode && leafNode.querySelector(`[${DATA_EDITABLE_KEY}]`);
-      if (!editableNode) return void 0;
-      const targetNode = isDOMText(editableNode.firstChild)
-        ? editableNode.firstChild
-        : editableNode;
-      sel.setBaseAndExtent(targetNode, 0, targetNode, 0);
+      const leafNode = this.editor.model.getLeafNode(nextLeaf);
+      const node = leafNode && leafNode.querySelector(`[${DATA_EDITABLE_KEY}]`);
+      if (!node) return void 0;
+      const targetNode = isDOMText(node.firstChild) ? node.firstChild : node;
+      selection.setBaseAndExtent(targetNode, 0, targetNode, 0);
+      context.stop();
+      event.preventDefault();
+    }
+    if (
+      isArrowLeft(event) &&
+      leaf &&
+      leaf.embed &&
+      leaf &&
+      sel.start.offset === leaf.offset + leaf.length &&
+      leaf.op.attributes &&
+      leaf.op.attributes[VARS_KEY]
+    ) {
+      const leafNode = this.editor.model.getLeafNode(leaf);
+      const node = leafNode && leafNode.querySelector(`[${DATA_EDITABLE_KEY}]`);
+      if (!node) return void 0;
+      const targetNode = isDOMText(node.firstChild) ? node.firstChild : node;
+      const offset = isDOMText(node.firstChild) ? node.firstChild.length : 0;
+      selection.setBaseAndExtent(targetNode, offset, targetNode, offset);
       context.stop();
       event.preventDefault();
     }

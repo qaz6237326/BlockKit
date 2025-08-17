@@ -1,6 +1,15 @@
-import { EDITOR_EVENT } from "@block-kit/core";
+import { EDITOR_EVENT, LEAF_KEY, LEAF_STRING, ZERO_SPACE_KEY } from "@block-kit/core";
 import { Isolate } from "@block-kit/react";
-import { isKeyCode, isNil, KEY_CODE, NOOP, preventNativeEvent, TEXT_PLAIN } from "@block-kit/utils";
+import {
+  isDOMElement,
+  isDOMText,
+  isKeyCode,
+  isNil,
+  KEY_CODE,
+  NOOP,
+  preventNativeEvent,
+  TEXT_PLAIN,
+} from "@block-kit/utils";
 import { useMemoFn } from "@block-kit/utils/dist/es/hooks";
 import type { O } from "@block-kit/utils/dist/es/types";
 import type { FC } from "react";
@@ -47,6 +56,59 @@ export const EditableTextInput: FC<{
     }
   });
 
+  const onKeyDown = useMemoFn((e: KeyboardEvent) => {
+    if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
+      preventNativeEvent(e);
+    }
+    const sel = window.getSelection();
+    LEFT_ARROW: if (
+      isKeyCode(e, KEY_CODE.LEFT) &&
+      sel &&
+      sel.isCollapsed &&
+      sel.anchorOffset === 0 &&
+      sel.anchorNode &&
+      sel.anchorNode.parentElement &&
+      sel.anchorNode.parentElement.closest(`[${LEAF_KEY}]`)
+    ) {
+      const leafNode = sel.anchorNode.parentElement.closest(`[${LEAF_KEY}]`)!;
+      const prevNode = leafNode.previousSibling;
+      if (!isDOMElement(prevNode) || !prevNode.hasAttribute(LEAF_KEY)) {
+        break LEFT_ARROW;
+      }
+      const selector = `span[${LEAF_STRING}], span[${ZERO_SPACE_KEY}]`;
+      const focusNode = prevNode.querySelector(selector);
+      if (!focusNode || !isDOMText(focusNode.firstChild)) {
+        break LEFT_ARROW;
+      }
+      const text = focusNode.firstChild;
+      sel.setBaseAndExtent(text, text.length, text, text.length);
+      preventNativeEvent(e);
+    }
+    RIGHT_ARROW: if (
+      isKeyCode(e, KEY_CODE.RIGHT) &&
+      sel &&
+      sel.isCollapsed &&
+      sel.anchorOffset === props.value.length &&
+      sel.anchorNode &&
+      sel.anchorNode.parentElement &&
+      sel.anchorNode.parentElement.closest(`[${LEAF_KEY}]`)
+    ) {
+      const leafNode = sel.anchorNode.parentElement.closest(`[${LEAF_KEY}]`)!;
+      const prevNode = leafNode.nextSibling;
+      if (!isDOMElement(prevNode) || !prevNode.hasAttribute(LEAF_KEY)) {
+        break RIGHT_ARROW;
+      }
+      const selector = `span[${LEAF_STRING}], span[${ZERO_SPACE_KEY}]`;
+      const focusNode = prevNode.querySelector(selector);
+      if (!focusNode || !isDOMText(focusNode.firstChild)) {
+        break RIGHT_ARROW;
+      }
+      const text = focusNode.firstChild;
+      sel.setBaseAndExtent(text, 0, text, 0);
+      preventNativeEvent(e);
+    }
+  });
+
   useEffect(() => {
     const el = refState;
     if (!el) return void 0;
@@ -56,11 +118,6 @@ export const EditableTextInput: FC<{
     const onCompositionEnd = (e: CompositionEvent) => {
       setIsComposing(false);
       onInput(e);
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
-        preventNativeEvent(e);
-      }
     };
     const onPaste = (e: ClipboardEvent) => {
       preventNativeEvent(e);
@@ -84,7 +141,7 @@ export const EditableTextInput: FC<{
       el.removeEventListener(COMPOSITION_START, onCompositionStart);
       el.removeEventListener(COMPOSITION_END, onCompositionEnd);
     };
-  }, [onInput, onMouseDown, refState]);
+  }, [onInput, onKeyDown, onMouseDown, refState]);
 
   return (
     <Isolate className={props.className} style={props.style}>

@@ -16,6 +16,7 @@ import { DELTA, PLACEHOLDERS, SCHEMA, SELECTOR } from "./constant";
 
 const App: FC = () => {
   const [readonly] = useState(false);
+
   const editor = useMemo(() => {
     const instance = new Editor({ schema: SCHEMA, delta: DELTA, logLevel: LOG_LEVEL.DEBUG });
     instance.plugin.register([

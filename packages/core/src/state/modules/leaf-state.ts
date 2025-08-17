@@ -11,7 +11,7 @@ import type { LineState } from "./line-state";
 export class LeafState {
   /** Op 所属 Line 的索引 */
   public index: number;
-  /** Op 起始偏移量 */
+  /** Op 行级起始偏移量 */
   public offset: number;
   /** 唯一 key 值 */
   public key: string;

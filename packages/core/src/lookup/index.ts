@@ -32,6 +32,7 @@ export class Lookup {
 
   /**
    * 基于 Point 获取索引位置的 Leaf
+   * - 节点的文本偏移: point.offset - leaf.offset
    * @param point
    */
   public getLeafAtPoint(point: Point): LeafState | null {

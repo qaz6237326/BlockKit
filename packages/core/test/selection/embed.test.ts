@@ -1,4 +1,5 @@
 import { Delta } from "@block-kit/delta";
+import { KEY_CODE } from "@block-kit/utils";
 
 import { Editor, LOG_LEVEL, Range } from "../../src";
 import { mountEditorViewModel } from "../config/view";
@@ -19,6 +20,7 @@ describe("selection embed", () => {
       mention: { inline: true, void: true },
     },
   });
+  editor.state.set("FOCUS", true);
   const { leafDOMs } = mountEditorViewModel(editor);
 
   it("normal zero node", () => {
@@ -78,6 +80,15 @@ describe("selection embed", () => {
     const node = leafDOMs[0][1].querySelector("[data-embed-text]")!;
     const text = node.firstChild!;
     sel?.setBaseAndExtent(text, 2, text, 2);
+    document.dispatchEvent(new Event("selectionchange"));
+    expect(editor.selection.get()).toEqual(Range.fromTuple([0, 5], [0, 5]));
+  });
+
+  it("embed selection right arrow", () => {
+    editor.selection.set(Range.fromTuple([0, 4], [0, 4]), true);
+    const container = editor.getContainer();
+    const event = new KeyboardEvent("keydown", { keyCode: KEY_CODE.RIGHT });
+    container.dispatchEvent(event);
     document.dispatchEvent(new Event("selectionchange"));
     expect(editor.selection.get()).toEqual(Range.fromTuple([0, 5], [0, 5]));
   });

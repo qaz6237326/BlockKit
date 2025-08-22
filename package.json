@@ -5,10 +5,10 @@
   "scripts": {
     "bootstrap": "pnpm install --frozen-lockfile",
     "dev": "pnpm run --filter ./examples/website dev",
-    "build": "pnpm run --filter \"./packages/*\" build",
-    "test": "pnpm run --filter \"./packages/*\" test",
-    "lint:ts": "pnpm run --filter \"./packages/*\" lint:ts",
-    "lint:circular": "pnpm run --filter \"./packages/*\" lint:circular"
+    "build": "pnpm run --filter '*' build",
+    "test": "pnpm run --filter '*' test",
+    "lint:ts": "pnpm run --filter '*' lint:ts",
+    "lint:circular": "pnpm run --filter '*' lint:circular"
   },
   "author": "WindRunnerMax",
   "license": "MIT",

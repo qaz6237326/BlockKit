@@ -148,8 +148,11 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
       }
       // CASE2: 当 Embed 元素前存在内容且光标位于节点末时, 需要校正到 Embed 节点上
       // <s>1|</s><e> </e> => <s>1</s><e>| </e>
-      if (nodeOffset === len && nextLeaf && nextLeaf.hasAttribute(ZERO_EMBED_KEY)) {
-        return { node: nextLeaf, offset: 0 };
+      // 这部分主要是避免按下右键时需要受控处理光标移动, 但与 Model Case2 冲突依然需要受控
+      {
+        // if (nodeOffset === len && nextLeaf && nextLeaf.hasAttribute(ZERO_EMBED_KEY)) {
+        //   return { node: nextLeaf, offset: 0 };
+        // }
       }
       // CASE3: 当光标位于 Void 节点时, 且此时存在后续的 leaf 节点, 需要兜底处理节点偏移
       // 由于是 Void 而不是 Embed, 通常这种情况不会存在, 但是需要兜底这种情况, 防止 crash

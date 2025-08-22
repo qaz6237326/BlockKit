@@ -3,7 +3,7 @@ import "../styles/link.scss";
 import { Button, Form, Input, Switch, Trigger } from "@arco-design/web-react";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { IconLink, IconRight } from "@arco-design/web-react/icon";
-import { APPLY_SOURCE, EDITOR_EVENT } from "@block-kit/core";
+import { EDITOR_EVENT } from "@block-kit/core";
 import { cs, NIL, TRULY } from "@block-kit/utils";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
@@ -82,7 +82,7 @@ export const Link: FC<{
       editor.perform.applyMarks(
         sel,
         { [LINK_TEMP_KEY]: TRULY },
-        { autoCaret: false, source: APPLY_SOURCE.NO_UNDO }
+        { autoCaret: false, undoable: false }
       );
       editor.event.once(EDITOR_EVENT.SELECTION_CHANGE, () => {
         // 这里是需要等待渲染后再执行, 否则会导致选区校正无法获取 LineNode
@@ -90,7 +90,7 @@ export const Link: FC<{
           editor.perform.applyMarks(
             sel,
             { [LINK_TEMP_KEY]: NIL },
-            { autoCaret: false, source: APPLY_SOURCE.NO_UNDO }
+            { autoCaret: false, undoable: false }
           );
         });
       });

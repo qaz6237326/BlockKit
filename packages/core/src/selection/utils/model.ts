@@ -67,8 +67,8 @@ export const toModelPoint = (
     return new Point(lineIndex, 1);
   }
   // Case 4: 光标位于 data-zero-embed 节点上时, 需要将其修正为节点前
-  // 若不校正会携带 DOM-Point CASE1 的零选区位置, 按下左键无法正常移动光标
-  // 主体原则是落于零宽字符时，光标置于节点前, `div`位置表示节点后, 对齐浏览器
+  // 若不校正会携带先前 Model CASE1 的零选区位置, 按下左键无法正常移动光标
+  // 主体原则是落于零宽字符时, 光标置于节点前, `div`位置表示节点后, 对齐浏览器
   // [[z][caret]]\n => [[caret][z]]\n
   // [[z][div[caret]]][123]\n => [[z][div]][[caret]123]\n
   // Case 5: 光标在 Embed 节点内时, 光标可能会在其内部文本上(offset 可能 > 1)

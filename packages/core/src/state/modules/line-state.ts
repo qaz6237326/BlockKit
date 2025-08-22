@@ -157,7 +157,7 @@ export class LineState {
 
   /**
    * 向前查找行状态
-   * @param len
+   * @param len [?=1]
    */
   public prev(len = 1) {
     return this.parent.getLine(this.index - len);
@@ -165,7 +165,7 @@ export class LineState {
 
   /**
    * 向后查找行状态
-   * @param len
+   * @param len [?=1]
    */
   public next(len = 1) {
     return this.parent.getLine(this.index + len);

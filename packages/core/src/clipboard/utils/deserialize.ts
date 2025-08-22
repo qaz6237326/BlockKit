@@ -68,7 +68,7 @@ export const applyLineMarker = (delta: Delta, attributes: AttributeMap) => {
       op.attributes = { ...op.attributes, ...attributes };
     }
   }
-  // 如果最后一个操作不是 EOL，则添加一个 EOL
+  // 如果最后一个操作不是 EOL, 则添加一个 EOL
   const lastOp = delta.ops[delta.ops.length - 1];
   if (lastOp && lastOp.insert !== EOL) {
     delta.ops.push({ insert: EOL, attributes: { ...attributes } });

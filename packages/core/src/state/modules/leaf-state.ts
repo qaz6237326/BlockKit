@@ -57,9 +57,9 @@ export class LeafState {
 
   /**
    * 获取前一个 LeafState
-   * @param span [?=true] 跨行
+   * @param span [?=false] 跨行
    */
-  public prev(span = true) {
+  public prev(span = false) {
     const index = this.index;
     if (index < 0) return null;
     // 大于 0 则可以直接取前一个节点
@@ -74,9 +74,9 @@ export class LeafState {
 
   /**
    * 获取下一个 LeafState
-   * @param span [?=true] 跨行
+   * @param span [?=false] 跨行
    */
-  public next(span = true) {
+  public next(span = false) {
     const index = this.index;
     if (index < 0) return null;
     if (index < this.parent.size - 1) {

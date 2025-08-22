@@ -2,7 +2,7 @@ import "../styles/index.scss";
 
 import { IconLoading } from "@arco-design/web-react/icon";
 import type { Editor } from "@block-kit/core";
-import { APPLY_SOURCE, RawRange } from "@block-kit/core";
+import { RawRange } from "@block-kit/core";
 import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
@@ -49,7 +49,7 @@ export const ImageView: FC<{
     const rawRange = RawRange.fromRange(editor, range);
     if (!rawRange) return void 0;
     const delta = new Delta().retain(rawRange.start).retain(rawRange.len, next);
-    editor.state.apply(delta, { source: APPLY_SOURCE.NO_UNDO, autoCaret: false });
+    editor.state.apply(delta, { undoable: false, autoCaret: false });
   };
 
   return (

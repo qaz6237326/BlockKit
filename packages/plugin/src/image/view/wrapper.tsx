@@ -35,7 +35,7 @@ export const ImageWrapper: FC<{
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const resider = e.target;
     if (!ref.current) return void 0;
-    // 这里直接取图片的宽高，若取原始图宽高会导致拖拽缩放问题
+    // 这里直接取图片的宽高, 若取原始图宽高会导致拖拽缩放问题
     const width = ref.current.clientWidth;
     const height = ref.current.clientHeight;
     e.stopPropagation();

@@ -9,7 +9,7 @@ import { isOrderList } from "./is";
 
 /**
  * 批量刷新选区的列表序号 [批量刷新简单方便]
- * - 从选区开始的第一个列表项开始，逐个刷新序号
+ * - 从选区开始的第一个列表项开始, 逐个刷新序号
  * - 全量刷新序号数据, 最后需要在渲染时批量刷新
  * @param editor
  * @param sel
@@ -23,7 +23,7 @@ export const applyNewOrderList = (editor: Editor, range?: Range) => {
   const selStartLine = block.getLine(sel.start.line);
   const selEndLine = block.getLine(sel.end.line);
   const selEndNextLine = selEndLine && selEndLine.next();
-  // 如果当前行不是列表项，且选区结尾下一行是列表项，则从下一行开始探查
+  // 如果当前行不是列表项, 且选区结尾下一行是列表项, 则从下一行开始探查
   if (
     selStartLine &&
     !isOrderList(selStartLine.attributes) &&

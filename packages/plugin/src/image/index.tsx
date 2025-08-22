@@ -1,5 +1,5 @@
 import type { CMDPayload, Editor } from "@block-kit/core";
-import { APPLY_SOURCE, Point, Range, RawRange } from "@block-kit/core";
+import { Point, Range, RawRange } from "@block-kit/core";
 import type { AttributeMap } from "@block-kit/delta";
 import { Delta } from "@block-kit/delta";
 import type { ReactLeafContext } from "@block-kit/react";
@@ -107,7 +107,7 @@ export class ImagePlugin extends EditorPlugin {
     editor.state.apply(delta, { autoCaret: false });
     editor.selection.set(new Range(point, point));
     // 正式开始上传文件
-    // 注意这里是先 apply 再上传文件，否则 pack 的索引会被影响到
+    // 注意这里是先 apply 再上传文件, 否则 pack 的索引会被影响到
     for (let i = 0; i < packIndex.length; i++) {
       const file = files[i];
       const refIndex = packIndex[i];
@@ -122,7 +122,7 @@ export class ImagePlugin extends EditorPlugin {
             [IMAGE_STATUS]: LOADING_STATUS.SUCCESS,
           };
           const change = new Delta().retain(rawRange.start).retain(1, next);
-          editor.state.apply(change, { source: APPLY_SOURCE.NO_UNDO });
+          editor.state.apply(change, { undoable: false });
         })
         .catch(() => {
           const rawRange = ref.unpack();
@@ -131,7 +131,7 @@ export class ImagePlugin extends EditorPlugin {
             [IMAGE_STATUS]: LOADING_STATUS.FAIL,
           };
           const change = new Delta().retain(rawRange.start).retain(rawRange.len, next);
-          editor.state.apply(change, { source: APPLY_SOURCE.NO_UNDO, autoCaret: false });
+          editor.state.apply(change, { undoable: false, autoCaret: false });
         });
     }
   }

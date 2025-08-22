@@ -13,7 +13,6 @@ import { ALERT, DIRECTION } from "./types";
 import {
   getRootSelection,
   getStaticSelection,
-  isEmbedZeroNode,
   isNeedIgnoreRangeDOM,
   isVoidZeroNode,
 } from "./utils/dom";
@@ -240,10 +239,11 @@ export class Selection {
       newFocus = new Point(nextLine.index, 0);
     }
     // 右键且在嵌入节点时 将光标放在嵌入节点后
-    if (rightArrow && sel && sel.isCollapsed && isEmbedZeroNode(sel.focusNode)) {
-      const line = newFocus ? newFocus.line : focus.line;
-      const offset = newFocus ? newFocus.offset : focus.offset;
-      newFocus = new Point(line, offset + 1);
+    RIGHT_ARROW: if (rightArrow && sel && sel.isCollapsed) {
+      const leaf = this.editor.lookup.getLeafAtPoint(focus);
+      const nextLeaf = leaf && leaf.next();
+      if (!leaf || !nextLeaf || !nextLeaf.embed) break RIGHT_ARROW;
+      newFocus = new Point(focus.line, focus.offset + 1);
     }
     // 如果存在新的焦点, 则统一更新选区
     if (newFocus) {

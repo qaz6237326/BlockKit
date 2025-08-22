@@ -1,4 +1,4 @@
-import type { Delta } from "@block-kit/delta";
+import { Delta } from "@block-kit/delta";
 import { getId } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
@@ -10,7 +10,7 @@ import { BlockState } from "./modules/block-state";
 import { Mutate } from "./mutate";
 import type { ApplyOptions, ApplyResult } from "./types";
 import { EDITOR_STATE } from "./types";
-import { normalizeDelta } from "./utils/normalize";
+import { normalizeDelta, removeLastEOL } from "./utils/normalize";
 
 export class EditorState {
   /** Delta 缓存 */
@@ -85,7 +85,19 @@ export class EditorState {
   }
 
   /**
-   * 应用变更
+   * 主动设置编辑器内容
+   * @param delta
+   */
+  public setContent(delta: Delta) {
+    const len = this.block.length - 1;
+    const newDelta = new Delta().delete(len).concat(removeLastEOL(delta));
+    this.apply(newDelta, { undoable: false });
+    this.editor.history.clear();
+    return this;
+  }
+
+  /**
+   * 应用编辑器变更
    * @param delta
    * @param options
    */
@@ -100,6 +112,7 @@ export class EditorState {
     // 获取当前选区位置
     const raw: RawRange | null = autoCaret ? options.range || selection.toRaw() : null;
     this.editor.event.trigger(EDITOR_EVENT.CONTENT_WILL_CHANGE, {
+      options,
       current: previous,
       source: source,
       changes: normalized,
@@ -122,6 +135,7 @@ export class EditorState {
     const current = this.toBlockSet();
     const payload: ContentChangeEvent = {
       id: id,
+      options,
       previous: previous,
       current: current,
       source: source,

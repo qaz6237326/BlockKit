@@ -18,6 +18,8 @@ export const Editable: React.FC<{
   /**
    * 占位节点
    * - 节点会脱离文档流, 需要注意 CSS 布局
+   * - data-node 节点样式需要同步 data-placeholder
+   * - 伪元素模式仅支持文本, 可以配合 data-block 处理
    */
   placeholder?: React.ReactNode;
   /**

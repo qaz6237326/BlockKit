@@ -4,6 +4,7 @@ import type { Object } from "@block-kit/utils";
 import type { Reflex } from "@block-kit/utils";
 
 import type { Range } from "../../selection/modules/range";
+import type { ApplyOptions } from "../../state/types";
 import type { NativeEventMap } from "../native/types";
 import { NATIVE_EVENTS } from "../native/types";
 
@@ -19,6 +20,7 @@ export type ContentWillChangeEvent = {
   current: Delta;
   changes: Delta;
   source: string;
+  options: ApplyOptions;
 };
 
 export type ContentChangeEvent = ContentWillChangeEvent & {

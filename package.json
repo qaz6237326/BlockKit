@@ -7,7 +7,8 @@
     "dev": "pnpm run --filter ./examples/website dev",
     "build": "pnpm run --filter \"./packages/*\" build",
     "test": "pnpm run --filter \"./packages/*\" test",
-    "lint:ts": "pnpm run --filter \"./packages/*\" lint:ts"
+    "lint:ts": "pnpm run --filter \"./packages/*\" lint:ts",
+    "lint:circular": "pnpm run --filter \"./packages/*\" lint:circular"
   },
   "author": "WindRunnerMax",
   "license": "MIT",

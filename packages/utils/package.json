@@ -10,11 +10,9 @@
     "dist"
   ],
   "scripts": {
-    "build:es": "tsc -p tsconfig.build.json",
-    "build:lib": "tsc -p tsconfig.lib.json",
     "build:style": "mkdir -p dist/style && cp src/*.*ss dist/style",
-    "build": "npm run build:es && npm run build:lib && npm run build:style",
-    "test": "jest",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.lib.json && npm run build:style",
+    "test": "jest --config jest.config.js",
     "lint:ts": "tsc -p tsconfig.build.json --noEmit",
     "lint:circular": "madge --extensions js --circular ./dist"
   },

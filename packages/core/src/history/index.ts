@@ -117,6 +117,7 @@ export class History {
 
   /**
    * 批量执行回调
+   * - 合并执行的历史记录
    * @param callback
    */
   public batch(callback: () => void) {
@@ -178,6 +179,17 @@ export class History {
   }
 
   /**
+   * 清空历史记录
+   */
+  public clear() {
+    this.batching = [];
+    this.redoStack = [];
+    this.undoStack = [];
+    this.lastRecord = 0;
+    this.currentRange = null;
+  }
+
+  /**
    * 获取最新选区
    */
   @Bind
@@ -213,7 +225,7 @@ export class History {
     if (!changes.ops.length || source === APPLY_SOURCE.HISTORY) {
       return void 0;
     }
-    if (event.source === APPLY_SOURCE.REMOTE || event.source === APPLY_SOURCE.NO_UNDO) {
+    if (event.source === APPLY_SOURCE.REMOTE || event.options.undoable === false) {
       this.transformStack(this.undoStack, changes);
       this.transformStack(this.redoStack, changes);
       return void 0;

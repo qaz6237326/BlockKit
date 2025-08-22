@@ -24,8 +24,6 @@ export const APPLY_SOURCE = {
   REMOTE: "REMOTE",
   /** History 模块触发 */
   HISTORY: "HISTORY",
-  /** 不记录 History */
-  NO_UNDO: "NO_UNDO",
 };
 
 export type ApplyOptions = {
@@ -41,6 +39,8 @@ export type ApplyOptions = {
    * - 相关规则参考 normalizeDelta 方法
    */
   preventNormalize?: boolean;
+  /** 自动记录到 History */
+  undoable?: boolean;
 };
 
 export type ApplyResult = {

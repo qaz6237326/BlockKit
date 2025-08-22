@@ -12,8 +12,13 @@
 
 ```bash
 pnpm install
-pnpm run --filter "../../packages/*" build
-npm run dev
+pnpm run --filter "@block-kit/variable^..." build
+npm run dev 
+```
+
+```bash
+# http://localhost:8080/variable.html
+pnpm run --filter @block-kit/website dev
 ```
 
 ## Example

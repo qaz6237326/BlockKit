@@ -98,5 +98,5 @@ export { Iterator } from "./state/mutate/iterator";
 export type { ApplyOptions } from "./state/types";
 export { APPLY_SOURCE, EDITOR_STATE } from "./state/types";
 export { Key, NODE_TO_KEY } from "./state/utils/key";
-export { binarySearch, normalizeDelta } from "./state/utils/normalize";
+export { binarySearch, normalizeDelta, removeLastEOL } from "./state/utils/normalize";
 export { Tracer } from "./tracer";

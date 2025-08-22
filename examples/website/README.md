@@ -12,7 +12,6 @@
 
 ```bash
 pnpm install
-pnpm run --filter "../../packages/*" build
-pnpm run --filter "../../examples/*" --filter !'./'  build
+pnpm run --filter "@block-kit/website^..." build
 npm run dev
 ```

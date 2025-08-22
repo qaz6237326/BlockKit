@@ -23,6 +23,7 @@ describe("event bus", () => {
       inserts: [],
       revises: [],
       deletes: [],
+      options: {},
     });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: protected property
@@ -44,6 +45,7 @@ describe("event bus", () => {
       inserts: [],
       revises: [],
       deletes: [],
+      options: {},
     });
     event.emit(EDITOR_EVENT.CONTENT_CHANGE, {
       current: delta,
@@ -54,6 +56,7 @@ describe("event bus", () => {
       inserts: [],
       revises: [],
       deletes: [],
+      options: {},
     });
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -71,6 +74,7 @@ describe("event bus", () => {
       inserts: [],
       revises: [],
       deletes: [],
+      options: {},
     });
     event.emit(EDITOR_EVENT.CONTENT_CHANGE, {
       current: delta,
@@ -81,6 +85,7 @@ describe("event bus", () => {
       inserts: [],
       revises: [],
       deletes: [],
+      options: {},
     });
     expect(spy).toHaveBeenCalledTimes(0);
   });

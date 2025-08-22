@@ -39,7 +39,7 @@ export const normalizeDelta = (editor: Editor, delta: Delta) => {
   const ops = delta.ops;
   const collection: Ops = [];
   const collect = (op: Op) => {
-    if (!op.attributes) {
+    if (!op.attributes || !Object.keys(op.attributes).length) {
       delete op.attributes;
     }
     return collection.push(op);
@@ -74,4 +74,21 @@ export const normalizeDelta = (editor: Editor, delta: Delta) => {
     return void 0;
   });
   return new Delta(collection);
+};
+
+/**
+ * 移除 Delta 末尾的文本 EOL
+ * @param delta
+ */
+export const removeLastEOL = (delta: Delta) => {
+  if (!delta.ops.length) return delta;
+  const newOps = [...delta.ops];
+  let lastOp: Op | void = newOps.pop();
+  if (lastOp && isInsertOp(lastOp)) {
+    const newLastOp = cloneOp(lastOp);
+    newLastOp.insert = lastOp.insert.replace(/\n$/, "");
+    lastOp = newLastOp.insert ? newLastOp : void 0;
+  }
+  lastOp && newOps.push(lastOp);
+  return new Delta(newOps);
 };

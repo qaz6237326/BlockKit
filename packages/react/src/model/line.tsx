@@ -39,7 +39,8 @@ const LineView: FC<{
    */
   useUpdateLayoutEffect(() => {
     const leaves = lineState.getLeaves();
-    // OnRef 调用时机在 LayoutEffect 前, 在此处进行脏数据检查
+    // 在 OnRef 回调时会设置 Leaf 映射的相关 DOM 节点以及方法等
+    // OnRef 调用时机在 LayoutEffect 前, 可以在此处进行脏数据检查
     for (const leaf of leaves) {
       updateDirtyText(leaf);
       updateDirtyLeaf(editor, leaf);

@@ -22,9 +22,9 @@ export const toModelPoint = (
     isCollapsed: boolean;
     /** 是否是末尾节点(EndDOMPoint) */
     isEndNode: boolean;
-    /** 原始容器 */
+    /** 原始选区容器 */
     nodeContainer: Node;
-    /** 原始偏移 */
+    /** 原始选区偏移 */
     nodeOffset: number;
   }
 ) => {
@@ -77,12 +77,16 @@ export const toModelPoint = (
   // [embed[caret > 1]] => [embed[caret = 1]]
   if (leafModel && leafModel.embed && offset >= 1) {
     const isEmbedZeroContainer = isEmbedZeroNode(nodeContainer);
+    // 若是光标在 Embed 节点的零宽字符上, 修正到 Embed 节点前
     if (isEmbedZeroContainer && nodeOffset) {
       return new Point(lineIndex, leafModel.offset);
     }
+    // 非折叠状态下, 需要判断 End 节点来决定选中边界
     if (!isCollapsed && isDOMText(nodeContainer)) {
-      return new Point(lineIndex, leafModel.offset + (isEndNode ? 1 : 0));
+      const index = isEndNode ? 1 : 0;
+      return new Point(lineIndex, leafModel.offset + index);
     }
+    // 默认情况下, 点击内部文本直接将光标放置于节点后
     return new Point(lineIndex, leafModel.offset + 1);
   }
 

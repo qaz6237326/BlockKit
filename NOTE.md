@@ -1675,7 +1675,93 @@ for (const leaf of leaves) {
 
 以这种策略来处理脏`DOM`的问题，还可以避免部分其他可能存在的问题，零宽字符文本的内容暂时先不处理，如果再碰到类似的情况是需要额外的检查的。此外，这里的问题也可能是我们的选区策略是尽可能偏左侧的查找，如果在这种情况将其校正到右侧节点可能也可以解决问题，不过因为在空行的情况下我们的末尾`\n`节点并不会渲染，因此这样的策略目前并不能彻底解决问题。
 
-然而，在往后的的实现中，重新出现了先前在`Wrapper DOM`一节中提到的`a`标签问题，此时的问题变得复杂了很多，主要是各个浏览器的兼容性的问题。
+然而，在后期的实现中，重新出现了先前在`Wrapper DOM`一节中提到的`a`标签问题，此时的问题变得复杂了很多，主要是各个浏览器的兼容性的问题。类似于行内代码块，本质上还是浏览器`IME`非受控导致的`DOM`变更问题，但是在浏览器表现差异很大，下面是最小的`DEMO`结构。
+
+```html
+<div contenteditable>
+  <span data-leaf><a href="#"><span data-string>在[:]后输入:</span></a></span><span data-leaf>非链接文本</span>
+</div>
+```
+
+在上述示例的`a`标签位置的最后的位置上输入内容，主流的浏览器的表现是有差异的，甚至在不同版本的浏览器上表现还不一致:
+
+- 在`Chrome`中会在`a`标签的同级位置插入文本类型的节点，效果类似于`<a></a>"text"`内容。
+- 在`Firefox`中会在`a`标签内插入`span`类型的节点，效果类似于`<a></a><span data-string>text</span>`内容。
+- 在`Safari`中会将`a`标签和`span`标签交换位置，然后在`a`标签上同级位置加入文本内容，类似`<span><a></a>"text"</span>`。
+
+```html
+<!-- Chrome -->
+<span data-leaf="true">
+  <a href="https://www.baidu.com"><span data-string="true">超链接</span></a>
+  "文本"
+</span>
+
+<!-- Firefox -->
+ <span data-leaf="true">
+  <a href="https://www.baidu.com"><span data-string="true">超链接</span></a>
+  <span data-string="true">文本</span>
+</span>
+
+<!-- Safari -->
+ <span data-leaf="true">
+  <span data-string="true">
+    <a href="https://www.baidu.com">超链接</a>
+    "文本"
+    ""
+  </span>
+</span>
+```
+
+因此我们的脏`DOM`检查需要更细粒度地处理，仅仅对比文本内容显然是不足以处理的，我们还需要检查文本的内容节点结构是否准确。其实最开始我是仅处理了`Chrome`下的情况，最简单的办法就是在`leaf`节点下仅允许存在单个节点，存在多个节点则说明是脏`DOM`。
+
+```js
+for (let i = 1; i < nodes.length; ++i) {
+  const node = nodes[i];
+  node && node.remove();
+}
+```
+
+但是后来发现在编辑时会把`Embed`节点移除，这里也就是因为我们错误地把组合的`div`节点当成了脏`DOM`，因此这里就需要更细粒度地处理了。然后考虑检查节点的类型，如果是文本的节点类型再移除，那么就可以避免`Embed`节点被误删的问题。
+
+```js
+for (let i = 1; i < nodes.length; ++i) {
+  const node = nodes[i];
+  isDOMText(node) && node.remove();
+}
+```
+
+虽然看起来是解决了问题，然而在后续就发现了`Firefox`和`Safari`下的问题。先来看`Firefox`的情况，这个节点并非文本类型的节点，在脏`DOM`检查的时候就无法被移除掉，这依然无法处理`Firefox`下的脏`DOM`问题，因此我们需要进一步处理不同类型的节点。
+
+```js
+// data-leaf 节点内部仅应该存在非文本节点, 文本类型单节点, 嵌入类型双节点
+for (let i = 1; i < nodes.length; ++i) {
+  const node = nodes[i];
+  // 双节点情况下, 即 Void/Embed 节点类型时需要忽略该节点
+  if (isHTMLElement(node) && node.hasAttribute(VOID_KEY)) {
+    continue;
+  }
+  node.remove();
+}
+```
+
+在`Safari`的情况下就更加复杂，因为其会将`a`标签和`span`标签交换位置，这样就导致了`DOM`结构性造成了破坏。这种情况下我们就必须要重新刷新`DOM`结构，这种情况下就需要更加复杂地处理，在这里我们加入`forceUpdate`以及`TextNode`节点的检查。
+
+其实在飞书文档中也是采用了类似的做法，飞书文档的`a`标签在唤醒`IME`输入后，同样会触发脏`DOM`的检查，然后飞书文档会直接以行为基础`ReMount`当前行的所有`leaf`节点，这样就可以避免复杂的脏`DOM`检查。我们这里实现更精细的`leaf`处理，主要是避免不必要的挂载。
+
+```js
+const LeafView: FC = () => {
+  const { forceUpdate, index: renderKey } = useForceUpdate();
+  LEAF_TO_REMOUNT.set(leafState, forceUpdate);
+  return (<span key={renderKey}></span>);
+}
+
+if (isDOMText(dom.firstChild)) {
+  // ...
+} else {
+  const func = LEAF_TO_REMOUNT.get(leaf);
+  func && func();
+}
+```
 
 ## 全量存储 VS 增量存储
 假设我们现在的编辑器是表单、输入框等场景，那么自然是不需要协同的调度的，在这种情况下数据就可以直接全量存储。但是假如我们现在并不是这种小型场景，而是类似于知识库、笔记文档等这种相对不太需要多人协同的情况，或者以此为基础搭建`CMS`管理系统，就需要考虑增量文档存储的情况了。
@@ -2049,7 +2135,7 @@ const PortalView: FC<{ editor: Editor }> = props => {
 </span>
 ```
 
-因此在先前的实现中，虽然整个选区的行为是更倾向于偏左的节点，但是在`Embed`节点上的右侧选区则是偏右的，这是因为这里的设计会导致浏览器的光标展示是在左侧的，这部分实现则依旧保持现状。说起来`slate`的实现是额外增加了零宽节点作为选区，不会存在类似问题。
+因此在先前的实现中，虽然整个选区的行为是更倾向于偏左的节点，但是在`Embed`节点上的右侧选区则是偏右的，这是因为这里的设计会导致浏览器的光标始终是展示在左侧的，这部分实现则依旧保持现状。说起来`slate`的实现是额外增加了零宽节点作为选区，不会存在类似问题。
 
 此处的修改主要是对于`Case 4`做了增添，主体原则是落于零宽字符时，无论`offset`是`0`还是`1`，光标都会置于节点前，当然由于`offset`为`0`时本身就是左选区无需特殊处理。`data-void`位置表示选区需要置于节点后, 由此能够对齐浏览器的实现。
 

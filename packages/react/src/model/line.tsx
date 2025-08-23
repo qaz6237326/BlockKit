@@ -1,5 +1,4 @@
 import type { Editor, LineState } from "@block-kit/core";
-import type { LeafState } from "@block-kit/core";
 import { NODE_KEY, PLUGIN_TYPE } from "@block-kit/core";
 import { EOL, EOL_OP } from "@block-kit/delta";
 import { cs } from "@block-kit/utils";
@@ -7,11 +6,10 @@ import { useUpdateLayoutEffect } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 
-import { EDITOR_TO_WRAP_LEAF_KEYS, EDITOR_TO_WRAP_LEAF_PLUGINS } from "../plugin/modules/wrap";
-import type { ReactLineContext, ReactWrapLeafContext } from "../plugin/types";
+import { withWrapLeafNodes } from "../plugin/modules/wrap";
+import type { ReactLineContext } from "../plugin/types";
 import { updateDirtyLeaf, updateDirtyText } from "../utils/dirty-dom";
-import { JSX_TO_STATE, LEAF_TO_TEXT } from "../utils/weak-map";
-import { getWrapSymbol } from "../utils/wrapper-node";
+import { JSX_TO_STATE } from "../utils/weak-map";
 import { EOLModel } from "./eol";
 import { LeafModel } from "./leaf";
 
@@ -37,15 +35,14 @@ const LineView: FC<{
 
   /**
    * 首次处理会将所有 DOM 渲染, 不需要执行脏数据检查
-   * 需要 LayoutEffect 以保证 DOM -> Sel 的执行顺序
+   * - 需要 LayoutEffect 以保证 DOM -> Sel 的执行顺序
    */
   useUpdateLayoutEffect(() => {
     const leaves = lineState.getLeaves();
+    // OnRef 调用时机在 LayoutEffect 前, 在此处进行脏数据检查
     for (const leaf of leaves) {
-      // 避免 React 非受控与 IME 造成的 DOM 内容问题
+      updateDirtyText(leaf);
       updateDirtyLeaf(editor, leaf);
-      const dom = LEAF_TO_TEXT.get(leaf);
-      dom && updateDirtyText(dom, leaf.getText());
     }
   }, [lineState]);
 
@@ -73,8 +70,7 @@ const LineView: FC<{
     if (!nodes.length && leaves[0]) {
       const leaf = leaves[0];
       const node = <EOLModel key={EOL} editor={editor} leafState={leaf} />;
-      JSX_TO_STATE.set(node, leaf);
-      nodes.push(node);
+      JSX_TO_STATE.set(node, leaf) && nodes.push(node);
       return nodes;
     }
     // inline-void(embed) 在行未时需要预设零宽字符来放置光标
@@ -82,8 +78,7 @@ const LineView: FC<{
     const lastLeaf = textLeaves[textLeaves.length - 1];
     if (lastLeaf && eolLeaf && lastLeaf.embed) {
       const node = <EOLModel key={EOL} editor={editor} leafState={eolLeaf} />;
-      JSX_TO_STATE.set(node, eolLeaf);
-      nodes.push(node);
+      JSX_TO_STATE.set(node, eolLeaf) && nodes.push(node);
       return nodes;
     }
     return nodes;
@@ -93,49 +88,7 @@ const LineView: FC<{
    * 将行内叶子节点包装组合 O(N)
    */
   const children = useMemo(() => {
-    const wrapped: JSX.Element[] = [];
-    const keys = EDITOR_TO_WRAP_LEAF_KEYS.get(editor);
-    const plugins = EDITOR_TO_WRAP_LEAF_PLUGINS.get(editor);
-    if (!keys || !plugins) return elements;
-    const len = elements.length;
-    for (let i = 0; i < len; ++i) {
-      const element = elements[i];
-      const symbol = getWrapSymbol(keys, element);
-      const leaf = JSX_TO_STATE.get(element) as LeafState;
-      if (!element || !leaf || !symbol) {
-        wrapped.push(element);
-        continue;
-      }
-      // 执行到此处说明需要包装相关节点(即使仅单个节点)
-      const nodes: JSX.Element[] = [element];
-      for (let k = i + 1; k < len; ++k) {
-        const next = elements[k];
-        const nextSymbol = getWrapSymbol(keys, next);
-        if (!next || !nextSymbol || nextSymbol !== symbol) {
-          // 回退到上一个值, 以便下次循环时重新检查
-          i = k - 1;
-          break;
-        }
-        nodes.push(next);
-        i = k;
-      }
-      // 通过插件渲染包装节点
-      let wrapper: React.ReactNode = nodes;
-      const op = leaf.op;
-      for (const plugin of plugins) {
-        // 这里的状态以首个节点为准
-        const context: ReactWrapLeafContext = {
-          leafState: leaf,
-          children: wrapper,
-        };
-        if (plugin.match(leaf.op.attributes || {}, op) && plugin.wrapLeaf) {
-          wrapper = plugin.wrapLeaf(context);
-        }
-      }
-      const key = `${i - nodes.length + 1}-${i}`;
-      wrapped.push(<React.Fragment key={key}>{wrapper}</React.Fragment>);
-    }
-    return wrapped;
+    return withWrapLeafNodes(editor, elements);
   }, [editor, elements]);
 
   /**

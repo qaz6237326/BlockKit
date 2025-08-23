@@ -22,7 +22,7 @@ export type ZeroSpaceProps = {
   /** 空节点占位长度 */
   len?: number;
   /** 获取 DOM 引用 */
-  onRef?: React.MutableRefObject<HTMLDivElement | null>;
+  onRef?: React.Ref<HTMLSpanElement>;
 };
 
 /**

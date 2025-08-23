@@ -6,6 +6,7 @@ import React from "react";
 
 import { useEditorStatic } from "../hooks/use-editor";
 import type { ReactLeafContext } from "../plugin/types";
+import { LEAF_TO_ZERO_TEXT } from "../utils/weak-map";
 import { ZeroSpace } from "./zero";
 
 export type VoidProps = PropsWithChildren<{
@@ -34,7 +35,12 @@ export const Void: FC<VoidProps> = props => {
 
   return (
     <React.Fragment>
-      <ZeroSpace void hide len={leaf.length > 1 ? leaf.length : void 0} />
+      <ZeroSpace
+        void
+        hide
+        len={leaf.length > 1 ? leaf.length : void 0}
+        onRef={el => LEAF_TO_ZERO_TEXT.set(leaf, el)}
+      />
       <Tag
         className={props.className}
         style={{ userSelect: "none", ...props.style }}

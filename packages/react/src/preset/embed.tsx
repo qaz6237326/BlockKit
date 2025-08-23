@@ -6,6 +6,7 @@ import React from "react";
 
 import { useEditorStatic } from "../hooks/use-editor";
 import type { ReactLeafContext } from "../plugin/types";
+import { LEAF_TO_ZERO_TEXT } from "../utils/weak-map";
 import { ZeroSpace } from "./zero";
 
 export type EmbedProps = PropsWithChildren<{
@@ -32,7 +33,11 @@ export const Embed: FC<EmbedProps> = props => {
 
   return (
     <React.Fragment>
-      <ZeroSpace embed len={leaf.length > 1 ? leaf.length : void 0} />
+      <ZeroSpace
+        embed
+        len={leaf.length > 1 ? leaf.length : void 0}
+        onRef={el => LEAF_TO_ZERO_TEXT.set(leaf, el)}
+      />
       <span
         className={props.className}
         style={{ margin: "0 0.1px", ...props.style }}

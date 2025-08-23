@@ -1,11 +1,12 @@
 import type { Editor, LeafState } from "@block-kit/core";
 import { LEAF_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { useForceUpdate } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 
 import type { ReactLeafContext } from "../plugin/types";
 import { Text } from "../preset/text";
-import { LEAF_TO_TEXT as LT } from "../utils/weak-map";
+import { LEAF_TO_REMOUNT, LEAF_TO_TEXT as LT } from "../utils/weak-map";
 
 /**
  * Leaf Model
@@ -17,6 +18,7 @@ const LeafView: FC<{
   leafState: LeafState;
 }> = props => {
   const { editor, leafState } = props;
+  const { forceUpdate, index: renderKey } = useForceUpdate();
 
   /**
    * 设置叶子 DOM 节点
@@ -31,6 +33,7 @@ const LeafView: FC<{
    * 处理叶子节点的渲染
    */
   const runtime = useMemo(() => {
+    LEAF_TO_REMOUNT.set(leafState, forceUpdate);
     const text = leafState.getText();
     const context: ReactLeafContext = {
       op: leafState.op,
@@ -48,10 +51,11 @@ const LeafView: FC<{
       }
     }
     return context;
-  }, [editor, leafState]);
+  }, [editor.plugin, forceUpdate, leafState]);
 
   return (
     <span
+      key={renderKey}
       {...{ [LEAF_KEY]: true }}
       ref={setModel}
       className={runtime.classList.join(" ")}

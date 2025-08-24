@@ -27,13 +27,13 @@ const LeafView: FC<{
     if (ref) {
       editor.model.setLeafModel(ref, leafState);
     }
+    LEAF_TO_REMOUNT.set(leafState, forceUpdate);
   };
 
   /**
    * 处理叶子节点的渲染
    */
   const runtime = useMemo(() => {
-    LEAF_TO_REMOUNT.set(leafState, forceUpdate);
     const text = leafState.getText();
     const context: ReactLeafContext = {
       op: leafState.op,
@@ -42,7 +42,7 @@ const LeafView: FC<{
       leafState: leafState,
       attributes: leafState.op.attributes,
       style: {},
-      children: <Text onRef={el => LT.set(leafState, el)}>{text}</Text>,
+      children: <Text onRef={el => el && LT.set(leafState, el)}>{text}</Text>,
     };
     const plugins = editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LEAF);
     for (const plugin of plugins) {
@@ -51,7 +51,7 @@ const LeafView: FC<{
       }
     }
     return context;
-  }, [editor.plugin, forceUpdate, leafState]);
+  }, [editor.plugin, leafState]);
 
   return (
     <span

@@ -14,7 +14,7 @@ export const LEAF_TO_ZERO_TEXT = new WeakMap<LeafState, HTMLElement | null>();
 
 /**
  * LeafState 与节点渲染方法的映射
- * - 结构性的脏节点问题, 需要重建 Leaf DOM, ReMount 节点
+ * - 结构性的脏节点问题, 需要重建 Leaf DOM, 重新 Mount 节点
  */
 export const LEAF_TO_REMOUNT = new WeakMap<LeafState, () => void>();
 

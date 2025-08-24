@@ -4,7 +4,7 @@
 set -e # -x
 dir=$(pwd)
 bash_args="$@"
-prefix="@block-kit/"
+prefix="@block-kit"
 packages=(delta utils core react plugin)
 # npm version patch --no-git-tag-version
 version=$(echo "console.log(require(\"./package.json\").version)" | node)
@@ -32,13 +32,11 @@ if ! check_argument "--emit" || check_argument "--build-only"; then
 fi
 
 for item in "${packages[@]}"; do
-  cd $dir
-  path="./packages/$item"
-  cd $path
-  rm -rf dist
-  npm run lint:ts
-  npm run test
-  npm run build
+  package="$prefix/$item"
+  pnpm --filter "${package}" exec rm -rf dist
+  pnpm run --filter "${package}" lint:ts
+  pnpm run --filter "${package}" test
+  pnpm run --filter "${package}" build
 done
 
 if check_argument "--build-only"; then
@@ -54,7 +52,7 @@ for item in "${packages[@]}"; do
       json.version = '$version';
       const dep = json.dependencies || {};
       for(const [key, value] of Object.entries(dep)) {
-        if(key.startsWith('$prefix')) dep[key] = '$version';
+        if(key.startsWith('$prefix/')) dep[key] = '$version';
       }
       fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
     " | node
@@ -70,7 +68,7 @@ for item in "${packages[@]}"; do
       json.version = '1.0.0';
       const dep = json.dependencies || {};
       for(const [key, value] of Object.entries(dep)) {
-        if(key.startsWith('$prefix')) dep[key] = 'workspace: *';
+        if(key.startsWith('$prefix/')) dep[key] = 'workspace: *';
       }
       fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
     " | node

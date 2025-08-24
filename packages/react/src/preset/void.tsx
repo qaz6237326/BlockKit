@@ -36,10 +36,10 @@ export const Void: FC<VoidProps> = props => {
   return (
     <React.Fragment>
       <ZeroSpace
-        void
-        hide
+        void={true}
+        hide={true}
         len={leaf.length > 1 ? leaf.length : void 0}
-        onRef={el => LEAF_TO_ZERO_TEXT.set(leaf, el)}
+        onRef={el => el && LEAF_TO_ZERO_TEXT.set(leaf, el)}
       />
       <Tag
         className={props.className}

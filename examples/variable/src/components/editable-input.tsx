@@ -1,5 +1,5 @@
 import { EDITOR_EVENT, LEAF_KEY, LEAF_STRING, ZERO_SPACE_KEY } from "@block-kit/core";
-import { Isolate } from "@block-kit/react";
+import { Isolate, useReadonly } from "@block-kit/react";
 import {
   isDOMElement,
   isDOMText,
@@ -26,6 +26,7 @@ export const EditableTextInput: FC<{
   onRef?: (ref: HTMLDivElement | null) => void;
 }> = props => {
   const { onChange = NOOP, value, placeholder } = props;
+  const { readonly } = useReadonly();
   const [isComposing, setIsComposing] = React.useState(false);
   const [refState, setRefState] = React.useState<HTMLDivElement | null>(null);
 
@@ -57,6 +58,9 @@ export const EditableTextInput: FC<{
   });
 
   const onKeyDown = useMemoFn((e: KeyboardEvent) => {
+    if (readonly) {
+      return void 0;
+    }
     if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
       preventNativeEvent(e);
     }

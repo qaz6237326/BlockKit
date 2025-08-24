@@ -34,9 +34,9 @@ export const Embed: FC<EmbedProps> = props => {
   return (
     <React.Fragment>
       <ZeroSpace
-        embed
+        embed={true}
         len={leaf.length > 1 ? leaf.length : void 0}
-        onRef={el => LEAF_TO_ZERO_TEXT.set(leaf, el)}
+        onRef={el => el && LEAF_TO_ZERO_TEXT.set(leaf, el)}
       />
       <span
         className={props.className}

@@ -118,7 +118,7 @@ export const useMemoFn = <T extends Func.Any>(fn: T) => {
 
   fnRef.current = fn;
   if (!memoFn.current) {
-    memoFn.current = function (this: unknown, ...args: unknown[]) {
+    memoFn.current = function MemoFn(this: unknown, ...args: unknown[]) {
       return fnRef.current.apply(this, args);
     };
   }

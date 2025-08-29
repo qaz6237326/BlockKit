@@ -28,26 +28,29 @@ export const EditableTextInput: FC<{
   const { onChange = NOOP, value, placeholder } = props;
   const { readonly } = useReadonly();
   const [isComposing, setIsComposing] = React.useState(false);
-  const [refState, setRefState] = React.useState<HTMLDivElement | null>(null);
+  const [nodeState, setNodeState] = React.useState<HTMLDivElement | null>(null);
 
   const onEditableRef = (ref: HTMLDivElement | null) => {
     props.onRef && props.onRef(ref);
-    setRefState(ref);
+    setNodeState(ref);
   };
 
   useEffect(() => {
-    if (!refState) return void 0;
-    const innerText = refState.textContent || "";
-    if (innerText !== props.value) {
-      refState.innerText = props.value;
+    if (!nodeState) return void 0;
+    if (isDOMText(nodeState.firstChild)) {
+      if (nodeState.firstChild.nodeValue !== props.value) {
+        nodeState.firstChild.nodeValue = props.value;
+      }
+    } else {
+      nodeState.innerText = props.value;
     }
-  }, [props.value, refState]);
+  }, [props.value, nodeState]);
 
   const onInput = useMemoFn((e: Event) => {
-    if ((e as unknown as O.Map<unknown>).isComposing || isNil(refState)) {
+    if ((e as unknown as O.Map<unknown>).isComposing || isNil(nodeState)) {
       return void 0;
     }
-    const newValue = refState.textContent || "";
+    const newValue = nodeState.textContent || "";
     newValue !== value && onChange(newValue);
   });
 
@@ -114,7 +117,7 @@ export const EditableTextInput: FC<{
   });
 
   useEffect(() => {
-    const el = refState;
+    const el = nodeState;
     if (!el) return void 0;
     const onCompositionStart = () => {
       setIsComposing(true);
@@ -145,7 +148,7 @@ export const EditableTextInput: FC<{
       el.removeEventListener(COMPOSITION_START, onCompositionStart);
       el.removeEventListener(COMPOSITION_END, onCompositionEnd);
     };
-  }, [onInput, onKeyDown, onMouseDown, refState]);
+  }, [onInput, onKeyDown, onMouseDown, nodeState]);
 
   return (
     <Isolate className={props.className} style={props.style}>

@@ -1,8 +1,13 @@
-import { isDOMElement, isDOMText } from "@block-kit/utils";
+import { FALSY, isDOMElement, isDOMText } from "@block-kit/utils";
 
 import type { Editor } from "../../editor";
 import {
+  BLOCK_KEY,
+  EDITABLE,
+  ISOLATED_KEY,
   LEAF_STRING,
+  PLACEHOLDER_KEY,
+  VOID_KEY,
   VOID_LEN_KEY,
   ZERO_EMBED_KEY,
   ZERO_SPACE_KEY,
@@ -83,6 +88,48 @@ export const normalizeDOMPoint = (
 };
 
 /**
+ * 创建文本节点迭代器
+ * - 查找节点, 剪枝 + 惰性迭代
+ * @param root 根节点
+ */
+export const createTextNodeWalker = (root: Node) => {
+  // 类似于选择器 `span[${LEAF_STRING}], span[${ZERO_SPACE_KEY}]`
+  // 虽然配合 :not() 可以实现剪枝, 但仍然会遍历内部节点, 在编辑器嵌套时会有较多无效查找
+  // 使用 Walker 除了可以控制实现剪枝之外, 还可以实现惰性迭代, 无需预先遍历所有 DOM 结构
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
+    acceptNode(node) {
+      // 剪枝条件, 存在如下条件时, 则拒绝整个子树
+      if (
+        node instanceof HTMLElement === false ||
+        node.getAttribute(EDITABLE) === FALSY ||
+        node.hasAttribute(VOID_KEY) ||
+        node.hasAttribute(BLOCK_KEY) ||
+        node.hasAttribute(ISOLATED_KEY) ||
+        node.hasAttribute(PLACEHOLDER_KEY)
+      ) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      // 接受条件, 如果节点存在文本 Key, 则接受
+      if (node.hasAttribute(LEAF_STRING) || node.hasAttribute(ZERO_SPACE_KEY)) {
+        return NodeFilter.FILTER_ACCEPT;
+      }
+      // 默认情况, 跳过该节点, 但继续检查子节点
+      return NodeFilter.FILTER_SKIP;
+    },
+  });
+  function* iterator() {
+    let current = walker.nextNode();
+    let next = walker.nextNode();
+    while (current) {
+      yield [current, next] as [HTMLElement, HTMLElement | null];
+      current = next;
+      next = walker.nextNode();
+    }
+  }
+  return iterator();
+};
+
+/**
  * 将 ModalPoint 转换为 DOMPoint
  * @param editor
  * @param point
@@ -100,18 +147,10 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
   if (isDOMText(lineNode)) {
     return { node: lineNode, offset: offset };
   }
-
-  // For each leaf, we need to isolate its content, which means filtering
-  // to its direct text and zero-width spans. (We have to filter out any
-  // other siblings that may have been rendered alongside them.)
-  const selector = `span[${LEAF_STRING}], span[${ZERO_SPACE_KEY}]`;
-  // Maybe use LineState Model to iterate over node ?
-  // 所有文本类型标记的节点, 此处的查找方式倾向于左节点优先
-  const leaves = Array.from(lineNode.querySelectorAll(selector));
   let start = 0;
-  for (let i = 0; i < leaves.length; i++) {
-    const leaf = leaves[i];
-    if (!leaf || leaf instanceof HTMLElement === false || leaf.textContent === null) {
+  const walker = createTextNodeWalker(lineNode);
+  for (const [leaf, nextLeaf] of walker) {
+    if (!leaf || leaf.textContent === null) {
       continue;
     }
     // Leaf 节点的长度, 即处理 offset 关注的实际偏移量
@@ -136,7 +175,6 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
       // end = 5(start) + 5(len) = 10
       // offset = 7 < 10 -> new offset = 7(offset) - 5(start) = 2
       const nodeOffset = Math.max(offset - start, 0);
-      const nextLeaf = leaves[i + 1];
       // CASE1: 对同个光标位置, 且存在两个节点相邻时, 实际上是存在两种表达
       // 即 <s>1|</s><s>1</s> / <s>1</s><s>|1</s>
       // 当前计算方法的默认行为是 1, 而 Embed 节点在末尾时则需要额外的零宽字符放置光标
@@ -149,6 +187,7 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
       // CASE2: 当 Embed 元素前存在内容且光标位于节点末时, 需要校正到 Embed 节点上
       // <s>1|</s><e> </e> => <s>1</s><e>| </e>
       // 这部分主要是避免按下右键时需要受控处理光标移动, 但与 Model Case2 冲突依然需要受控
+      // 因此此处先注释 CASE2 的逻辑, 避免
       {
         // if (nodeOffset === len && nextLeaf && nextLeaf.hasAttribute(ZERO_EMBED_KEY)) {
         //   return { node: nextLeaf, offset: 0 };

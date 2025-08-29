@@ -59,23 +59,43 @@ export class Editor {
    * @param options
    */
   public constructor(options: EditorOptions = {}) {
-    const { delta = new Delta(BLOCK_LIKE), logLevel = LOG_LEVEL.ERROR, schema = {} } = options;
+    const {
+      delta = new Delta(BLOCK_LIKE),
+      logLevel = LOG_LEVEL.ERROR,
+      schema = {},
+      modules = {},
+    } = options;
     this.container = null;
-    this.logger = new Logger(logLevel);
-    this.schema = new Schema(schema);
-    this.model = new Model();
-    this.state = new EditorState(this, delta);
-    this.event = new Event(this);
-    this.selection = new Selection(this);
-    this.input = new Input(this);
-    this.plugin = new Plugin(this);
-    this.history = new History(this);
-    this.clipboard = new Clipboard(this);
-    this.perform = new Perform(this);
-    this.command = new Command();
-    this.tracer = new Tracer(this);
-    this.lookup = new Lookup(this);
-    this.rect = new Rect(this);
+    const LoggerModule = modules.Logger || Logger;
+    const SchemaModule = modules.Schema || Schema;
+    const ModelModule = modules.Model || Model;
+    const StateModule = modules.State || EditorState;
+    const EventModule = modules.Event || Event;
+    const SelectionModule = modules.Selection || Selection;
+    const InputModule = modules.Input || Input;
+    const PluginModule = modules.Plugin || Plugin;
+    const HistoryModule = modules.History || History;
+    const ClipboardModule = modules.Clipboard || Clipboard;
+    const PerformModule = modules.Perform || Perform;
+    const CommandModule = modules.Command || Command;
+    const TracerModule = modules.Tracer || Tracer;
+    const LookupModule = modules.Lookup || Lookup;
+    const RectModule = modules.Rect || Rect;
+    this.logger = new LoggerModule(logLevel);
+    this.schema = new SchemaModule(schema);
+    this.model = new ModelModule();
+    this.state = new StateModule(this, delta);
+    this.event = new EventModule(this);
+    this.selection = new SelectionModule(this);
+    this.input = new InputModule(this);
+    this.plugin = new PluginModule(this);
+    this.history = new HistoryModule(this);
+    this.clipboard = new ClipboardModule(this);
+    this.perform = new PerformModule(this);
+    this.command = new CommandModule();
+    this.tracer = new TracerModule(this);
+    this.lookup = new LookupModule(this);
+    this.rect = new RectModule(this);
   }
 
   /**

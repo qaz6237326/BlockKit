@@ -4,6 +4,7 @@ import type { FC } from "react";
 import React from "react";
 
 import { ZeroSpace } from "../preset/zero";
+import { LEAF_TO_ZERO_TEXT } from "../utils/weak-map";
 
 /**
  * EOL Model
@@ -23,7 +24,7 @@ const EOLView: FC<{
 
   return (
     <span {...{ [LEAF_KEY]: true }} ref={setModel}>
-      <ZeroSpace enter />
+      <ZeroSpace enter={true} onRef={el => el && LEAF_TO_ZERO_TEXT.set(leafState, el)} />
     </span>
   );
 };

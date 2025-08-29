@@ -11,30 +11,30 @@ import { LEAF_TO_REMOUNT, LEAF_TO_TEXT, LEAF_TO_ZERO_TEXT } from "./weak-map";
 export const updateDirtyText = (leaf: LeafState) => {
   const zeroNode = LEAF_TO_ZERO_TEXT.get(leaf);
   const isZeroNode = !!zeroNode;
-  const dom = isZeroNode ? zeroNode : LEAF_TO_TEXT.get(leaf);
-  if (!dom) return false;
+  const textNode = isZeroNode ? zeroNode : LEAF_TO_TEXT.get(leaf);
+  if (!textNode) return false;
   const text = isZeroNode ? ZERO_SYMBOL : leaf.getText();
-  const nodes = dom.childNodes;
+  const nodes = textNode.childNodes;
   // 文本节点内部仅应该存在一个文本节点, 需要移除额外节点
   for (let i = 1; i < nodes.length; ++i) {
     const node = nodes[i];
     node && node.remove();
   }
   // 如果文本内容不合法, 通常是由于输入的脏 DOM, 需要纠正内容
-  if (isDOMText(dom.firstChild)) {
+  if (isDOMText(textNode.firstChild)) {
     // Case1: [inline-code][caret][text] IME 会导致模型/文本差异
     // Case3: 在单行仅存在 Embed 节点时, 在节点最前输入会导致内容重复
-    if (dom.firstChild.nodeValue === text) return false;
-    dom.firstChild.nodeValue = text;
+    if (textNode.firstChild.nodeValue === text) return false;
+    textNode.firstChild.nodeValue = text;
     if (process.env.NODE_ENV === "development") {
-      console.log("Correct Text Node", dom);
+      console.log("Correct Text Node", textNode);
     }
   } else {
     // Case2: Safari 下在 a 节点末尾输入时, 会导致节点内外层交换
     const func = LEAF_TO_REMOUNT.get(leaf);
     func && func();
     if (process.env.NODE_ENV === "development") {
-      console.log("Force Render Text Node", dom);
+      console.log("Force Render Text Node", textNode);
     }
   }
   return true;

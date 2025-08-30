@@ -8,4 +8,5 @@ packages:
   - "packages/plugin"
   - "packages/vue"
   - "examples/variable"
+  - "examples/stream"
   - "examples/website"

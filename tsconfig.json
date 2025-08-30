@@ -25,7 +25,9 @@
       "@block-kit/plugin": ["./packages/plugin/src"],
       "@block-kit/utils": ["./packages/utils/src"],
       "@block-kit/utils/dist/es/*": ["./packages/utils/src/*"],
-      "@block-kit/vue": ["./packages/vue/src"]
+      "@block-kit/vue": ["./packages/vue/src"],
+      "@block-kit/variable": ["./examples/variable/src"],
+      "@block-kit/stream": ["./examples/stream/src"]
     }
   },
   "include": ["packages/*/src"],

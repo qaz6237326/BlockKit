@@ -1,6 +1,6 @@
 import type { EditorSchema } from "@block-kit/core";
 
-export const schema: EditorSchema = {
+export const SCHEMA: EditorSchema = {
   "bold": { mark: true },
   "italic": { mark: true },
   "underline": { mark: true },

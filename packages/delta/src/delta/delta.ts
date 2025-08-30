@@ -328,7 +328,7 @@ export class Delta {
   /**
    * 原地拼接 Ops
    * - 常用于纯文档描述的原地拼接, 非纯文档应使用 compose
-   * @param other
+   * @param other Delta
    * @param fastMode [?=true] 快速模式下直接拼接, 否则会尝试合并 Ops
    */
   public merge(other: Delta, fastMode = true): Delta {

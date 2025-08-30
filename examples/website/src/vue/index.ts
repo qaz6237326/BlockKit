@@ -6,14 +6,14 @@ import { BlockKit, Editable } from "@block-kit/vue";
 import { computed, createApp, defineComponent, h, onMounted, ref } from "vue";
 
 import { INIT } from "../react/config/block";
-import { schema } from "../react/config/schema";
+import { SCHEMA } from "../react/config/schema";
 
 const App = defineComponent({
   name: "App",
   setup() {
     const readonly = ref(false);
     const editor = computed(() => {
-      const instance = new Editor({ schema, delta: INIT, logLevel: LOG_LEVEL.DEBUG });
+      const instance = new Editor({ schema: SCHEMA, delta: INIT, logLevel: LOG_LEVEL.DEBUG });
       return instance;
     });
 

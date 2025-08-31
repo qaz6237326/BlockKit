@@ -142,6 +142,9 @@ importers:
       '@block-kit/react':
         specifier: 'workspace: *'
         version: link:../../packages/react
+      '@block-kit/stream':
+        specifier: 'workspace: *'
+        version: link:../stream
       '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../../packages/utils

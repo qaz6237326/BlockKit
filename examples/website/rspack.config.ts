@@ -12,7 +12,7 @@ const utils = path.resolve(__dirname, "../../packages/utils/src");
 const plugin = path.resolve(__dirname, "../../packages/plugin/src");
 const vue = path.resolve(__dirname, "../../packages/vue/src");
 const variable = path.resolve(__dirname, "../../examples/variable/src");
-const stream = path.resolve(__dirname, "../../examples/stream/src");
+const streaming = path.resolve(__dirname, "../../examples/stream/src");
 
 /**
  * @type {import("@rspack/cli").Configuration}
@@ -24,7 +24,7 @@ const config: Configuration = {
     index: "./src/react/index.tsx",
     vue: "./src/vue/index.ts",
     variable: "./src/variable/index.tsx",
-    stream: "./src/stream/index.tsx",
+    streaming: "./src/stream/index.tsx",
   },
   externals: {
     "react": "React",
@@ -49,9 +49,9 @@ const config: Configuration = {
       chunks: ["variable"],
     }),
     new HtmlPlugin({
-      filename: "stream-md.html",
+      filename: "streaming.html",
       template: "./public/index.html",
-      chunks: ["stream"],
+      chunks: ["streaming"],
     }),
   ],
   resolve: {
@@ -64,7 +64,7 @@ const config: Configuration = {
       "@block-kit/plugin": plugin,
       "@block-kit/vue": vue,
       "@block-kit/variable": variable,
-      "@block-kit/stream": stream,
+      "@block-kit/stream": streaming,
     },
   },
   builtins: {

@@ -14,23 +14,28 @@ export const isListSuspend = (tree: Token[]) => {
   }
   // 多级列表嵌套时, 单个字符流追加的情况下, 会出现无法缩进的情况
   // 1. xxx
-  //    - xxx
-  if (secondToLast.type === "list") {
+  //    [前方三个空格会出现 space 导致归档]
+  if (secondToLast.type === "list" && last.type === "space") {
     return true;
   }
   return false;
 };
 
-export const normalizeTokenList = (tree: Token[]) => {
+export const normalizeTokenTree = (tree: Token[]) => {
   const copied = [...tree];
-  if (copied.length && isListSuspend(copied)) {
-    // 若是需要等待后续的数据处理, 移除最后一个节点
+  if (!copied.length) return copied;
+  const last = copied[copied.length - 1];
+  // 若是需要等待后续的数据处理, 就移除最后一个节点
+  // Case1: 出现 space 节点可能会存在等待输入的情况, 例如上述的 list
+  // 1. xxx
+  //    [前方三个空格会出现 space 导致归档]
+  if (last.type === "space") {
     copied.pop();
   }
   return copied;
 };
 
-export const normalizeMarkdown = (md: string) => {
+export const normalizeFragment = (md: string) => {
   // Case 1: 在缩进的无序列表尾部出现单个 - 时, 需要避免被解析为标题
   // - xxx
   //    -

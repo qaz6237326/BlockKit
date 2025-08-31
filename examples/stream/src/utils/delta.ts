@@ -27,10 +27,10 @@ export const applyMarks = (delta: Delta, attrs: AttributeMap) => {
  * 应用行属性
  * - 原地修改
  */
-export const applyLineMarks = (delta: Delta, newAttrs: AttributeMap) => {
+export const applyLineMarks = (delta: Delta, newAttrs: AttributeMap, applyToAllLines?: boolean) => {
   const newDelta = new Delta();
   delta.eachLine((line, attrs, index) => {
-    const newLineAttrs = !index ? { ...attrs, ...newAttrs } : attrs;
+    const newLineAttrs = !index || applyToAllLines ? { ...attrs, ...newAttrs } : attrs;
     const ops = line.ops;
     const lastOp = ops[ops.length - 1];
     if (isEOLOp(lastOp)) {

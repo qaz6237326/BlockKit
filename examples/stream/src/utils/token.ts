@@ -6,9 +6,9 @@ import { DEFAULT_OPTIONS } from "../types";
 import { applyLineMarks, applyMarks } from "./delta";
 
 /**
- * 处理 Tokens 组合到 Delta
+ * 递归地处理处理子 Tokens
  */
-const coordinate = (tokens: Token[], options: Omit<TokenParserOptions, "index">) => {
+const parseChildTokens = (tokens: Token[], options: Omit<TokenParserOptions, "index">) => {
   const delta = new Delta();
   tokens.forEach((token, index) => {
     const tokenDelta = parseLexerToken(token, { ...options, index });
@@ -30,7 +30,7 @@ export const parseLexerToken = (
     // 行格式
     case "paragraph": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -40,7 +40,7 @@ export const parseLexerToken = (
     }
     case "heading": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -56,17 +56,17 @@ export const parseLexerToken = (
     }
     case "blockquote": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
       });
-      applyLineMarks(delta, { quote: "true" });
+      applyLineMarks(delta, { quote: "true" }, true);
       return delta;
     }
     case "list": {
       const tokens = token.items || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -114,7 +114,7 @@ export const parseLexerToken = (
     // 行内格式
     case "strong": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth,
         parent: token,
@@ -124,7 +124,7 @@ export const parseLexerToken = (
     }
     case "em": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -134,7 +134,7 @@ export const parseLexerToken = (
     }
     case "del": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -144,7 +144,7 @@ export const parseLexerToken = (
     }
     case "link": {
       const tokens = token.tokens || [];
-      const delta = coordinate(tokens, {
+      const delta = parseChildTokens(tokens, {
         ...options,
         depth: depth + 1,
         parent: token,
@@ -159,7 +159,7 @@ export const parseLexerToken = (
     case "text": {
       if (token.tokens) {
         const tokens = token.tokens || [];
-        const delta = coordinate(tokens, {
+        const delta = parseChildTokens(tokens, {
           ...options,
           depth: depth + 1,
           parent: token,

@@ -1,4 +1,15 @@
 /* stylelint-disable selector-no-qualifying-type */
+
+body {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .github-link {
   color: var(--color-text-1);
   font-size: 23px;
@@ -9,13 +20,13 @@
 
 .stream-markdown-container-wrapper {
   padding: 0 20px;
-  padding-top: 200px;
+  padding-top: 60px;
 
   .stream-markdown-title {
     font-size: 32px;
     font-weight: bold;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
     text-align: center;
     user-select: none;
   }
@@ -43,10 +54,10 @@
   > .arco-textarea {
     min-height: 200px;
   }
+}
 
-  >.arco-btn {
-    margin-top: 5px;
-  }
+.stream-markdown-exec {
+  margin-top: 10px;
 }
 
 .stream-markdown-editor {

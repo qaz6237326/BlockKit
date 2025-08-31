@@ -89,12 +89,17 @@ const App: FC = () => {
       <div className="stream-markdown-container">
         <div className="stream-markdown-content">
           <Input.TextArea readOnly value={MARKDOWN}></Input.TextArea>
-          <Button disabled={disableBoot} type="primary" onClick={onStart}>
-            开始
-          </Button>
         </div>
+        <Button
+          className="stream-markdown-exec"
+          disabled={disableBoot}
+          type="primary"
+          onClick={onStart}
+        >
+          执行 &gt;
+        </Button>
         <div className="stream-markdown-editor">
-          <BlockKit editor={editor} readonly={false}>
+          <BlockKit editor={editor} readonly={disableBoot}>
             <Editable placeholder="Please Enter..." className="block-kit-editable"></Editable>
           </BlockKit>
         </div>

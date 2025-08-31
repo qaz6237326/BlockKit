@@ -4,7 +4,7 @@ import type { Token } from "marked";
 import { marked } from "marked";
 
 import { getDeltaPointerPosition } from "../utils/delta";
-import { normalizeMarkdown, normalizeTokenList as normalizeTokenTree } from "../utils/normalize";
+import { normalizeFragment, normalizeTokenTree } from "../utils/normalize";
 import { parseLexerToken } from "../utils/token";
 import type { DeltaComposer } from "./delta-composer";
 
@@ -40,7 +40,7 @@ export class MdComposer {
    * 解析当前内容
    */
   public parse() {
-    const tokens = marked.lexer(normalizeMarkdown(this.content));
+    const tokens = marked.lexer(normalizeFragment(this.content));
     const tree = normalizeTokenTree(tokens);
     const delta = new Delta().retain(this.dc.archiveIndex);
     // 这里的指针需要合并已经归档的长度
@@ -52,12 +52,14 @@ export class MdComposer {
       const prev = tree[i - 1];
       const child = tree[i];
       // 首层子节点存在第二级时，归档上一个节点
-      // 此外诸如表格等节点可以正则匹配来避免过早归档
+      // 此外诸如表格等节点可以正则等额外的匹配策略来避免过早归档
+      // 但这样需要避免前次循环不归档而后续归档, 导致归档数据本身不连续
       if (prev && child) {
         this.archive(prev);
         archiveLength = archiveLength + this.dc.archive();
         const deltaLength = getDeltaPointerPosition(delta);
-        // 若归档长度大于当前 delta 长度，则需要移动指针
+        // 若归档长度大于当前 delta 长度, 则需要移动指针
+        // 主要是因为后续的处理是 merge diff, 此时的长度并非是 dc 的长度
         if (archiveLength - deltaLength > 0) {
           delta.push({ retain: archiveLength - deltaLength });
         }

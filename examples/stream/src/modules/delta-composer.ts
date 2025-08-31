@@ -1,10 +1,10 @@
 import { cloneOps, Delta } from "@block-kit/delta";
 
 export class DeltaComposer {
-  /** 正在处理的 delta */
-  public current: Delta | null;
   /** 归档的索引 */
   public archiveIndex: number;
+  /** 正在处理的 token-delta */
+  public current: Delta | null;
 
   /**
    * 构造函数

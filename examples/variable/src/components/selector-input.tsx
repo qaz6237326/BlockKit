@@ -6,6 +6,36 @@ import { useState } from "react";
 
 import { SEL_KEY } from "../utils/constant";
 
+const SelectorOptions: FC<{
+  left: number;
+  top: number;
+  width: number;
+  value: string;
+  options: string[];
+  onChange: (v: string) => void;
+}> = props => {
+  return (
+    <div
+      className="editable-selector-options"
+      style={{ left: props.left, top: props.top, width: props.width }}
+      onMouseDown={preventNativeEvent}
+    >
+      {props.options.map((option, index) => (
+        <div
+          key={index}
+          className={cs(option === props.value && "editable-selector-option-selected")}
+          onClick={e => {
+            preventNativeEvent(e);
+            props.onChange(option);
+          }}
+        >
+          {option}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const SelectorInput: FC<{
   value: string;
   options: string[];
@@ -61,35 +91,5 @@ export const SelectorInput: FC<{
         <path d="M793.002667 341.333333H230.997333a42.666667 42.666667 0 0 0-30.165333 72.832l281.002667 281.002667a42.666667 42.666667 0 0 0 60.330666 0l281.002667-281.002667A42.752 42.752 0 0 0 793.002667 341.333333z"></path>
       </svg>
     </span>
-  );
-};
-
-const SelectorOptions: FC<{
-  left: number;
-  top: number;
-  width: number;
-  value: string;
-  options: string[];
-  onChange: (v: string) => void;
-}> = props => {
-  return (
-    <div
-      className="editable-selector-options"
-      style={{ left: props.left, top: props.top, width: props.width }}
-      onMouseDown={preventNativeEvent}
-    >
-      {props.options.map((option, index) => (
-        <div
-          key={index}
-          className={cs(option === props.value && "editable-selector-option-selected")}
-          onClick={e => {
-            preventNativeEvent(e);
-            props.onChange(option);
-          }}
-        >
-          {option}
-        </div>
-      ))}
-    </div>
   );
 };

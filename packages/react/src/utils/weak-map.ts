@@ -23,9 +23,3 @@ export const LEAF_TO_REMOUNT = new WeakMap<LeafState, () => void>();
  * - 渲染时即刻加入映射, wrap 时即刻消费映射
  */
 export const JSX_TO_STATE = new WeakMap<JSX.Element, LeafState | LineState>();
-
-/**
- * State 与 Wrapper Symbol 的映射
- * - 主要是取得已经处理过的节点, 避免重复处理
- */
-export const STATE_TO_SYMBOL = new WeakMap<LeafState | LineState, string>();

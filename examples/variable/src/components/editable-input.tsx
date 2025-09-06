@@ -150,13 +150,15 @@ export const EditableTextInput: FC<{
     };
   }, [onInput, onKeyDown, onMouseDown, nodeState]);
 
+  const showPlaceholder = !value && placeholder && !isComposing;
+
   return (
     <Isolate className={props.className} style={props.style}>
       <div
         {...{ [DATA_EDITABLE_KEY]: true }}
         className="block-kit-editable-text"
         ref={onEditableRef}
-        data-placeholder={!value && placeholder && !isComposing ? placeholder : void 0}
+        data-vars-placeholder={showPlaceholder ? placeholder : void 0}
         contentEditable
         suppressContentEditableWarning
       ></div>

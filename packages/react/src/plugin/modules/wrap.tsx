@@ -2,19 +2,30 @@ import type { CorePlugin, Editor, LeafState, LineState } from "@block-kit/core";
 import type { O, P } from "@block-kit/utils/dist/es/types";
 import React from "react";
 
-import { JSX_TO_STATE, STATE_TO_SYMBOL } from "../../utils/weak-map";
+import { JSX_TO_STATE } from "../../utils/weak-map";
 import type { EditorPlugin } from "../index";
 import type { ReactWrapLeafContext, ReactWrapLineContext } from "../types";
 import { WRAP_TYPE } from "../types";
 import { getPluginPriority } from "./priority";
 
+/** 插件的 WrapKey 后缀 */
+const SUFFIX_KEY = "Keys";
+/** Editor 行 Keys 存储 */
 export const EDITOR_TO_WRAP_LINE_KEYS = new WeakMap<Editor, string[]>();
+/** Editor 节点 Keys 存储 */
 export const EDITOR_TO_WRAP_LEAF_KEYS = new WeakMap<Editor, string[]>();
+/** Editor 行 Wrap 插件 */
 export const EDITOR_TO_WRAP_LINE_PLUGINS = new WeakMap<Editor, EditorPlugin[]>();
+/** Editor 节点 Wrap 插件 */
 export const EDITOR_TO_WRAP_LEAF_PLUGINS = new WeakMap<Editor, EditorPlugin[]>();
+/**
+ * State 与 Wrapper Symbol 的映射
+ * - 主要是取得已经处理过的节点, 避免重复处理
+ */
+export const STATE_TO_SYMBOL = new WeakMap<LeafState | LineState, string>();
 
 /**
- * 为 WrapNode 定义 Key
+ * 装饰器, 为 WrapNode 定义 Key
  * @param ...keys
  */
 export function InjectWrapKeys<T>(...keys: string[]) {
@@ -23,7 +34,7 @@ export function InjectWrapKeys<T>(...keys: string[]) {
     key: O.Values<typeof WRAP_TYPE>,
     descriptor: PropertyDescriptor
   ): PropertyDescriptor {
-    const wrapPluginKey = `${key}Keys`;
+    const wrapPluginKey = `${key}${SUFFIX_KEY}`;
     const plugin = target as O.Mixed;
     plugin[wrapPluginKey] = keys;
     return descriptor;
@@ -36,14 +47,14 @@ export function InjectWrapKeys<T>(...keys: string[]) {
  * @param plugin
  */
 export const getWrapKeys = (key: string, plugin: CorePlugin): string[] | P.Undef => {
-  const wrapPluginKey = `${key}Keys`;
+  const wrapPluginKey = `${key}${SUFFIX_KEY}`;
   const wrapPlugin = plugin as O.Any;
   const keys = wrapPlugin[wrapPluginKey];
   return keys;
 };
 
 /**
- * 根据属性获取唯一标识值
+ * 根据 Wrap Keys 以及元素获取唯一标识值
  * @param keys
  * @param element
  */
@@ -79,19 +90,11 @@ export const initWrapPlugins = (editor: Editor) => {
   const wrapLeafPlugins: EditorPlugin[] = [];
   for (const plugin of plugins) {
     const lineKeys = getWrapKeys(WRAP_TYPE.LINE, plugin);
-    if (lineKeys) {
-      wrapLineKeys.push(...lineKeys);
-    }
+    lineKeys && wrapLineKeys.push(...lineKeys);
     const leafKeys = getWrapKeys(WRAP_TYPE.LEAF, plugin);
-    if (leafKeys) {
-      wrapLeafKeys.push(...leafKeys);
-    }
-    if (plugin.wrapLine) {
-      wrapLinePlugins.push(plugin);
-    }
-    if (plugin.wrapLeaf) {
-      wrapLeafPlugins.push(plugin);
-    }
+    leafKeys && wrapLeafKeys.push(...leafKeys);
+    plugin.wrapLine && wrapLinePlugins.push(plugin);
+    plugin.wrapLeaf && wrapLeafPlugins.push(plugin);
   }
   wrapLinePlugins.sort((a, b) => {
     const priorityA = getPluginPriority(WRAP_TYPE.LINE, a);

@@ -1,5 +1,5 @@
 import "./index.scss";
-import "@block-kit/variable/dist/style/index.css";
+import "@block-kit/variable/src/index.scss";
 import "@arco-design/web-react/es/style/index.less";
 
 import { IconArrowUp, IconGithub } from "@arco-design/web-react/icon";

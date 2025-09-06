@@ -6,6 +6,8 @@
 <a href="https://windrunnermax.github.io/BlockKit/variable.html">DEMO</a>
 <span>｜</span>
 <a href="https://github.com/WindRunnerMax/BlockKit/tree/master/examples/website/src/variable">Usage</a>
+<span>｜</span>
+<a href="https://codesandbox.io/p/devbox/cycrdf">CodeSandbox</a>
 </p>
 
 ## Development

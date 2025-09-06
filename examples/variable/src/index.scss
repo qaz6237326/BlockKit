@@ -3,19 +3,20 @@
 /** 编辑器 */
 .block-kit-editable div[data-node],
 .block-kit-editable div[data-placeholder] {
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 /** 变量模版 */
-.editable-vars,
+.editable-vars > .block-kit-editable-text,
 .editable-selector {
   background: rgba(0, 102, 255, 0.06);
   border-radius: 4px;
-  color: #06f;
+  color: #0057ff;
   cursor: text;
+  display: inline-block;
   font-weight: bold;
-  margin: 0 3px;
-  padding: 2px 5px;
+  margin: 1px 3px;
+  padding: 0 5px;
 }
 
 .block-kit-editable-text {
@@ -23,7 +24,7 @@
   outline: none;
 
   &::after {
-    content: attr(data-placeholder);
+    content: attr(data-vars-placeholder);
     cursor: text;
     opacity: 0.5;
     pointer-events: none;
@@ -35,9 +36,6 @@
 .editable-selector {
   align-items: center;
   cursor: pointer;
-  display: inline-flex;
-  line-height: 1;
-  padding: 3px 5px;
 }
 
 .editable-selector-triangle {
@@ -69,7 +67,7 @@
     }
 
     &.editable-selector-option-selected {
-      color: #06f;
+      color: #0057ff;
       font-weight: bold;
     }
   }

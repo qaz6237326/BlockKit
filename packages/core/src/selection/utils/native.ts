@@ -187,7 +187,7 @@ export const toDOMPoint = (editor: Editor, point: Point): DOMPoint => {
       // CASE2: 当 Embed 元素前存在内容且光标位于节点末时, 需要校正到 Embed 节点上
       // <s>1|</s><e> </e> => <s>1</s><e>| </e>
       // 这部分主要是避免按下右键时需要受控处理光标移动, 但与 Model Case2 冲突依然需要受控
-      // 因此此处先注释 CASE2 的逻辑, 避免
+      // 因此这里先注释 CASE2 的逻辑, 避免在 Safari 旧版本中的光标位置无法正常获取的问题
       {
         // if (nodeOffset === len && nextLeaf && nextLeaf.hasAttribute(ZERO_EMBED_KEY)) {
         //   return { node: nextLeaf, offset: 0 };

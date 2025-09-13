@@ -141,4 +141,11 @@ export class LeafState {
     const rawRange = RawRange.fromRange(this.parent.parent.editor, range);
     return rawRange;
   }
+
+  /**
+   * 获取 State 对应的 DOM 节点
+   */
+  public getNode() {
+    return this.parent.parent.editor.model.getLeafNode(this);
+  }
 }

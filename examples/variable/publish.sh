@@ -6,6 +6,7 @@ dir=$(pwd)
 bash_args="$@"
 # npm version patch --no-git-tag-version
 version=$(echo "console.log(require(\"../../package.json\").version)" | node)
+vars_version=$(echo "console.log(require(\"./package.json\").version)" | node)
 
 function check_argument {
   local value=$1
@@ -23,6 +24,7 @@ function echo_notice {
 }
 
 echo_notice "Editor Version: $version"
+echo_notice "Publish Version: $vars_version"
 
 if ! check_argument "--emit" || check_argument "--build-only"; then
   echo_notice "Notice: Current Version Will Not Publish To NPM"

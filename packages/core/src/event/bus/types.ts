@@ -21,6 +21,7 @@ export type ContentWillChangeEvent = {
   changes: Delta;
   source: string;
   options: ApplyOptions;
+  extra?: unknown;
 };
 
 export type ContentChangeEvent = ContentWillChangeEvent & {

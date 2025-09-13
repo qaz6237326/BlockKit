@@ -11,8 +11,10 @@ export const EDITOR_STATE = {
   READONLY: "READONLY",
   /** 鼠标按键状态 */
   MOUSE_DOWN: "MOUSE_DOWN",
-  /** 焦点状态 */
+  /** 焦点状态(捕获) */
   FOCUS: "FOCUS",
+  /** 焦点状态(冒泡) */
+  FOCUSIN: "FOCUSIN",
   /** 渲染状态 */
   PAINTING: "PAINTING",
 } as const;
@@ -41,6 +43,8 @@ export type ApplyOptions = {
   preventNormalize?: boolean;
   /** 自动记录到 History */
   undoable?: boolean;
+  /** 额外携带的信息 */
+  extra?: unknown;
 };
 
 export type ApplyResult = {

@@ -116,6 +116,7 @@ export class EditorState {
       current: previous,
       source: source,
       changes: normalized,
+      extra: options.extra,
     });
 
     // 更新 BlockSet Model
@@ -143,6 +144,7 @@ export class EditorState {
       inserts: mutate.inserts,
       revises: mutate.revises,
       deletes: mutate.deletes,
+      extra: options.extra,
     };
     this.editor.logger.debug("Editor Content Change", payload);
     this.editor.event.trigger(EDITOR_EVENT.CONTENT_CHANGE, payload);

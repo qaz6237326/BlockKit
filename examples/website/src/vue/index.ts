@@ -18,9 +18,9 @@ const App = defineComponent({
     });
 
     onMounted(() => {
-      // @ts-expect-error editor
+      // @ts-expect-error 仅调试用
       window.editor = editor.value;
-      // @ts-expect-error BlockDelta
+      // @ts-expect-error 仅调试用
       window.Delta = Delta;
     });
 

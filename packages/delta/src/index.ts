@@ -24,3 +24,4 @@ export {
 } from "./utils/clone";
 export { deltaEndsWith, deltaToText, isEOLOp, normalizeEOL, startsWithEOL } from "./utils/delta";
 export { isEqualAttributes, isEqualOp } from "./utils/equal";
+export { default as fastDiff } from "fast-diff";

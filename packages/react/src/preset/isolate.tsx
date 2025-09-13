@@ -29,6 +29,8 @@ export const Isolate: FC<IsolateProps> = props => {
       INPUT,
       FOCUS,
       BLUR,
+      FOCUSIN,
+      FOCUSOUT,
       CLICK,
       COMPOSITION_END,
       COMPOSITION_START,
@@ -41,6 +43,8 @@ export const Isolate: FC<IsolateProps> = props => {
     el.addEventListener(PASTE, stopNativeEvent);
     el.addEventListener(FOCUS, stopNativeEvent);
     el.addEventListener(BLUR, stopNativeEvent);
+    el.addEventListener(FOCUSIN, stopNativeEvent);
+    el.addEventListener(FOCUSOUT, stopNativeEvent);
     el.addEventListener(KEY_DOWN, stopNativeEvent);
     el.addEventListener(INPUT, stopNativeEvent);
     el.addEventListener(BEFORE_INPUT, stopNativeEvent);
@@ -55,6 +59,8 @@ export const Isolate: FC<IsolateProps> = props => {
       el.removeEventListener(PASTE, stopNativeEvent);
       el.removeEventListener(FOCUS, stopNativeEvent);
       el.removeEventListener(BLUR, stopNativeEvent);
+      el.removeEventListener(FOCUSIN, stopNativeEvent);
+      el.removeEventListener(FOCUSOUT, stopNativeEvent);
       el.removeEventListener(KEY_DOWN, stopNativeEvent);
       el.removeEventListener(INPUT, stopNativeEvent);
       el.removeEventListener(BEFORE_INPUT, stopNativeEvent);

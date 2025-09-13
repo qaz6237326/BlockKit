@@ -9,14 +9,12 @@ import { Delta } from "@block-kit/variable";
 import { BlockKit, Editable } from "@block-kit/variable";
 import { EditableInputPlugin } from "@block-kit/variable";
 import type { FC } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import ReactDOM from "react-dom";
 
 import { DELTA, PLACEHOLDERS, SCHEMA, SELECTOR } from "./constant";
 
 const App: FC = () => {
-  const [readonly] = useState(false);
-
   const editor = useMemo(() => {
     const instance = new Editor({ schema: SCHEMA, delta: DELTA, logLevel: LOG_LEVEL.DEBUG });
     instance.plugin.register([
@@ -27,9 +25,9 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    // @ts-expect-error editor
+    // @ts-expect-error 仅调试用
     window.editor = editor;
-    // @ts-expect-error BlockDelta
+    // @ts-expect-error 仅调试用
     window.Delta = Delta;
   }, [editor]);
 
@@ -42,7 +40,7 @@ const App: FC = () => {
     <div className="vars-input-container-wrapper">
       <div className="vars-input-title">变量模版输入框</div>
       <div className="vars-input-container">
-        <BlockKit editor={editor} readonly={readonly}>
+        <BlockKit editor={editor} readonly={/** 文本区域只读模式 */ false}>
           <Editable className="block-kit-editable" placeholder="描述你要创作的内容..."></Editable>
         </BlockKit>
         <div className="vars-input-footer" onMouseDown={preventNativeEvent} onClick={onSendMessage}>

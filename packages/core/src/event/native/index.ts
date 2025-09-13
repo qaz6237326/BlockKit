@@ -62,6 +62,16 @@ export class NativeEvent {
     this.event.emit(NATIVE_EVENTS.BLUR, e);
   };
 
+  protected onFocusIn = (e: FocusEvent) => {
+    this.editor.state.set(EDITOR_STATE.FOCUSIN, true);
+    this.event.emit(NATIVE_EVENTS.FOCUS, e);
+  };
+
+  protected onFocusOut = (e: FocusEvent) => {
+    this.editor.state.set(EDITOR_STATE.FOCUSIN, false);
+    this.event.emit(NATIVE_EVENTS.BLUR, e);
+  };
+
   protected onSelectionChange = (e: Event) => {
     this.event.emit(NATIVE_EVENTS.SELECTION_CHANGE_NATIVE, e);
   };
@@ -104,6 +114,8 @@ export class NativeEvent {
     container.addEventListener(NATIVE_EVENTS.KEY_UP, this.onKeyup);
     container.addEventListener(NATIVE_EVENTS.FOCUS, this.onFocus);
     container.addEventListener(NATIVE_EVENTS.BLUR, this.onBlur);
+    container.addEventListener(NATIVE_EVENTS.FOCUSIN, this.onFocusIn);
+    container.addEventListener(NATIVE_EVENTS.FOCUSOUT, this.onFocusOut);
     container.addEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDown);
     container.addEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUp);
     container.addEventListener(NATIVE_EVENTS.CLICK, this.onClick);
@@ -127,6 +139,8 @@ export class NativeEvent {
     container.removeEventListener(NATIVE_EVENTS.KEY_UP, this.onKeyup);
     container.removeEventListener(NATIVE_EVENTS.FOCUS, this.onFocus);
     container.removeEventListener(NATIVE_EVENTS.BLUR, this.onBlur);
+    container.removeEventListener(NATIVE_EVENTS.FOCUSIN, this.onFocusIn);
+    container.removeEventListener(NATIVE_EVENTS.FOCUSOUT, this.onFocusOut);
     container.removeEventListener(NATIVE_EVENTS.MOUSE_DOWN, this.onMouseDown);
     container.removeEventListener(NATIVE_EVENTS.MOUSE_UP, this.onMouseUp);
     container.removeEventListener(NATIVE_EVENTS.CLICK, this.onClick);

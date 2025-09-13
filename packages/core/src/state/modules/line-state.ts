@@ -236,6 +236,13 @@ export class LineState {
   }
 
   /**
+   * 获取 State 对应的 DOM 节点
+   */
+  public getNode() {
+    return this.parent.editor.model.getLineNode(this);
+  }
+
+  /**
    * 追加 LeafState
    * @param delta
    * @internal 仅编辑器内部使用

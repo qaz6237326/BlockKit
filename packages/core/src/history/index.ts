@@ -68,7 +68,8 @@ export class History {
       range: this.transformRange(item.range, inverted),
     });
     this.lastRecord = 0;
-    this.editor.state.apply(item.delta, { source: APPLY_SOURCE.HISTORY });
+    const { HISTORY } = APPLY_SOURCE;
+    this.editor.state.apply(item.delta, { source: HISTORY, autoCaret: false });
     this.restoreSelection(item);
   }
 
@@ -87,7 +88,8 @@ export class History {
       range: this.transformRange(item.range, inverted),
     });
     this.lastRecord = 0;
-    this.editor.state.apply(item.delta, { source: APPLY_SOURCE.HISTORY });
+    const { HISTORY } = APPLY_SOURCE;
+    this.editor.state.apply(item.delta, { source: HISTORY, autoCaret: false });
     this.restoreSelection(item);
   }
 

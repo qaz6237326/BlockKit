@@ -80,13 +80,18 @@ export class EditableInputPlugin extends EditorPlugin {
     }
   }
 
-  public onTextChange(leaf: LeafState, v: string) {
+  public onTextChange(leaf: LeafState, value: string, event: InputEvent) {
     const rawRange = leaf.toRawRange();
     if (!rawRange) return void 0;
     const delta = new Delta().retain(rawRange.start).retain(rawRange.len, {
-      [VARS_VALUE_KEY]: v,
+      [VARS_VALUE_KEY]: value,
     });
-    this.editor.state.apply(delta, { autoCaret: false });
+    this.editor.state.apply(delta, {
+      autoCaret: false,
+      // 即使不记录到 History 模块, 仍然存在部分问题
+      // 但若是受控处理, 则又存在焦点问题, 因为此时焦点并不在编辑器
+      undoable: event.inputType !== "historyUndo" && event.inputType !== "historyRedo",
+    });
   }
 
   public renderLeaf(context: ReactLeafContext): React.ReactNode {
@@ -99,7 +104,7 @@ export class EditableInputPlugin extends EditorPlugin {
           className={cs(VARS_CLS_PREFIX, `${VARS_CLS_PREFIX}-${varKey}`)}
           value={attrs[VARS_VALUE_KEY] || ""}
           placeholder={placeholders[varKey]}
-          onChange={v => this.onTextChange(context.leafState, v)}
+          onChange={(v, e) => this.onTextChange(context.leafState, v, e)}
         ></EditableTextInput>
       </Embed>
     );

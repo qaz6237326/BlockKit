@@ -37,7 +37,7 @@
 
 - [Website](./examples/website): 编辑器部署的在线演示项目。
 - [Scenario](./examples/common): 常见的编辑应用场景与解决方案。
-- [Variables](./examples/variable/): 基于可编辑变量实现的模版输入框。
+- [Variables](./examples/variable/): 基于可编辑变量实现的模板输入框。
 - [Streaming](./examples/stream/): 流式`Md`增量富文本解析算法实现。
 - [CanvasEditor](https://github.com/WindRunnerMax/CanvasEditor): 基于`Canvas`实现的简历编辑器。
 

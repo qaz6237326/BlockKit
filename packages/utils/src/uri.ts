@@ -263,7 +263,7 @@ export class URI {
         result[key.slice(1)] = value;
         continue;
       }
-      // 路径与模版不匹配
+      // 路径与模板不匹配
       if (key !== "*" && key !== value) {
         break;
       }

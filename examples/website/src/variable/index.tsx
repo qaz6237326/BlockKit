@@ -38,7 +38,7 @@ const App: FC = () => {
 
   return (
     <div className="vars-input-container-wrapper">
-      <div className="vars-input-title">变量模版输入框</div>
+      <div className="vars-input-title">变量模板输入框</div>
       <div className="vars-input-container">
         <BlockKit editor={editor} readonly={/** 文本区域只读模式 */ false}>
           <Editable className="block-kit-editable" placeholder="描述你要创作的内容..."></Editable>

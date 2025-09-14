@@ -9,7 +9,7 @@ import { RawRange } from "../selection/modules/raw-range";
 import { BlockState } from "./modules/block-state";
 import { Mutate } from "./mutate";
 import type { ApplyOptions, ApplyResult } from "./types";
-import { EDITOR_STATE } from "./types";
+import { APPLY_SOURCE, EDITOR_STATE } from "./types";
 import { normalizeDelta, removeLastEOL } from "./utils/normalize";
 
 export class EditorState {
@@ -102,7 +102,7 @@ export class EditorState {
    * @param options
    */
   public apply(delta: Delta, options: ApplyOptions = {}): ApplyResult {
-    const { source = "user", autoCaret = true, preventNormalize } = options;
+    const { source = APPLY_SOURCE.USER, autoCaret = true, preventNormalize } = options;
     const previous = this.toBlockSet();
     this._delta = null;
     const selection = this.editor.selection;

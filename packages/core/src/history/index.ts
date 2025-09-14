@@ -22,7 +22,7 @@ export class History {
   protected undoStack: StackItem[];
   /** REDO 栈 */
   protected redoStack: StackItem[];
-  /** 当前选区 */
+  /** 内容变化前的选区 */
   protected currentRange: RawRange | null;
   /** 批量执行 */
   protected batching: number[];
@@ -65,6 +65,7 @@ export class History {
     this.redoStack.push({
       id: item.id,
       delta: inverted,
+      // 如果直接取编辑器选区也可以, 但不够准确, 存在用户移动光标的场景
       range: this.transformRange(item.range, inverted),
     });
     this.lastRecord = 0;
@@ -157,7 +158,7 @@ export class History {
     }
     this.undoStack[baseIndex] = {
       id: new Set([...baseItem.id, ...mergeItem.id]),
-      // 这里是 merge.compose(base) 而不是相反
+      // 这里是 merge.compose(base) 而不是 base.compose(merge)
       // 因为 undo 后的执行顺序是 merge -> base
       delta: mergeDelta.compose(baseItem.delta),
       range: baseItem.range,
@@ -283,6 +284,8 @@ export class History {
 
   /**
    * 变换选区
+   * - 举个例子, undo delta 为 insert "xxx", range 则为 3
+   * - 那么 invert 之后为 delete 3, range 需要变换到 0 的位置
    * @param range
    * @param delta
    */

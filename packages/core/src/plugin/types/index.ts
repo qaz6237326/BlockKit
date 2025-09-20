@@ -6,14 +6,18 @@ export type PluginType = keyof CorePlugin;
 export type RequiredPlugin = Required<CorePlugin>;
 export type CallerType = O.Values<typeof CALLER_TYPE>;
 
+/** 插件批量调用方法 */
 export const CALLER_TYPE = {
   SERIALIZE: "serialize",
   DESERIALIZE: "deserialize",
   WILL_SET_CLIPBOARD: "willSetToClipboard",
   WILL_PASTE_DELTAS: "willApplyPasteDelta",
+  PAINTED_LINE_STATE: "paintedLineState",
+  WILL_PAINT_LINE_STATE: "willPaintLineState",
 } as const;
 
-export const PLUGIN_TYPE = {
+/** 插件原型方法 */
+export const PLUGIN_FUNC = {
   ...CALLER_TYPE,
   RENDER_LINE: "renderLine",
   RENDER_LEAF: "renderLeaf",

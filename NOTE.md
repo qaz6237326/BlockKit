@@ -1763,6 +1763,36 @@ if (isDOMText(dom.firstChild)) {
 }
 ```
 
+此外，由于我们的编辑器是完全`immutable`实现的，因此在文本节点变更时若是需要存在连续的格式处理，例如`inline-code`的样式实现，那么就会存在渲染问题。具体表现是若是多个连续的`code`节点，最后一个节点长度为`1`，删除最后这个节点时会导致前一个节点无法刷新样式。
+
+```js
+if (!prev || !prev.op.attributes || !prev.op.attributes[INLINE_CODE_KEY]) {
+  context.classList.push(INLINE_CODE_START_CLASS);
+}
+context.classList.push("block-kit-inline-code");
+if (!next || !next.op.attributes || !next.op.attributes[INLINE_CODE_KEY]) {
+  context.classList.push(INLINE_CODE_END_CLASS);
+}
+```
+
+这个情况同样类似于`Dirty DOM`的问题，由于删除的节点长度为`1`，因此前一个节点的`LeafState`并没有变更，因此不会触发`React`的重新渲染。这里我们就需要在行节点渲染时进行纠正，这里的执行倒是不需要像上述检查那样同步执行，以异步的`effect`执行即可。
+
+```js
+/**
+ * 编辑器行结构布局计算后异步调用
+ */
+public paintedLineState(lineState: LineState): void {
+  for (let i = 0; i < leaves.length; i++) {
+    if (!prev || !prev.op.attributes || !prev.op.attributes[INLINE_CODE_KEY]) {
+      node && node.classList.add(INLINE_CODE_START_CLASS);
+    }
+    if (!next || !next.op.attributes || !next.op.attributes[INLINE_CODE_KEY]) {
+      node && node.classList.add(INLINE_CODE_END_CLASS);
+    }
+  }
+}
+```
+
 ## 全量存储 VS 增量存储
 假设我们现在的编辑器是表单、输入框等场景，那么自然是不需要协同的调度的，在这种情况下数据就可以直接全量存储。但是假如我们现在并不是这种小型场景，而是类似于知识库、笔记文档等这种相对不太需要多人协同的情况，或者以此为基础搭建`CMS`管理系统，就需要考虑增量文档存储的情况了。
 

@@ -284,7 +284,7 @@ export class History {
 
   /**
    * 变换选区
-   * - 举个例子, undo delta 为 insert "xxx", range 则为 3
+   * - 假设此时 undo delta 为 insert "xxx", range 索引为 3
    * - 那么 invert 之后为 delete 3, range 需要变换到 0 的位置
    * @param range
    * @param delta

@@ -8,6 +8,7 @@ import type {
   SerializeContext,
 } from "../../clipboard/types";
 import type { Editor } from "../../editor";
+import type { LineState } from "../../state/modules/line-state";
 import type { LeafContext, LineContext } from "../types/context";
 
 export abstract class CorePlugin {
@@ -61,4 +62,14 @@ export abstract class CorePlugin {
    * 粘贴的内容即将应用到编辑器
    */
   public willApplyPasteDelta?(context: PasteContext): PasteContext;
+  /**
+   * 编辑器行结构布局计算后同步调用
+   * - 通常仅用于行级别的 Dirty DOM 检查, 务必谨慎调度
+   * - 重渲染 Layout 同步调用, 需要严格避免复杂计算以及布局处理
+   */
+  public willPaintLineState?(lineState: LineState): void;
+  /**
+   * 编辑器行结构布局计算后异步调用
+   */
+  public paintedLineState?(lineState: LineState): void;
 }

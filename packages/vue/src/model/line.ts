@@ -1,6 +1,6 @@
 import type { Editor, LineState } from "@block-kit/core";
 import type { LeafState } from "@block-kit/core";
-import { NODE_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { NODE_KEY, PLUGIN_FUNC } from "@block-kit/core";
 import { EOL, EOL_OP } from "@block-kit/delta";
 import { cs, isDOMText } from "@block-kit/utils";
 import type { P } from "@block-kit/utils/dist/es/types";
@@ -170,7 +170,7 @@ export const LineModel = /*#__PURE__*/ defineComponent<LineModelProps>({
         style: {},
         children: children.value,
       };
-      const plugins = props.editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LINE);
+      const plugins = props.editor.plugin.getPriorityPlugins(PLUGIN_FUNC.RENDER_LINE);
       for (const plugin of plugins) {
         const op = { ...EOL_OP, attributes: context.attributes };
         if (plugin.match(context.attributes, op)) {

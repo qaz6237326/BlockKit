@@ -79,6 +79,7 @@ export class LeafState {
   public next(span = false) {
     const index = this.index;
     if (index < 0) return null;
+    // 小于 line.size-1 则可以直接取下一个节点
     if (index < this.parent.size - 1) {
       return this.parent.getLeaf(index + 1);
     }

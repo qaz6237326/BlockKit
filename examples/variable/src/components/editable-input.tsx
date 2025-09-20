@@ -67,13 +67,13 @@ export const EditableTextInput: FC<{
   });
 
   const onKeyDown = useMemoFn((e: KeyboardEvent) => {
-    if (readonly) return void 0;
     if (isKeyCode(e, KEY_CODE.ENTER) || isKeyCode(e, KEY_CODE.TAB)) {
       preventNativeEvent(e);
       return void 0;
     }
     const sel = window.getSelection();
     LEFT_ARROW_KEY: if (
+      !readonly &&
       isKeyCode(e, KEY_CODE.LEFT) &&
       sel &&
       sel.isCollapsed &&
@@ -97,6 +97,7 @@ export const EditableTextInput: FC<{
       preventNativeEvent(e);
     }
     RIGHT_ARROW_KEY: if (
+      !readonly &&
       isKeyCode(e, KEY_CODE.RIGHT) &&
       sel &&
       sel.isCollapsed &&

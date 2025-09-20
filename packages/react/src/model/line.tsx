@@ -1,8 +1,8 @@
 import type { Editor, LineState } from "@block-kit/core";
-import { NODE_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { CALLER_TYPE, NODE_KEY, PLUGIN_FUNC } from "@block-kit/core";
 import { EOL, EOL_OP } from "@block-kit/delta";
 import { cs } from "@block-kit/utils";
-import { useUpdateLayoutEffect } from "@block-kit/utils/dist/es/hooks";
+import { useUpdateEffect, useUpdateLayoutEffect } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
 
@@ -34,7 +34,8 @@ const LineView: FC<{
   };
 
   /**
-   * 首次处理会将所有 DOM 渲染, 不需要执行脏数据检查
+   * 编辑器行结构布局计算后同步调用
+   * - 首次处理会将所有 DOM 渲染, 不需要执行脏数据检查
    * - 需要 LayoutEffect 以保证 DOM -> Sel 的执行顺序
    */
   useUpdateLayoutEffect(() => {
@@ -45,6 +46,14 @@ const LineView: FC<{
       updateDirtyText(leaf);
       updateDirtyLeaf(editor, leaf);
     }
+    editor.plugin.call(CALLER_TYPE.WILL_PAINT_LINE_STATE, lineState);
+  }, [lineState]);
+
+  /**
+   * 编辑器行结构布局计算后异步调用
+   */
+  useUpdateEffect(() => {
+    editor.plugin.call(CALLER_TYPE.PAINTED_LINE_STATE, lineState);
   }, [lineState]);
 
   /**
@@ -103,7 +112,7 @@ const LineView: FC<{
       style: {},
       children,
     };
-    const plugins = editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LINE);
+    const plugins = editor.plugin.getPriorityPlugins(PLUGIN_FUNC.RENDER_LINE);
     for (const plugin of plugins) {
       const op = { ...EOL_OP, attributes: context.attributes };
       if (plugin.match(context.attributes, op)) {

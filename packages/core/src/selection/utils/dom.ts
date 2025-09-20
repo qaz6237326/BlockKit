@@ -202,6 +202,11 @@ export const isNotEditableNode = (node: Node | null) => {
     : node.parentElement.getAttribute(EDITABLE) === "false";
 };
 
+/**
+ * 判断选区变更时, 判断是否需要忽略该变更
+ * @param node
+ * @param root
+ */
 export const isNeedIgnoreRangeDOM = (node: DOMNode, root: HTMLDivElement) => {
   for (let n: DOMNode | null = node; n !== root; n = n.parentNode) {
     // node 节点向上查找到 body, 说明 node 并非在 root 下, 忽略选区变更

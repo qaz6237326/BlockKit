@@ -1,5 +1,5 @@
 import type { Editor, LeafState } from "@block-kit/core";
-import { LEAF_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { LEAF_KEY, PLUGIN_FUNC } from "@block-kit/core";
 import { useForceUpdate } from "@block-kit/utils/dist/es/hooks";
 import type { FC } from "react";
 import React, { useMemo } from "react";
@@ -44,7 +44,7 @@ const LeafView: FC<{
       style: {},
       children: <Text onRef={el => el && LT.set(leafState, el)}>{text}</Text>,
     };
-    const plugins = editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LEAF);
+    const plugins = editor.plugin.getPriorityPlugins(PLUGIN_FUNC.RENDER_LEAF);
     for (const plugin of plugins) {
       if (plugin.match(context.attributes || {}, context.op)) {
         context.children = plugin.renderLeaf(context);

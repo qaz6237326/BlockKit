@@ -10,9 +10,10 @@ import { LEAF_TO_ZERO_TEXT } from "../utils/weak-map";
 import { ZeroSpace } from "./zero";
 
 export type EmbedProps = PropsWithChildren<{
+  context: ReactLeafContext;
   className?: string;
   style?: React.CSSProperties;
-  context: ReactLeafContext;
+  onMousedown?: (event: React.MouseEvent<HTMLSpanElement>) => void;
 }>;
 
 /**
@@ -25,10 +26,11 @@ export const Embed: FC<EmbedProps> = props => {
   const { editor } = useEditorStatic();
   const leaf = context.leafState;
 
-  const onMouseDown = () => {
+  const onMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
     const point = new Point(leaf.parent.index, leaf.offset + 1);
     const range = new Range(point, point.clone());
     editor.selection.set(range, true);
+    props.onMousedown && props.onMousedown(event);
   };
 
   return (

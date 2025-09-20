@@ -1,5 +1,5 @@
 import type { Editor, LeafState } from "@block-kit/core";
-import { LEAF_KEY, PLUGIN_TYPE } from "@block-kit/core";
+import { LEAF_KEY, PLUGIN_FUNC } from "@block-kit/core";
 import type { P } from "@block-kit/utils/dist/es/types";
 import { computed, defineComponent, h } from "vue";
 
@@ -39,7 +39,7 @@ export const LeafModel = /*#__PURE__*/ defineComponent<LeafModelProps>({
           text: text,
         }),
       };
-      const plugins = props.editor.plugin.getPriorityPlugins(PLUGIN_TYPE.RENDER_LEAF);
+      const plugins = props.editor.plugin.getPriorityPlugins(PLUGIN_FUNC.RENDER_LEAF);
       for (const plugin of plugins) {
         if (plugin.match(context.attributes || {}, context.op)) {
           context.children = plugin.renderLeaf(context);

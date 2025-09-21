@@ -2,9 +2,9 @@ module.exports = {
   moduleFileExtensions: ["js", "ts", "jsx", "tsx"],
   moduleDirectories: ["node_modules", "src", "test"],
   moduleNameMapper: {
-    "src/(.*)$": "<rootDir>/src/$1",
     "^react$": require.resolve("react"),
     "^react-dom$": require.resolve("react-dom"),
+    "\\.(css|less|scss|sass)$": "<rootDir>/test/config/styles.ts",
   },
   transform: {
     "\\.tsx?$": "ts-jest",

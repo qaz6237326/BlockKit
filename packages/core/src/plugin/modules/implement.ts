@@ -71,5 +71,5 @@ export abstract class CorePlugin {
   /**
    * 编辑器行结构布局计算后异步调用
    */
-  public paintedLineState?(lineState: LineState): void;
+  public didPaintLineState?(lineState: LineState): void;
 }

@@ -53,7 +53,7 @@ const LineView: FC<{
    * 编辑器行结构布局计算后异步调用
    */
   useUpdateEffect(() => {
-    editor.plugin.call(CALLER_TYPE.PAINTED_LINE_STATE, lineState);
+    editor.plugin.call(CALLER_TYPE.DID_PAINT_LINE_STATE, lineState);
   }, [lineState]);
 
   /**

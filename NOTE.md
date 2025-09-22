@@ -1781,7 +1781,7 @@ if (!next || !next.op.attributes || !next.op.attributes[INLINE_CODE_KEY]) {
 /**
  * 编辑器行结构布局计算后异步调用
  */
-public paintedLineState(lineState: LineState): void {
+public didPaintLineState(lineState: LineState): void {
   for (let i = 0; i < leaves.length; i++) {
     if (!prev || !prev.op.attributes || !prev.op.attributes[INLINE_CODE_KEY]) {
       node && node.classList.add(INLINE_CODE_START_CLASS);

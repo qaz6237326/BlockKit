@@ -12,8 +12,8 @@ export const CALLER_TYPE = {
   DESERIALIZE: "deserialize",
   WILL_SET_CLIPBOARD: "willSetToClipboard",
   WILL_PASTE_DELTAS: "willApplyPasteDelta",
-  PAINTED_LINE_STATE: "paintedLineState",
   WILL_PAINT_LINE_STATE: "willPaintLineState",
+  DID_PAINT_LINE_STATE: "didPaintLineState",
 } as const;
 
 /** 插件原型方法 */

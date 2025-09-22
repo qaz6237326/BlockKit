@@ -35,7 +35,7 @@ export class InlineCodePlugin extends EditorPlugin {
     return context;
   }
 
-  public paintedLineState(lineState: LineState): void {
+  public didPaintLineState(lineState: LineState): void {
     const leaves = lineState.getLeaves();
     for (let i = 0; i < leaves.length; i++) {
       const leaf = leaves[i];

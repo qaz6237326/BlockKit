@@ -1,0 +1,45 @@
+name: unit testing
+
+on:
+  - push
+  - pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: install node-v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.16.0"
+
+      - name: install dependencies
+        run: |
+          node -v
+          npm install -g pnpm@8.11.0
+          pnpm install --registry=https://registry.npmjs.org/
+
+      - name: build project
+        run: |
+          pnpm run --filter '*' build
+
+      - name: lint typescript
+        run: |
+          pnpm run --filter '*' lint:ts
+
+      - name: lint circular
+        run: |
+          pnpm run --filter '*' lint:circular
+
+      - name: unit testing
+        run: |
+          pnpm run --filter '*' test

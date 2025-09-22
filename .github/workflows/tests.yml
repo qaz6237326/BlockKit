@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  build-and-deploy:
+  project-testing:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -38,6 +38,7 @@ jobs:
 
       - name: lint circular
         run: |
+          npm -g install madge@8.0.0 --registry=https://registry.npmjs.org/
           pnpm run --filter '*' lint:circular
 
       - name: unit testing

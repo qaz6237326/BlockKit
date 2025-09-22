@@ -1,4 +1,4 @@
-name: unit testing
+name: project testing
 
 on:
   - push
@@ -17,10 +17,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: install node-v16
+      - name: install node-v18
         uses: actions/setup-node@v3
         with:
-          node-version: "16.16.0"
+          node-version: "18.20.8"
 
       - name: install dependencies
         run: |
@@ -43,4 +43,5 @@ jobs:
 
       - name: unit testing
         run: |
+          export TZ="Asia/Shanghai"
           pnpm run --filter '*' test

@@ -34,9 +34,9 @@ fi
 for item in "${packages[@]}"; do
   package="$prefix/$item"
   pnpm --filter "${package}" exec rm -rf dist
+  pnpm run --filter "${package}" build
   pnpm run --filter "${package}" lint:ts
   pnpm run --filter "${package}" test
-  pnpm run --filter "${package}" build
 done
 
 if check_argument "--build-only"; then

@@ -1793,6 +1793,47 @@ public didPaintLineState(lineState: LineState): void {
 }
 ```
 
+虽然看起来已经解决了问题，然而在`React`中还是存在一些问题，主要的原因此时的`DOM`处理是非受控的。在下面的例子中，由于`React`在处理`style`属性时，只会更新发生变化的样式属性，即使整体是新对象，但具体值与上次渲染时相同，因此`React`不会重新设置这个样式属性。
+
+```js
+// https://playcode.io/react
+import React from "react";
+export function App() {
+  const el = React.useRef();
+  const [, setState] = React.useState(1);
+  const onClick = () => {
+    el.current && (el.current.style.color = "blue");
+  }
+  console.log("Render App")
+  return (
+    <div>
+      <div style={{ color:"red" }} ref={el}>Hello React.</div>
+      <button onClick={onClick}>Color Button</button>
+      <button onClick={() => setState(c => ++c)}>Rerender Button</button>
+    </div>
+  );
+}
+```
+
+因此，在上述的`didPaintLineState`中我们主要是`classList`添加类属性值，即使是`LeafState`发生了变更，`React`也不会重新设置类属性值，因此这里我们还需要在`didPaintLineState`变更时删除非必要的类属性值。
+
+```js
+public didPaintLineState(lineState: LineState): void {
+  for (let i = 0; i < leaves.length; i++) {
+    if (!prev || !prev.op.attributes || !prev.op.attributes[INLINE_CODE_KEY]) {
+      node && node.classList.add(INLINE_CODE_START_CLASS);
+    } else {
+      node && node.classList.remove(INLINE_CODE_START_CLASS);
+    }
+    if (!next || !next.op.attributes || !next.op.attributes[INLINE_CODE_KEY]) {
+      node && node.classList.add(INLINE_CODE_END_CLASS);
+    } else {
+      node && node.classList.remove(INLINE_CODE_END_CLASS);
+    }
+  }
+}
+```
+
 ## 全量存储 VS 增量存储
 假设我们现在的编辑器是表单、输入框等场景，那么自然是不需要协同的调度的，在这种情况下数据就可以直接全量存储。但是假如我们现在并不是这种小型场景，而是类似于知识库、笔记文档等这种相对不太需要多人协同的情况，或者以此为基础搭建`CMS`管理系统，就需要考虑增量文档存储的情况了。
 

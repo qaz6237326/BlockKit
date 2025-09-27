@@ -47,9 +47,13 @@ export class InlineCodePlugin extends EditorPlugin {
       const node = leaf.getNode();
       if (!prev || !prev.op.attributes || !prev.op.attributes[INLINE_CODE_KEY]) {
         node && node.classList.add(INLINE_CODE_START_CLASS);
+      } else {
+        node && node.classList.remove(INLINE_CODE_START_CLASS);
       }
       if (!next || !next.op.attributes || !next.op.attributes[INLINE_CODE_KEY]) {
         node && node.classList.add(INLINE_CODE_END_CLASS);
+      } else {
+        node && node.classList.remove(INLINE_CODE_END_CLASS);
       }
     }
   }

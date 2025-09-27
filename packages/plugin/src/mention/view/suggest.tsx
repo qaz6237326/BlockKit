@@ -34,6 +34,9 @@ export const Suggest: FC<{
   }, [props.text]);
 
   const onKeydown = useMemoFn((event: KeyboardEvent, context: EventContext) => {
+    if (event.isComposing) {
+      return void 0;
+    }
     if (isKeyCode(event, KEY_CODE.DOWN)) {
       const nextIndex = (activeIndex + 1) % list.length;
       setActiveIndex(nextIndex);

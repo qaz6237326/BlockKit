@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.lib.json",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint:ts": "npm run build -- --noEmit",
     "lint:circular": "madge --extensions js --circular ./dist"
   },

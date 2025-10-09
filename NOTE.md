@@ -2361,3 +2361,12 @@ newRange && this.set(newRange);
 [ { insert: "*", attributes: { lmkr: "true" } }, { insert: "*", attributes: { lmkr: "true" } } ]
 [ { insert: "text" }, { insert: "*", attributes: { lmkr: "true" } } ]
 ```
+
+## 飞书文档 Blocks 设计
+最初的时候我们就希望设计`Blocks`模式的编辑器，所谓`Block`可以认为所有的内容都是以块的形式来呈现的，编辑器是作为外壳来管理和组织这些块结构。可以理解块是类似于积木的形式，而编辑器本身则更像是低代码的模式，富文本编辑器本身就是最好的`NoCode`编辑器。
+
+飞书文档以及`Notion`都是以`Blocks`的形式组织的编辑器模式，
+
+飞书扩展画板典型示例 协同算法明显不是OTJSON，脱离文档本身的数据结构设计，自身协同而非依赖飞书，数据也不需要存储于飞书(优劣) 
+并加入对比deltaset的扩展分子 研究飞书历史操作存储
+

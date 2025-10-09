@@ -7,6 +7,12 @@ packages:
   - "packages/react"
   - "packages/plugin"
   - "packages/vue"
+
+  - "blocks/x-json"
+  - "blocks/x-core"
+  - "blocks/x-react"
+  - "blocks/x-plugin"
+
   - "examples/variable"
   - "examples/stream"
   - "examples/website"

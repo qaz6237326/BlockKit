@@ -89,6 +89,8 @@ export {
   isVoidZeroNode,
   isZeroNode,
 } from "./selection/utils/dom";
+export { toModelPoint, toModelRange } from "./selection/utils/model";
+export { toDOMPoint, toDOMRange } from "./selection/utils/native";
 export { EditorState } from "./state";
 export { BlockState } from "./state/modules/block-state";
 export { LeafState } from "./state/modules/leaf-state";

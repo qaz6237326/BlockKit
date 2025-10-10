@@ -179,6 +179,13 @@ export class URI {
   }
 
   /**
+   * 输出格式化链接
+   */
+  public toString(): string {
+    return this.format();
+  }
+
+  /**
    * 克隆 URI 实例
    */
   public clone(): URI {
@@ -229,7 +236,7 @@ export class URI {
   }
 
   /**
-   * 解析查询参数
+   * 解析查询参数 search
    * @param query
    * @example ?q=1&w=3
    */

@@ -7,23 +7,22 @@ import importPlugin from "rollup-plugin-import";
 import postcss from "rollup-plugin-postcss";
 import ts from "rollup-plugin-typescript2";
 
-const IGNORE_ENTRY = ["src/**/*.d.ts"];
-const COMPOSE_ENTRY = ["src/**/*.{ts,tsx}"];
+const IGNORES = ["src/**/*.d.ts"];
+const ENTRIES = ["src/**/*.{ts,tsx}"];
 
 /**
+ * https://rollupjs.org/introduction/
  * @typedef { import("rollup").RollupOptions } RollupConfig
  * @return { Promise<RollupConfig[]> }
  * */
 export default async () => {
-  const dirsMap = await Promise.all(COMPOSE_ENTRY.map(item => glob(item, { ignore: IGNORE_ENTRY })))
+  const inputs = await Promise.all(ENTRIES.map(item => glob(item, { ignore: IGNORES })))
     .then(res => res.reduce((pre, cur) => [...pre, ...cur]))
-    .then(dirs => {
-      return Promise.all(
-        dirs.map(async fullPath => [
-          fullPath,
-          fullPath.replace(/^src\//, "").replace(/\.tsx?$/, ""),
-        ])
-      );
+    .then(entries => {
+      return entries.map(fullPath => [
+        fullPath,
+        fullPath.replace(/^src\//, "").replace(/\.tsx?$/, ""),
+      ]);
     })
     .then(arr => {
       return arr.reduce((res, [pre, cur]) => ({ ...res, [cur]: pre }), {});
@@ -38,80 +37,81 @@ export default async () => {
     "process.env.VERSION": JSON.stringify(process.env.BUILD_VERSION || packages.version),
   };
 
-  return [
-    {
-      input: dirsMap,
-      output: {
-        dir: "./dist/es",
-        format: "es",
-        // https://rollupjs.org/faqs/#why-do-additional-imports-turn-up-in-my-entry-chunks-when-code-splitting
-        hoistTransitiveImports: false,
-      },
-      plugins: [
-        resolve({ preferBuiltins: false }),
-        commonjs({ include: /node_modules/ }),
-        ts({
-          tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
-          extensions: [".ts", ".tsx"],
-        }),
-        replace({
-          values: definedValues,
-          preventAssignment: true,
-        }),
-        postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
-        importPlugin({
-          libraryName: "@arco-design/web-react",
-          libraryDirectory: "es",
-          exportName: "default",
-          style: true,
-        }),
-        importPlugin({
-          libraryName: "@arco-design/web-react/icon",
-          libraryDirectory: "react-icon",
-          exportName: "default",
-          style: false,
-        }),
-      ],
-      external: external,
+  const ES_CONFIG = {
+    input: inputs,
+    output: {
+      dir: "./dist/es",
+      format: "es",
+      // https://rollupjs.org/faqs/#why-do-additional-imports-turn-up-in-my-entry-chunks-when-code-splitting
+      hoistTransitiveImports: false,
     },
-    {
-      input: dirsMap,
-      output: {
-        dir: "./dist/lib",
-        format: "commonjs",
-        // https://rollupjs.org/configuration-options/#output-preservemodules
-        // 类似 BundleLess 模式保留模块独立性, 可能会造成依赖问题, 例如 tslib 会被处理为从 .pnpm 中引入
-        // preserveModules: true,
-        // preserveModulesRoot: "src",
-        // https://rollupjs.org/configuration-options/#output-hoisttransitiveimports
-        hoistTransitiveImports: false,
-      },
-      plugins: [
-        resolve({ preferBuiltins: false }),
-        commonjs({ include: /node_modules/ }),
-        ts({
-          tsconfig: path.resolve(__dirname, "./tsconfig.lib.json"),
-          extensions: [".ts", ".tsx"],
-        }),
-        replace({
-          values: definedValues,
-          preventAssignment: true,
-        }),
-        postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
-        importPlugin({
-          libraryName: "@arco-design/web-react",
-          libraryDirectory: "lib",
-          exportName: "default",
-          style: true,
-        }),
-        importPlugin({
-          libraryName: "@arco-design/web-react/icon",
-          libraryDirectory: "react-icon-cjs",
-          exportName: "default",
-          style: false,
-        }),
-      ],
-      external: external,
+    plugins: [
+      resolve({ preferBuiltins: false }),
+      commonjs({ include: /node_modules/ }),
+      ts({
+        tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
+        extensions: [".ts", ".tsx"],
+      }),
+      replace({
+        values: definedValues,
+        preventAssignment: true,
+      }),
+      postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      importPlugin({
+        libraryName: "@arco-design/web-react",
+        libraryDirectory: "es",
+        exportName: "default",
+        style: true,
+      }),
+      importPlugin({
+        libraryName: "@arco-design/web-react/icon",
+        libraryDirectory: "react-icon",
+        exportName: "default",
+        style: false,
+      }),
+    ],
+    external: external,
+  };
+
+  const LIB_CONFIG = {
+    input: inputs,
+    output: {
+      dir: "./dist/lib",
+      format: "commonjs",
+      // https://rollupjs.org/configuration-options/#output-preservemodules
+      // 类似 BundleLess 模式保留模块独立性, 可能会造成依赖问题, 例如 tslib 会被处理为从 .pnpm 中引入
+      // preserveModules: true,
+      // preserveModulesRoot: "src",
+      // https://rollupjs.org/configuration-options/#output-hoisttransitiveimports
+      hoistTransitiveImports: false,
     },
-  ];
+    plugins: [
+      resolve({ preferBuiltins: false }),
+      commonjs({ include: /node_modules/ }),
+      ts({
+        tsconfig: path.resolve(__dirname, "./tsconfig.lib.json"),
+        extensions: [".ts", ".tsx"],
+      }),
+      replace({
+        values: definedValues,
+        preventAssignment: true,
+      }),
+      postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      importPlugin({
+        libraryName: "@arco-design/web-react",
+        libraryDirectory: "lib",
+        exportName: "default",
+        style: true,
+      }),
+      importPlugin({
+        libraryName: "@arco-design/web-react/icon",
+        libraryDirectory: "react-icon-cjs",
+        exportName: "default",
+        style: false,
+      }),
+    ],
+    external: external,
+  };
+
+  return [ES_CONFIG, LIB_CONFIG];
 };

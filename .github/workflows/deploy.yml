@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  OUTPUT: "examples/website/build"
+  OUT_DIR: "examples/website/build"
 
 jobs:
   build-and-deploy:
@@ -32,12 +32,13 @@ jobs:
       - name: build project
         run: |
           pnpm run --filter "@block-kit/website..." build
-          echo "---\ntitle: Note\n---\n\n" > $OUTPUT/note.md
-          cat NOTE.md >> $OUTPUT/note.md
+          matter="---\ntitle: Note\n---\n"
+          echo -e "$matter" > $OUT_DIR/note.md
+          cat NOTE.md >> $OUT_DIR/note.md
 
       - name: deploy project
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: ${{ env.OUTPUT }}
+          OUT_DIR: ${{ env.OUT_DIR }}

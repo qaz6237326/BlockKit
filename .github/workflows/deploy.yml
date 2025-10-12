@@ -41,4 +41,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          OUT_DIR: ${{ env.OUT_DIR }}
+          FOLDER: ${{ env.OUT_DIR }}

@@ -33,8 +33,8 @@ jobs:
         run: |
           pnpm run --filter "@block-kit/website..." build
           matter="---\ntitle: Note\n---\n"
-          echo -e "$matter" > $OUT_DIR/note.md
-          cat NOTE.md >> $OUT_DIR/note.md
+          echo -e "$matter" > $OUT_DIR/Notes.md
+          cat NOTE.md >> $OUT_DIR/Notes.md
 
       - name: deploy project
         uses: JamesIves/github-pages-deploy-action@releases/v3

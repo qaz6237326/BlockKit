@@ -4,8 +4,9 @@ import replace from "@rollup/plugin-replace";
 import { glob } from "glob";
 import path from "path";
 import importPlugin from "rollup-plugin-import";
-import postcss from "rollup-plugin-postcss";
 import ts from "rollup-plugin-typescript2";
+
+import { postcssPreserve } from "./script/postcss-preserve";
 
 const IGNORES = ["src/**/*.d.ts"];
 const ENTRIES = ["src/**/*.{ts,tsx}"];
@@ -56,7 +57,12 @@ export default async () => {
         values: definedValues,
         preventAssignment: true,
       }),
-      postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      postcssPreserve({
+        preserveRoot: "./src",
+        extract: "_.css",
+        minimize: true,
+        extensions: [".css", ".scss"],
+      }),
       importPlugin({
         libraryName: "@arco-design/web-react",
         libraryDirectory: "es",
@@ -96,7 +102,12 @@ export default async () => {
         values: definedValues,
         preventAssignment: true,
       }),
-      postcss({ extract: "index.css", minimize: true, extensions: [".css", ".scss"] }),
+      postcssPreserve({
+        preserveRoot: "./src",
+        extract: "_.css",
+        minimize: true,
+        extensions: [".css", ".scss"],
+      }),
       importPlugin({
         libraryName: "@arco-design/web-react",
         libraryDirectory: "lib",

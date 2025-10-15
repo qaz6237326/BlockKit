@@ -108,6 +108,9 @@ importers:
 
   blocks/x-json:
     dependencies:
+      '@block-kit/delta':
+        specifier: 'workspace: *'
+        version: link:../../packages/delta
       '@block-kit/ot-json':
         specifier: 'workspace: *'
         version: link:../../packages/ot-json

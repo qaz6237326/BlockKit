@@ -1,14 +1,28 @@
-import type { O, P } from "@block-kit/utils/dist/es/types";
+import type { P } from "@block-kit/utils/dist/es/types";
 
 import type { Path, Side } from "./types";
 
 export type Subtype = {
+  /** 子类型名 */
   name: string;
+  /** 规范地址 */
   uri?: string;
-  invert: (o: P.Any) => O.Any;
-  compose: (a: P.Any, b: P.Any) => P.Any;
-  apply: (elem: P.Any, op: P.Any) => void;
-  transform: (a: P.Any, b: P.Any, side?: Side) => P.Any;
+  /** 反转变更 */
+  invert: (ops: P.Any, snapshot?: P.Any) => P.Any;
+  /** 应用变更 */
+  apply: (snapshot: P.Any, ops: P.Any) => void;
+  /** 组合变更 */
+  compose: (ops1: P.Any, ops2: P.Any) => P.Any;
+  /** 操作变换 */
+  transform: (ops1: P.Any, ops2: P.Any, side?: Side) => P.Any;
+  /** 规范化变更 */
+  normalize?: (ops: P.Any) => P.Any;
+  /** 序列化变更 */
+  serialize?: (ops: P.Any) => string;
+  /** 反序列化变更 */
+  deserialize?: (str: string) => P.Any;
+  /** 操作变换光标 */
+  transformCursor?: (cursor: number, ops: P.Any, side?: Side) => number;
 };
 
 export interface SubtypeOpMap {

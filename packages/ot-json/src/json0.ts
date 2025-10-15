@@ -13,21 +13,38 @@ import { clone, SIDE } from "./utils";
  * - https://github.com/ottypes/json0
  */
 export class JSONType {
+  /** 类型 */
   public readonly name = "json0";
 
-  public registerSubtype(subtype: Subtype) {
+  /**
+   * 注册子类型
+   */
+  public registerSubtype(this: JSONType, subtype: Subtype) {
     subtypes[subtype.name] = subtype;
+    return this;
   }
 
-  public unregisterSubtype(subtype: Subtype) {
+  /**
+   * 卸载子类型
+   */
+  public unregisterSubtype(this: JSONType, subtype: Subtype) {
     delete subtypes[subtype.name];
+    return this;
   }
 
+  /**
+   * 创建快照副本
+   */
   public create(data: Snapshot): Snapshot {
     // Null instead of undefined if you don't pass an argument.
     return data === undefined ? null : clone(data);
   }
 
+  /**
+   * 组合 Ops
+   * @param ops1
+   * @param ops2
+   */
   public compose(ops1: Op[], ops2: Op[]) {
     const json0 = JSONType.prototype;
     json0.checkValidOps(ops1);
@@ -39,16 +56,42 @@ export class JSONType {
     return newOp;
   }
 
-  public invert(ops: Op[]) {
+  /**
+   * 反转增量 invert
+   * @param ops
+   * @param snapshot
+   */
+  public invert(ops: Op[], snapshot?: Snapshot) {
     const json0 = JSONType.prototype;
     const op_ = ops.slice().reverse();
-    const iop = [];
+    const iop: Op[] = [];
     for (let i = 0; i < op_.length; i++) {
-      iop.push(json0.invertComponent(op_[i]));
+      iop.push(json0.invertComponent(op_[i], snapshot));
     }
     return iop;
   }
 
+  /**
+   * 根据 path 获取值
+   * @param snapshot
+   * @param path
+   */
+  public get<T>(snapshot: Snapshot, path: Path): T | null {
+    let node: P.Any = snapshot;
+    if (!snapshot) return null;
+    for (let i = 0; i < path.length; i++) {
+      const currentPath = path[i];
+      if (isNil(node)) return null;
+      node = node[currentPath];
+    }
+    return node || null;
+  }
+
+  /**
+   * 应用变更
+   * @param snapshot
+   * @param ops
+   */
   public apply<T extends Snapshot>(snapshot: T, ops: Op[]): T {
     const json0 = JSONType.prototype;
     json0.checkValidOps(ops);
@@ -135,6 +178,13 @@ export class JSONType {
     return container.data;
   }
 
+  /**
+   * 操作变换
+   * - ops' = transform(ops, otherOps, side)
+   * @param op
+   * @param otherOp
+   * @param side
+   */
   public transform(op: Op, otherOp: Op, side?: Side): Op | P.Undef;
   public transform(ops: Op[], otherOps: Op[], side?: Side): Op[];
   public transform(ops: Op | Op[], otherOps: Op | Op[], side?: Side): Op | Op[] | P.Undef {
@@ -206,13 +256,14 @@ export class JSONType {
     }
   }
 
-  private invertComponent(c: Op): Op {
+  private invertComponent(c: Op, snapshot?: unknown): Op {
     const c_: Op = { p: c.p };
 
     // handle subtype ops
     if (c.t && subtypes[c.t]) {
       c_.t = c.t;
-      c_.o = subtypes[c.t].invert(c.o);
+      const subSnapshot = this.get(snapshot as Snapshot, c.p);
+      c_.o = subtypes[c.t].invert(c.o, subSnapshot);
     }
 
     if (c.si !== void 0) c_.sd = c.si;

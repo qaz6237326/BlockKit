@@ -23,10 +23,14 @@ export const postcssPreserve = options => {
   return {
     name: "postcss-preserve",
     enforce: "post",
-    resolveId(source, importer) {
-      if (options.extract && extensions.some(ext => source.endsWith(ext)) && options.preserveRoot) {
+    resolveId(sourceId, importer) {
+      if (
+        options.extract &&
+        options.preserveRoot &&
+        extensions.some(ext => sourceId.endsWith(ext))
+      ) {
         const imports = importedCSS[importer] || [];
-        imports.push(source);
+        imports.push(sourceId);
         importedCSS[importer] = imports;
       }
       return null;

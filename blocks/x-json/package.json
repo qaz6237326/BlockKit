@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@block-kit/ot-json": "workspace: *",
+    "@block-kit/delta": "workspace: *",
     "@block-kit/utils": "workspace: *"
   },
   "devDependencies": {

@@ -74,6 +74,9 @@ importers:
       '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../../packages/utils
+      '@block-kit/x-json':
+        specifier: 'workspace: *'
+        version: link:../x-json
     devDependencies:
       '@babel/core':
         specifier: 7.20.12

@@ -1,8 +1,8 @@
 import type { JSONOp } from "../../src";
 import { normalizeBatchOps } from "../../src/utils/transform";
 
-describe("transform", () => {
-  it("batch normalize", () => {
+describe("transform batch", () => {
+  it("normalize", () => {
     const ops: JSONOp[] = [
       { p: ["a", "b", 1], ld: 1 },
       { p: ["a", "b", 3], ld: 3 },

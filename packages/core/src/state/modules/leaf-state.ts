@@ -56,7 +56,7 @@ export class LeafState {
   }
 
   /**
-   * 获取前一个 LeafState
+   * 获取上一个 LeafState
    * @param span [?=false] 跨行查找
    */
   public prev(span = false) {

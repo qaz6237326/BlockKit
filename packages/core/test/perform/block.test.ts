@@ -19,7 +19,7 @@ describe("perform block", () => {
     });
     const sel = new Range(new Point(1, 1), new Point(1, 1));
     editor.perform.deleteBackward(sel);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insertEOL().insertEOL()
     );
   });
@@ -39,7 +39,7 @@ describe("perform block", () => {
     });
     const sel = new Range(new Point(1, 1), new Point(1, 1));
     editor.perform.deleteForward(sel);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insertEOL().insertEOL()
     );
   });
@@ -63,7 +63,7 @@ describe("perform block", () => {
     const sel2 = editor.selection.get();
     expect(sel2).toEqual(Range.fromTuple([1, 0], [1, 1]));
     editor.perform.deleteBackward(sel2!);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insertEOL().insert("text2").insertEOL()
     );
   });
@@ -86,7 +86,7 @@ describe("perform block", () => {
     const sel2 = editor.selection.get();
     expect(sel2).toEqual(Range.fromTuple([1, 0], [1, 1]));
     editor.perform.deleteBackward(sel2!);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insertEOL()
     );
   });
@@ -109,7 +109,7 @@ describe("perform block", () => {
     const sel2 = editor.selection.get();
     expect(sel2).toEqual(Range.fromTuple([1, 0], [1, 1]));
     editor.perform.deleteForward(sel2!);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insertEOL().insertEOL()
     );
   });

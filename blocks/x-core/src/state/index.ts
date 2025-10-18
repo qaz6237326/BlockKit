@@ -1,19 +1,27 @@
 import { EDITOR_STATE } from "@block-kit/core";
-import type { Blocks } from "@block-kit/x-json";
+import type { Blocks, BlocksChange } from "@block-kit/x-json";
 
 import type { BlockEditor } from "../editor";
+import { BlockState } from "./modules/block-state";
+import type { ApplyOptions } from "./types";
 
 export class EditorState {
   /** 内建状态集合 */
   protected status: Record<string, boolean>;
+  /** Block 集合 */
+  public blocks: Record<string, BlockState>;
 
   /**
    * 构造函数
    * @param editor
-   * @param data
+   * @param initial
    */
-  constructor(protected editor: BlockEditor, protected data: Blocks) {
+  constructor(protected editor: BlockEditor, protected initial: Blocks) {
     this.status = {};
+    this.blocks = {};
+    Object.values(initial).forEach(block => {
+      this.blocks[block.id] = new BlockState(block, this);
+    });
   }
 
   /**
@@ -53,5 +61,26 @@ export class EditorState {
    */
   public isComposing() {
     return !!this.get(EDITOR_STATE.COMPOSING);
+  }
+
+  /**
+   * 获取 BlockState
+   * @param id Block ID
+   */
+  public getBlock(id: string) {
+    return this.blocks[id] || null;
+  }
+
+  public toBlockSet(): Blocks {
+    return {};
+  }
+
+  /**
+   * 应用编辑器变更
+   * @param changes
+   * @param options
+   */
+  public apply(changes: BlocksChange, options: ApplyOptions) {
+    console.log("changes,options :>> ", changes, options);
   }
 }

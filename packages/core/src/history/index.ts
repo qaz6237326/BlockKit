@@ -60,7 +60,7 @@ export class History {
     if (!this.undoStack.length) return void 0;
     const item = this.undoStack.pop();
     if (!item) return void 0;
-    const base = this.editor.state.toBlockSet();
+    const base = this.editor.state.toBlock();
     const inverted = item.delta.invert(base);
     this.redoStack.push({
       id: item.id,
@@ -81,7 +81,7 @@ export class History {
     if (!this.redoStack.length) return void 0;
     const item = this.redoStack.pop();
     if (!item) return void 0;
-    const base = this.editor.state.toBlockSet();
+    const base = this.editor.state.toBlock();
     const inverted = item.delta.invert(base);
     this.undoStack.push({
       id: item.id,

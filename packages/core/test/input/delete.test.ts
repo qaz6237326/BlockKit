@@ -22,6 +22,6 @@ describe("input delete", () => {
     const newDelta = new Delta({
       ops: [{ insert: "text1  text3" }, { insert: "\n" }],
     });
-    expect(editor.state.toBlockSet()).toEqual(newDelta);
+    expect(editor.state.toBlock()).toEqual(newDelta);
   });
 });

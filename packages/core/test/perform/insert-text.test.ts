@@ -15,7 +15,7 @@ describe("perform insert-text", () => {
     });
     editor.selection.set(new Range(new Point(0, 1), new Point(0, 1)));
     editor.perform.insertText(editor.selection.get()!, "1");
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("t1ext", { bold: "true" }).insertEOL()
     );
   });
@@ -31,7 +31,7 @@ describe("perform insert-text", () => {
     });
     editor.selection.set(new Range(new Point(0, 5), new Point(0, 5)));
     editor.perform.insertText(editor.selection.get()!, "1");
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta()
         .insert("text2", { italic: "true" })
         .insert("1")
@@ -51,7 +51,7 @@ describe("perform insert-text", () => {
     });
     editor.selection.set(new Range(new Point(0, 5), new Point(0, 8)));
     editor.perform.insertText(editor.selection.get()!, "1");
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta()
         .insert("text2", { italic: "true" })
         .insert("1")
@@ -73,7 +73,7 @@ describe("perform insert-text", () => {
     });
     editor.selection.set(new Range(new Point(0, 5), new Point(0, 5)));
     editor.perform.insertText(editor.selection.get()!, "1");
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta()
         .insert("text21", { link: "true" })
         .insert("text", { bold: "true", link: "true" })

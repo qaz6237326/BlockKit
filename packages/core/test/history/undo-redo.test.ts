@@ -17,36 +17,36 @@ describe("history undo-redo", () => {
     editor.state.apply(new Delta().retain(1).insert("3")); // 132
     await sleep(20);
     editor.state.apply(new Delta().retain(2).retain(1, { src: "http" })); // 132
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("13").insert("2", { src: "http" }).insertEOL()
     );
     expect(editor.history.isUndoAble()).toBe(true);
     expect(editor.history.isRedoAble()).toBe(false);
     editor.history.undo();
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("13").insert("2", { src: "blob" }).insertEOL()
     );
     editor.history.undo();
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("1").insert("2", { src: "blob" }).insertEOL()
     );
     editor.history.undo();
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("1").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("1").insertEOL());
     editor.history.undo();
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insertEOL());
     expect(editor.history.isUndoAble()).toBe(false);
     editor.history.redo();
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("1").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("1").insertEOL());
     editor.history.redo();
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("1").insert("2", { src: "blob" }).insertEOL()
     );
     editor.history.redo();
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("13").insert("2", { src: "blob" }).insertEOL()
     );
     editor.history.redo();
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("13").insert("2", { src: "http" }).insertEOL()
     );
     expect(editor.history.isUndoAble()).toBe(true);
@@ -60,7 +60,7 @@ describe("history undo-redo", () => {
     const { id: id1 } = editor.state.apply(new Delta().retain(1).insert("2"));
     await sleep(20);
     const { id: id2 } = editor.state.apply(new Delta().retain(1).insert("3"));
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("132").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("132").insertEOL());
     // @ts-expect-error protected property
     const undoStack = editor.history.undoStack;
     expect(undoStack[0].id).toEqual(new Set([id0, id1, id2]));

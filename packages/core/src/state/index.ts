@@ -71,11 +71,11 @@ export class EditorState {
   }
 
   /**
-   * 转换为 BlockSet
+   * 转换为 Block Delta
+   * - 以内建状态为主, Block 数据按需转换
    * @param deep 深拷贝
-   * @note 以内建状态为主, BlockSet 按需转换
    */
-  public toBlockSet(deep?: boolean) {
+  public toBlock(deep?: boolean) {
     if (!deep && this._delta) {
       return this._delta;
     }
@@ -103,7 +103,7 @@ export class EditorState {
    */
   public apply(delta: Delta, options: ApplyOptions = {}): ApplyResult {
     const { source = APPLY_SOURCE.USER, autoCaret = true, preventNormalize } = options;
-    const previous = this.toBlockSet();
+    const previous = this.toBlock();
     this._delta = null;
     const selection = this.editor.selection;
     // 需要先标准化 Delta, 否则可能导致协同一致性问题
@@ -133,7 +133,7 @@ export class EditorState {
     }
 
     const id = getId(6);
-    const current = this.toBlockSet();
+    const current = this.toBlock();
     const payload: ContentChangeEvent = {
       id: id,
       options,

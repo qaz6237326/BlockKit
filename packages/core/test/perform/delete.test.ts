@@ -9,7 +9,7 @@ describe("perform delete", () => {
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 4), new Point(0, 4));
     editor.perform.deleteBackward(sel);
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("tex").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("tex").insertEOL());
   });
 
   it("delete backward emoji", () => {
@@ -17,7 +17,7 @@ describe("perform delete", () => {
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 9), new Point(0, 9));
     editor.perform.deleteBackward(sel);
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("text🧑‍🎨123").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("text🧑‍🎨123").insertEOL());
   });
 
   it("delete forward emoji", () => {
@@ -25,7 +25,7 @@ describe("perform delete", () => {
     const editor = new Editor({ delta });
     const sel = new Range(new Point(0, 4), new Point(0, 4));
     editor.perform.deleteForward(sel);
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("text🧑‍🎨123").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("text🧑‍🎨123").insertEOL());
   });
 
   it("delete backward line head", () => {
@@ -33,7 +33,7 @@ describe("perform delete", () => {
     const editor = new Editor({ delta });
     const sel = Range.fromTuple([1, 0], [1, 0]);
     editor.perform.deleteBackward(sel);
-    expect(editor.state.toBlockSet()).toEqual(new MutateDelta().insert("text123").insertEOL());
+    expect(editor.state.toBlock()).toEqual(new MutateDelta().insert("text123").insertEOL());
   });
 
   it("delete backward line head attrs", () => {
@@ -41,7 +41,7 @@ describe("perform delete", () => {
     const editor = new Editor({ delta });
     const sel = Range.fromTuple([1, 0], [1, 0]);
     editor.perform.deleteBackward(sel);
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta().insert("text").insertEOL().insert("123").insertEOL()
     );
   });

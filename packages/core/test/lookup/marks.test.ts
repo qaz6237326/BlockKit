@@ -42,7 +42,7 @@ describe("lookup marks", () => {
     editor.lookup.marks["italic"] = "true";
     editor.perform.insertText(editor.selection.get()!, "1");
     expect(editor.lookup.marks).toEqual({ bold: "true", italic: "true" });
-    expect(editor.state.toBlockSet()).toEqual(
+    expect(editor.state.toBlock()).toEqual(
       new MutateDelta()
         .insert("t", { bold: "true" })
         .insert("1", { bold: "true", italic: "true" })

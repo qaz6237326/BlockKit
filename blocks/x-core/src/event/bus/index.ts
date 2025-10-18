@@ -1,9 +1,7 @@
-import type { Delta } from "@block-kit/delta";
-import type { InsertOp } from "@block-kit/delta";
 import type { Object } from "@block-kit/utils";
 import type { Reflex } from "@block-kit/utils";
+import type { Blocks, BlocksChange } from "@block-kit/x-json";
 
-import type { Range } from "../../selection/modules/range";
 import type { ApplyOptions } from "../../state/types";
 import type { NativeEventMap } from "../native/types";
 import { NATIVE_EVENTS } from "../native/types";
@@ -17,8 +15,8 @@ export const EDITOR_EVENT = {
 } as const;
 
 export type ContentWillChangeEvent = {
-  current: Delta;
-  changes: Delta;
+  current: Blocks;
+  changes: BlocksChange;
   source: string;
   options: ApplyOptions;
   extra?: unknown;
@@ -26,10 +24,10 @@ export type ContentWillChangeEvent = {
 
 export type ContentChangeEvent = ContentWillChangeEvent & {
   id: string;
-  previous: Delta;
-  inserts: InsertOp[];
-  revises: InsertOp[];
-  deletes: InsertOp[];
+  previous: Blocks;
+  inserts: string[];
+  updates: string[];
+  deletes: string[];
 };
 
 export type SelectionChangeEvent = {

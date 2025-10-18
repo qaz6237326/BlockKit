@@ -4,8 +4,8 @@ import { getOpLength, isEOLOp } from "@block-kit/delta";
 import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import type { SelectionChangeEvent } from "../event/bus/types";
-import { EDITOR_EVENT } from "../event/bus/types";
+import type { SelectionChangeEvent } from "../event/bus/";
+import { EDITOR_EVENT } from "../event/bus/";
 import type { Point } from "../selection/modules/point";
 import type { Range } from "../selection/modules/range";
 import type { LeafState } from "../state/modules/leaf-state";

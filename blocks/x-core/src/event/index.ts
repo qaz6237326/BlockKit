@@ -1,6 +1,6 @@
 import { EventBus } from "@block-kit/utils";
 
-import type { Editor } from "../editor";
+import type { BlockEditor } from "../editor";
 import type { EventMap } from "./bus";
 import type { EventMapExtension } from "./bus/types";
 import { NativeEvent } from "./native";
@@ -15,7 +15,7 @@ export class Event {
    * 构造函数
    * @param editor
    */
-  constructor(protected editor: Editor) {
+  constructor(protected editor: BlockEditor) {
     this.bus = new EventBus();
     this.nativeEvent = new NativeEvent(this.bus, this.editor);
   }

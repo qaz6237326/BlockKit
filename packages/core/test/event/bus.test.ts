@@ -1,11 +1,11 @@
 import { Delta } from "@block-kit/delta";
-import { getId } from "@block-kit/utils";
+import { EventBus, getId } from "@block-kit/utils";
 
-import { EventBus } from "../../src/event/bus";
+import type { EventMap } from "../../src/event/bus";
 import { EDITOR_EVENT } from "../../src/index";
 
 describe("event bus", () => {
-  const event = new EventBus();
+  const event = new EventBus<EventMap>();
   const delta = new Delta();
 
   it("on", () => {

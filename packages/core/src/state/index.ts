@@ -2,8 +2,8 @@ import { Delta } from "@block-kit/delta";
 import { getId } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import type { ContentChangeEvent } from "../event/bus/types";
-import { EDITOR_EVENT } from "../event/bus/types";
+import type { ContentChangeEvent } from "../event/bus/";
+import { EDITOR_EVENT } from "../event/bus/";
 import { Range } from "../selection/modules/range";
 import { RawRange } from "../selection/modules/raw-range";
 import { BlockState } from "./modules/block-state";
@@ -73,7 +73,7 @@ export class EditorState {
   /**
    * 转换为 Block Delta
    * - 以内建状态为主, Block 数据按需转换
-   * @param deep 深拷贝
+   * @param deep [?=undef] 深拷贝
    */
   public toBlock(deep?: boolean) {
     if (!deep && this._delta) {

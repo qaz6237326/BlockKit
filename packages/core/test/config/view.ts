@@ -60,7 +60,7 @@ export const mountEditorViewModel = (editor: Editor) => {
 
   const block = createBlockDOM(ROOT_BLOCK, lineDOMs);
   const container = createContainerDOM([block]);
-  editor.onMount(container as HTMLDivElement);
+  editor.mount(container as HTMLDivElement);
   document.body.appendChild(container);
 
   return { block, container, lineDOMs, leafDOMs };

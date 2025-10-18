@@ -1,6 +1,8 @@
-import { EDITOR_STATE } from "@block-kit/core";
+import { LOG_LEVEL, Logger } from "@block-kit/core";
 
+import { Event } from "../event";
 import { EditorState } from "../state";
+import { EDITOR_STATE } from "../state/types";
 import type { EditorOptions } from "./types";
 
 export class BlockEditor {
@@ -8,33 +10,41 @@ export class BlockEditor {
   protected container: HTMLDivElement | null;
   /** 状态模块 */
   public state: EditorState;
+  /** 日志模块 */
+  public logger: Logger;
+  /** 事件模块 */
+  public event: Event;
 
   /**
    * 构造函数
    * @param options
    */
   public constructor(options: EditorOptions = {}) {
-    const { initial = {} } = options;
+    const { initial = {}, logLevel = LOG_LEVEL.ERROR } = options;
     this.container = null;
     this.state = new EditorState(this, initial);
+    this.event = new Event(this);
+    this.logger = new Logger(logLevel);
   }
 
   /**
    * 挂载编辑器 DOM
    * @param container
    */
-  public onMount(this: BlockEditor, container: HTMLDivElement) {
+  public mount(this: BlockEditor, container: HTMLDivElement) {
     if (this.state.get(EDITOR_STATE.MOUNTED)) {
       console.warn("Editor has been mounted, please destroy it before mount again.");
     }
     this.container = container;
     this.state.set(EDITOR_STATE.MOUNTED, true);
+    this.event.bind();
   }
 
   /**
    * 卸载编辑器 DOM
    */
-  public onUnmount(this: BlockEditor) {
+  public unmount(this: BlockEditor) {
+    this.event.unbind();
     this.container = null;
     this.state.set(EDITOR_STATE.MOUNTED, false);
   }
@@ -56,6 +66,7 @@ export class BlockEditor {
    * 销毁编辑器
    */
   public destroy(this: BlockEditor) {
+    this.event.unbind();
     this.state.set(EDITOR_STATE.MOUNTED, false);
   }
 }

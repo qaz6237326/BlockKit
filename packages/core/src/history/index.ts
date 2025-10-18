@@ -3,8 +3,8 @@ import { isRetainOp } from "@block-kit/delta";
 import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import type { ContentChangeEvent } from "../event/bus/types";
-import { EDITOR_EVENT } from "../event/bus/types";
+import type { ContentChangeEvent } from "../event/bus/";
+import { EDITOR_EVENT } from "../event/bus/";
 import { isRedo, isUndo } from "../input/utils/hot-key";
 import { Range } from "../selection/modules/range";
 import { RawRange } from "../selection/modules/raw-range";

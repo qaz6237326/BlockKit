@@ -43,7 +43,7 @@ describe("selection dom", () => {
     ]);
     const block = createBlockDOM(ROOT_BLOCK, [line1, line2]);
     const container = createContainerDOM([block]);
-    editor.onMount(container as HTMLDivElement);
+    editor.mount(container as HTMLDivElement);
     createEditorModel(editor, container as HTMLDivElement);
   });
 

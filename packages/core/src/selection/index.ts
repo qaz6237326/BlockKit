@@ -2,7 +2,7 @@ import { Bind } from "@block-kit/utils";
 import type { O } from "@block-kit/utils/dist/es/types";
 
 import type { Editor } from "../editor";
-import { EDITOR_EVENT } from "../event/bus/types";
+import { EDITOR_EVENT } from "../event/bus/";
 import { isArrowLeft, isArrowRight } from "../input/utils/hot-key";
 import { EDITOR_STATE } from "../state/types";
 import { Point } from "./modules/point";

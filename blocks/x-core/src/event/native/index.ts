@@ -1,13 +1,16 @@
 import type { EventBus } from "@block-kit/utils";
 
-import type { Editor } from "../../editor";
+import type { BlockEditor } from "../../editor";
 import { EDITOR_STATE } from "../../state/types";
 import type { EventMap } from "../bus";
 import type { EventMapExtension } from "../bus/types";
 import { NATIVE_EVENTS } from "./types";
 
 export class NativeEvent {
-  constructor(protected event: EventBus<EventMap & EventMapExtension>, protected editor: Editor) {}
+  constructor(
+    protected event: EventBus<EventMap & EventMapExtension>,
+    protected editor: BlockEditor
+  ) {}
 
   protected onCompositionStart = (e: CompositionEvent) => {
     this.editor.state.set(EDITOR_STATE.COMPOSING, true);

@@ -3,7 +3,7 @@ import { Delta, EOL_OP } from "@block-kit/delta";
 import { Bind, TEXT_HTML, TEXT_PLAIN, TSON } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import { EDITOR_EVENT } from "../event/bus/types";
+import { EDITOR_EVENT } from "../event/bus/";
 import { Copy } from "./modules/copy";
 import { Paste } from "./modules/paste";
 import { TEXT_DOC } from "./types";

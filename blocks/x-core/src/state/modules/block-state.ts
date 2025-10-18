@@ -1,4 +1,5 @@
-import type { Block } from "@block-kit/x-json";
+import type { Block, BlockDataField } from "@block-kit/x-json";
+import { cloneSnapshot } from "@block-kit/x-json";
 
 import type { EditorState } from "../index";
 
@@ -6,7 +7,7 @@ export class BlockState {
   /** Block ID */
   public readonly id: string;
   /** Block 可变数据 */
-  public data: Block["data"];
+  public data: BlockDataField;
   /** Block 版本 */
   public version: number;
   /** 标记是否删除 */
@@ -57,5 +58,21 @@ export class BlockState {
     if (!parent || !parent.data.children) return null;
     const nextId = parent.data.children[this.index + 1];
     return nextId ? this.state.getBlock(nextId) : null;
+  }
+
+  /**
+   * 转化为 Block 数据
+   * @param deep [?=undef] 深拷贝
+   */
+  public toBlock(deep?: boolean): Block {
+    const data = deep ? cloneSnapshot(this.data) : { ...this.data };
+    if (data.children) {
+      data.children = [...data.children];
+    }
+    return {
+      id: this.id,
+      data: data,
+      version: this.version,
+    };
   }
 }

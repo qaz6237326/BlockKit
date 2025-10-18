@@ -102,7 +102,7 @@ export class Editor {
    * 挂载编辑器 DOM
    * @param container
    */
-  public onMount(this: Editor, container: HTMLDivElement) {
+  public mount(this: Editor, container: HTMLDivElement) {
     if (this.state.get(EDITOR_STATE.MOUNTED)) {
       console.warn("Editor has been mounted, please destroy it before mount again.");
     }

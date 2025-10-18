@@ -19,7 +19,7 @@ export type {
   Snapshot,
   TextOp,
 } from "./types";
-export { SIDE } from "./utils";
+export { clone as cloneSnapshot, SIDE } from "./utils";
 
 export const json = new JSONType();
 export const text = new TextType();

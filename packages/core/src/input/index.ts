@@ -1,7 +1,7 @@
 import { Bind } from "@block-kit/utils";
 
 import type { Editor } from "../editor";
-import { EDITOR_EVENT } from "../event/bus/types";
+import { EDITOR_EVENT } from "../event/bus/";
 import { Range } from "../selection/modules/range";
 import { DIRECTION, GRANULARITY } from "../selection/types";
 import { EDITOR_STATE } from "../state/types";

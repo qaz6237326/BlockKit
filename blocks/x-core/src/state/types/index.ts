@@ -1,4 +1,5 @@
 import type { O } from "@block-kit/utils/dist/es/types";
+import type { BlockChange } from "@block-kit/x-json";
 
 export const EDITOR_STATE = {
   /** IME 组合状态 */
@@ -24,6 +25,14 @@ export const APPLY_SOURCE = {
   REMOTE: "REMOTE",
   /** History 模块触发 */
   HISTORY: "HISTORY",
+};
+
+/** Block 应用变更 */
+export type ApplyChange = {
+  /** Block ID */
+  id: string;
+  /** 变更组合 */
+  ops: BlockChange;
 };
 
 export type ApplyOptions = {

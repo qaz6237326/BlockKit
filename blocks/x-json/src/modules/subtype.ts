@@ -43,7 +43,7 @@ export const deltaType: Subtype = {
 };
 
 /** JSON Delta Subtype Op */
-export type DeltaOp = SubtypeOp<"delta">;
+export type DeltaSubOp = SubtypeOp<"delta">;
 
 /** OT JSON Type */
 export const json = ot.registerSubtype(deltaType);

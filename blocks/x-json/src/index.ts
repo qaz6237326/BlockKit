@@ -1,4 +1,4 @@
-export type { DeltaOp as DeltaSubOp } from "./modules/subtype";
+export type { DeltaSubOp } from "./modules/subtype";
 export { deltaType, json } from "./modules/subtype";
 export type {
   Block,
@@ -10,6 +10,7 @@ export type {
 } from "./types/block";
 export type { BasicBlock, BlockModule } from "./types/interface";
 export { normalizeBatchOps } from "./utils/transform";
+export { createBlockTreeWalker, createBlockTreeWalkerBFS } from "./utils/walker";
 export type { Op as DeltaOp } from "@block-kit/delta";
 export type {
   Op as JSONOp,

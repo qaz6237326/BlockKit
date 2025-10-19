@@ -40,7 +40,14 @@ describe("iterator walker", () => {
     for (const node of walker) {
       target.push(node);
     }
-    expect(target).toEqual([blocks.root, blocks.child1, blocks.grandchild1, blocks.child2]);
+    const children = [blocks.root, blocks.child1, blocks.grandchild1, blocks.child2];
+    expect(target).toEqual(children);
+  });
+
+  it("create block tree walker dfs iterator2", () => {
+    const walker = createBlockTreeWalker(blocks, "root");
+    const children = [blocks.root, blocks.child1, blocks.grandchild1, blocks.child2];
+    expect([...walker]).toEqual(children);
   });
 
   it("create block tree walker bfs", () => {
@@ -58,6 +65,13 @@ describe("iterator walker", () => {
     for (const node of walker) {
       target.push(node);
     }
-    expect(target).toEqual([blocks.root, blocks.child1, blocks.child2, blocks.grandchild1]);
+    const children = [blocks.root, blocks.child1, blocks.child2, blocks.grandchild1];
+    expect(target).toEqual(children);
+  });
+
+  it("create block tree walker bfs iterator2", () => {
+    const walker = createBlockTreeWalkerBFS(blocks, "root");
+    const children = [blocks.root, blocks.child1, blocks.child2, blocks.grandchild1];
+    expect([...walker]).toEqual(children);
   });
 });

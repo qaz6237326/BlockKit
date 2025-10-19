@@ -11,7 +11,7 @@ import { json } from "../modules/subtype";
  * @param ops
  */
 export const normalizeBatchOps = (ops: Op[]) => {
-  const copied: Op[] = [...ops];
+  const copied: Op[] = ops.filter(op => op);
   for (let i = 0, len = copied.length; i < len; i++) {
     const base = copied[i];
     for (let k = i + 1; k < len; k++) {

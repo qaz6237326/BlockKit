@@ -24,7 +24,7 @@ export type NumberAddOp = {
  */
 export type ListInsertOp = {
   p: Path;
-  li: Snapshot;
+  li: P.Any;
 };
 
 /**
@@ -32,7 +32,7 @@ export type ListInsertOp = {
  */
 export type ListDeleteOp = {
   p: Path;
-  ld: Snapshot;
+  ld: P.Any;
 };
 
 /**
@@ -40,8 +40,8 @@ export type ListDeleteOp = {
  */
 export type ListReplaceOp = {
   p: Path;
-  ld: Snapshot;
-  li: Snapshot;
+  ld: P.Any;
+  li: P.Any;
 };
 
 /**
@@ -58,7 +58,7 @@ export type ListMoveOp = {
  */
 export type ObjectInsertOp = {
   p: Path;
-  oi: Snapshot;
+  oi: P.Any;
 };
 
 /**
@@ -66,7 +66,7 @@ export type ObjectInsertOp = {
  */
 export type ObjectDeleteOp = {
   p: Path;
-  od: Snapshot;
+  od: P.Any;
 };
 
 /**
@@ -74,8 +74,8 @@ export type ObjectDeleteOp = {
  */
 export type ObjectReplaceOp = {
   p: Path;
-  od: Snapshot;
-  oi: Snapshot;
+  od: P.Any;
+  oi: P.Any;
 };
 
 /**
@@ -92,18 +92,18 @@ export type Op = {
   /** - adds x to the number at [path]. */
   na?: number;
   /** - inserts the object obj before the item at idx in the list at [path]. */
-  li?: Snapshot;
+  li?: P.Any;
   /** - deletes the object obj from the index idx in the list at [path]. */
-  ld?: Snapshot;
+  ld?: P.Any;
   /** - replaces the object before at the index idx in the list at [path] with the object after. */
   // ld?: Snapshot;
   // li?: Snapshot;
   /** - moves the object at idx1 such that the object will be at index idx2 in the list at [path]. */
   lm?: number;
   /** - inserts the object obj into the object at [path] with key key. */
-  oi?: Snapshot;
+  oi?: P.Any;
   /** - deletes the object obj with key key from the object at [path]. */
-  od?: Snapshot;
+  od?: P.Any;
   /** - replaces the object before with the object after at key key in the object at [path]. */
   // od?: Snapshot;
   // oi?: Snapshot;

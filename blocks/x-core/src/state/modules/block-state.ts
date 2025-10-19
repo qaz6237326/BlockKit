@@ -9,7 +9,7 @@ export class BlockState {
   /** Block ID */
   public readonly id: string;
   /** Block 可变数据 */
-  public data: BlockDataField;
+  public readonly data: BlockDataField;
   /** Block 版本 */
   public version: number;
   /** 标记是否删除 */
@@ -22,11 +22,11 @@ export class BlockState {
   /** 构造函数 */
   public constructor(block: Block, protected state: EditorState) {
     this.index = -1;
-    this.id = block.id;
-    this.data = block.data;
-    this.version = block.version;
-    this.deleted = false;
     this.text = null;
+    this.id = block.id;
+    this.deleted = false;
+    this.version = block.version;
+    this.data = { ...block.data };
     this.restore();
   }
 
@@ -75,7 +75,7 @@ export class BlockState {
       console.warn("Text editor already exists.");
       return void 0;
     }
-    if (this.data.delta) {
+    if (this.data.delta && !this.text) {
       const options = this.state.editor.texts;
       const initial = new Delta(this.data.delta);
       const text = new Editor({ ...options.config, delta: initial });

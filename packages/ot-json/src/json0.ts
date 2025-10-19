@@ -3,7 +3,7 @@ import type { O, P } from "@block-kit/utils/dist/es/types";
 
 import type { Subtype } from "./subtype";
 import { subtypes } from "./subtype";
-import type { Op, Path, Side, Snapshot } from "./types";
+import type { Op, Path, Side } from "./types";
 import { clone, SIDE } from "./utils";
 
 /**
@@ -35,7 +35,7 @@ export class JSONType {
   /**
    * 创建快照副本
    */
-  public create(data: Snapshot): Snapshot {
+  public create(data: P.Any): P.Any {
     // Null instead of undefined if you don't pass an argument.
     return data === undefined ? null : clone(data);
   }
@@ -61,7 +61,7 @@ export class JSONType {
    * @param ops
    * @param snapshot
    */
-  public invert(ops: Op[], snapshot?: Snapshot) {
+  public invert(ops: Op[], snapshot?: P.Any) {
     const json0 = JSONType.prototype;
     const op_ = ops.slice().reverse();
     const iop: Op[] = [];
@@ -76,7 +76,7 @@ export class JSONType {
    * @param snapshot
    * @param path
    */
-  public get<T>(snapshot: Snapshot, path: Path): T | null {
+  public get<T>(snapshot: O.Any, path: Path): T | null {
     let node: P.Any = snapshot;
     if (!snapshot) return null;
     for (let i = 0; i < path.length; i++) {
@@ -92,7 +92,7 @@ export class JSONType {
    * @param snapshot
    * @param ops
    */
-  public apply<T extends Snapshot>(snapshot: T, ops: Op[]): T {
+  public apply<T extends O.Any>(snapshot: T, ops: Op[]): T {
     const json0 = JSONType.prototype;
     json0.checkValidOps(ops);
     ops = clone(ops);
@@ -104,7 +104,7 @@ export class JSONType {
       // convert old string ops to use subtype for backwards compatibility
       if (!isNil(c.si) || !isNil(c.sd)) json0.convertFromText(c);
 
-      let parent: Snapshot = null;
+      let parent: P.Any = null;
       let elem: O.Any = container;
       let key: string | number = "data";
 
@@ -244,13 +244,13 @@ export class JSONType {
     }
   }
 
-  private checkList(elem: Snapshot) {
+  private checkList(elem: P.Any) {
     if (!isArray(elem)) {
       throw new Error("Referenced element not a list");
     }
   }
 
-  private checkObj(elem: Snapshot) {
+  private checkObj(elem: P.Any) {
     if (!isPlainObject(elem)) {
       throw new Error("Referenced element not an object (it was " + JSON.stringify(elem) + ")");
     }
@@ -262,7 +262,7 @@ export class JSONType {
     // handle subtype ops
     if (c.t && subtypes[c.t]) {
       c_.t = c.t;
-      const subSnapshot = this.get(snapshot as Snapshot, c.p);
+      const subSnapshot = this.get(snapshot as O.Any, c.p);
       c_.o = subtypes[c.t].invert(c.o, subSnapshot);
     }
 

@@ -1,13 +1,14 @@
 import { getId } from "@block-kit/utils";
-import type { BlockDataField, Blocks, BlocksChange } from "@block-kit/x-json";
-import type { Block } from "@block-kit/x-json";
+import type { Blocks } from "@block-kit/x-json";
 
 import type { BlockEditor } from "../editor";
 import type { ContentChangeEvent } from "../event/bus";
 import { EDITOR_EVENT } from "../event/bus";
 import { BlockState } from "./modules/block-state";
-import type { ApplyOptions } from "./types";
+import { Mutate } from "./mutate";
+import type { ApplyChange, ApplyOptions } from "./types";
 import { APPLY_SOURCE, EDITOR_STATE } from "./types";
+import { normalizeBlocksChange } from "./utils/normalize";
 
 export class EditorState {
   /** 内建状态集合 */
@@ -79,15 +80,6 @@ export class EditorState {
   }
 
   /**
-   * 创建 Block
-   * @param data
-   */
-  public createBlock(data: BlockDataField): Block {
-    const id = getId(10);
-    return { id, data, version: 1 };
-  }
-
-  /**
    * 转换为 Block 集合
    * - 以内建状态为主, Block 集合数据按需转换
    * @param deep [?=undef] 深拷贝
@@ -110,11 +102,11 @@ export class EditorState {
    * @param changes
    * @param options
    */
-  public apply(changes: BlocksChange, options: ApplyOptions) {
+  public apply(changes: ApplyChange[], options: ApplyOptions = {}) {
     const { source = APPLY_SOURCE.USER } = options;
     const previous = this.toBlockSet();
     this._cache = null;
-    const normalized = changes;
+    const normalized = normalizeBlocksChange(changes);
 
     this.editor.event.trigger(EDITOR_EVENT.CONTENT_WILL_CHANGE, {
       options,
@@ -123,6 +115,9 @@ export class EditorState {
       changes: normalized,
       extra: options.extra,
     });
+
+    const mutate = new Mutate(this);
+    const { inserts, updates, deletes } = mutate.apply(normalized);
 
     const id = getId(6);
     const current = this.toBlockSet();
@@ -133,13 +128,13 @@ export class EditorState {
       current: current,
       source: source,
       changes: normalized,
-      inserts: [],
-      updates: [],
-      deletes: [],
+      inserts: inserts,
+      updates: updates,
+      deletes: deletes,
       extra: options.extra,
     };
     this.editor.logger.debug("Editor Content Change", payload);
     this.editor.event.trigger(EDITOR_EVENT.CONTENT_CHANGE, payload);
-    return { id };
+    return { id, inserts, updates, deletes };
   }
 }

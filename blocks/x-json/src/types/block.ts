@@ -19,11 +19,7 @@ export type Block = {
 export type Blocks = Record<string, Block>;
 
 /** Block 变更 */
-export type BlockChange = {
-  id: string;
-  version: number;
-  ops: JSONOp[];
-};
+export type BlockChange = JSONOp[];
 
 /** Blocks 变更 */
 export type BlocksChange = Record<string, BlockChange>;

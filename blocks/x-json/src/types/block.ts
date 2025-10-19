@@ -22,7 +22,7 @@ export type Blocks = Record<string, Block>;
 export type BlockChange = {
   id: string;
   version: number;
-  change: JSONOp[];
+  ops: JSONOp[];
 };
 
 /** Blocks 变更 */

@@ -2120,7 +2120,7 @@ export const Editable: React.FC<{
     const el = ref.current;
     el && editor.mount(el);
     return () => {
-      editor.onUnmount();
+      editor.unmount();
       !preventDestroy && editor.destroy();
     };
   }, [editor, preventDestroy]);

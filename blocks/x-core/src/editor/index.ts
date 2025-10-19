@@ -3,11 +3,13 @@ import { LOG_LEVEL, Logger } from "@block-kit/core";
 import { Event } from "../event";
 import { EditorState } from "../state";
 import { EDITOR_STATE } from "../state/types";
-import type { EditorOptions } from "./types";
+import type { EditorOptions, TextEditorOptions } from "./types";
 
 export class BlockEditor {
-  /** 编辑容器 */
+  /** 编辑器 DOM 容器 */
   protected container: HTMLDivElement | null;
+  /** 文本编辑器选项 */
+  public texts: TextEditorOptions;
   /** 状态模块 */
   public state: EditorState;
   /** 日志模块 */
@@ -20,7 +22,8 @@ export class BlockEditor {
    * @param options
    */
   public constructor(options: EditorOptions = {}) {
-    const { initial = {}, logLevel = LOG_LEVEL.ERROR } = options;
+    const { initial = {}, logLevel = LOG_LEVEL.ERROR, texts = {} } = options;
+    this.texts = texts;
     this.container = null;
     this.state = new EditorState(this, initial);
     this.event = new Event(this);

@@ -85,7 +85,7 @@ export class EventBus<E extends O.Any = EventBusType> {
   public off<T extends EventKeys<E>>(key: T, listener: Listener<E, T>) {
     const handler = this.listeners[key];
     if (!handler) return void 0;
-    // COMPAT: 不能直接`splice` 可能会导致`trigger`时打断`forEach`
+    // COMPAT: 不能直接 splice, 可能会导致 trigger 时打断 forEach
     const next = handler.filter(item => item.listener !== listener);
     this.listeners[key] = <EventHandler<E, T>[]>next;
   }

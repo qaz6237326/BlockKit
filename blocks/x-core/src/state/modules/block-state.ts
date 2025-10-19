@@ -1,3 +1,5 @@
+import { Editor } from "@block-kit/core";
+import { Delta } from "@block-kit/delta";
 import type { Block, BlockDataField } from "@block-kit/x-json";
 import { cloneSnapshot } from "@block-kit/x-json";
 
@@ -14,6 +16,8 @@ export class BlockState {
   public deleted: boolean;
   /** Block 父节点索引 */
   public index: number;
+  /** 编辑器实例 */
+  public text: Editor | null;
 
   /** 构造函数 */
   public constructor(block: Block, protected state: EditorState) {
@@ -22,6 +26,8 @@ export class BlockState {
     this.data = block.data;
     this.version = block.version;
     this.deleted = false;
+    this.text = null;
+    this.restore();
   }
 
   /**
@@ -58,6 +64,32 @@ export class BlockState {
     if (!parent || !parent.data.children) return null;
     const nextId = parent.data.children[this.index + 1];
     return nextId ? this.state.getBlock(nextId) : null;
+  }
+
+  /**
+   * 标记块挂载
+   */
+  public restore() {
+    this.deleted = false;
+    if (this.text && process.env.NODE_ENV === "development") {
+      console.warn("Text editor already exists.");
+      return void 0;
+    }
+    if (this.data.delta) {
+      const options = this.state.editor.texts;
+      const initial = new Delta(this.data.delta);
+      const text = new Editor({ ...options.config, delta: initial });
+      options.plugin && text.plugin.register(options.plugin);
+      this.text = text;
+    }
+  }
+
+  /**
+   * 标记块删除
+   */
+  public remove() {
+    this.deleted = true;
+    this.text = null;
   }
 
   /**

@@ -1,5 +1,6 @@
 import { getId } from "@block-kit/utils";
-import type { Blocks, BlocksChange } from "@block-kit/x-json";
+import type { BlockDataField, Blocks, BlocksChange } from "@block-kit/x-json";
+import type { Block } from "@block-kit/x-json";
 
 import type { BlockEditor } from "../editor";
 import type { ContentChangeEvent } from "../event/bus";
@@ -10,9 +11,9 @@ import { APPLY_SOURCE, EDITOR_STATE } from "./types";
 
 export class EditorState {
   /** 内建状态集合 */
-  protected status: Record<string, boolean>;
+  protected readonly status: Record<string, boolean>;
   /** Block 集合 */
-  public blocks: Record<string, BlockState>;
+  public readonly blocks: Record<string, BlockState>;
   /** Block 集合缓存 */
   protected _cache: Blocks | null;
 
@@ -21,7 +22,7 @@ export class EditorState {
    * @param editor
    * @param initial
    */
-  constructor(protected editor: BlockEditor, protected initial: Blocks) {
+  constructor(public editor: BlockEditor, initial: Blocks) {
     this._cache = {};
     this.status = {};
     this.blocks = {};
@@ -75,6 +76,15 @@ export class EditorState {
    */
   public getBlock(id: string) {
     return this.blocks[id] || null;
+  }
+
+  /**
+   * 创建 Block
+   * @param data
+   */
+  public createBlock(data: BlockDataField): Block {
+    const id = getId(10);
+    return { id, data, version: 1 };
   }
 
   /**

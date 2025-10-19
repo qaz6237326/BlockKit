@@ -5,9 +5,8 @@ import type { Func, O } from "./types";
 export class Format {
   /**
    * 格式化字符串
-   * @param {string} str
-   * @param {Record<string, string> | string[]} data
-   * @returns {string}
+   * @param str
+   * @param data
    * @example ("1{{0}}1", [1]) => "111"
    * @example ("1{{id}}1", { id: 1 }) => "111"
    */
@@ -20,9 +19,8 @@ export class Format {
 
   /**
    * 格式化数字
-   * @param {number} number
-   * @param {string} locale
-   * @returns {string}
+   * @param number
+   * @param locale
    * @example 1123 => "1,123"
    */
   public static number(
@@ -35,9 +33,8 @@ export class Format {
 
   /**
    * 格式化字节数
-   * @param {number} bytes
-   * @param {number} decimals
-   * @returns {string}
+   * @param bytes
+   * @param decimals
    * @example 1024 => "1 KB"
    */
   public static bytes(bytes: number, decimals = 2): string {
@@ -49,12 +46,11 @@ export class Format {
 
   /**
    * 格式化经过的时间
-   * @param {number} ms
-   * @param {number} relative
-   * @returns {string}
+   * @param ms
+   * @param relative
    * @example (2000, 1000) => "1 second ago"
    */
-  public static time(ms: number, relative = Date.now()): string {
+  public static time(ms: number, relative: number = Date.now()): string {
     const diff = new DateTime(ms).diff(new DateTime(relative));
     const flags = ["years", "months", "days", "hours", "minutes", "seconds"] as const;
     for (const flag of flags) {

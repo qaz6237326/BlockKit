@@ -12,7 +12,7 @@ const IGNORES = ["src/**/*.d.ts"];
 const ENTRIES = ["src/**/*.{ts,tsx}"];
 
 /**
- * https://rollupjs.org/introduction/
+ * https://rollupjs.org/configuration-options/
  * @typedef { import("rollup").RollupOptions } RollupConfig
  * @return { Promise<RollupConfig[]> }
  * */

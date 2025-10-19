@@ -11,5 +11,19 @@ export type {
 export type { BasicBlock, BlockModule } from "./types/interface";
 export { normalizeBatchOps } from "./utils/transform";
 export type { Op as DeltaOp } from "@block-kit/delta";
-export type { Op as JSONOp } from "@block-kit/ot-json";
+export type {
+  Op as JSONOp,
+  ListDeleteOp,
+  ListInsertOp,
+  ListMoveOp,
+  ListReplaceOp,
+  NumberAddOp,
+  ObjectDeleteOp,
+  ObjectInsertOp,
+  ObjectReplaceOp,
+  Op,
+  Side,
+  Snapshot,
+  TextOp,
+} from "@block-kit/ot-json";
 export { cloneSnapshot } from "@block-kit/ot-json";

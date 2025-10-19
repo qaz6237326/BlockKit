@@ -71,6 +71,9 @@ importers:
       '@block-kit/core':
         specifier: 'workspace: *'
         version: link:../../packages/core
+      '@block-kit/delta':
+        specifier: 'workspace: *'
+        version: link:../../packages/delta
       '@block-kit/utils':
         specifier: 'workspace: *'
         version: link:../../packages/utils

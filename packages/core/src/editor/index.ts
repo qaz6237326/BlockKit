@@ -114,7 +114,7 @@ export class Editor {
   /**
    * 卸载编辑器 DOM
    */
-  public onUnmount(this: Editor) {
+  public unmount(this: Editor) {
     this.event.unbind();
     this.container = null;
     this.state.set(EDITOR_STATE.MOUNTED, false);

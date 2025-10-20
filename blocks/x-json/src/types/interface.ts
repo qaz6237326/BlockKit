@@ -8,16 +8,15 @@ export interface BasicBlock {
   /** Block 文本类型 */
   delta?: Op[];
   /** Block 父节点 */
-  parent?: string;
+  parent: string;
   /** Block 子节点 */
-  children?: string[];
+  children: string[];
 }
 
 /** Block 类型属性扩展 */
 export interface BlockModule {
   root: {
     type: typeof ROOT_BLOCK;
-    children: string[];
   };
   text: {
     type: "text";

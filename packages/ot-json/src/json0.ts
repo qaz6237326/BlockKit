@@ -92,7 +92,7 @@ export class JSONType {
    * @param snapshot
    * @param ops
    */
-  public apply<T extends O.Any>(snapshot: T, ops: Op[]): T {
+  public apply<T extends P.Any>(snapshot: T, ops: Op[]): T {
     const json0 = JSONType.prototype;
     json0.checkValidOps(ops);
     ops = clone(ops);

@@ -27,8 +27,13 @@ export class EditorState {
     this._cache = {};
     this.status = {};
     this.blocks = {};
+    // 建立 Blocks 树结构
     Object.values(initial).forEach(block => {
       this.blocks[block.id] = new BlockState(block, this);
+    });
+    // 建立完树结构后更新元信息
+    Object.values(this.blocks).forEach(state => {
+      state._updateMeta();
     });
   }
 

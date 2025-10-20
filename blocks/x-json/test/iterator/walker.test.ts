@@ -5,22 +5,22 @@ const blocks: Blocks = {
   root: {
     id: "root",
     version: 1,
-    data: { type: "ROOT", children: ["child1", "child2"] },
+    data: { type: "ROOT", children: ["child1", "child2"], parent: "" },
   },
   child1: {
     id: "child1",
     version: 1,
-    data: { type: "text", children: ["grandchild1"], delta: [] },
+    data: { type: "text", children: ["grandchild1"], delta: [], parent: "root" },
   },
   child2: {
     id: "child2",
     version: 1,
-    data: { type: "text", children: [], delta: [] },
+    data: { type: "text", children: [], delta: [], parent: "root" },
   },
   grandchild1: {
     id: "grandchild1",
     version: 1,
-    data: { type: "text", children: [], delta: [] },
+    data: { type: "text", children: [], delta: [], parent: "child1" },
   },
 };
 

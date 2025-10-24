@@ -24,7 +24,7 @@ export const useIsMounted = () => {
 };
 
 /**
- * 安全地使用 useState
+ * 组件挂载时 useState
  * @param value 状态
  * @param mounted 组件挂载状态
  */
@@ -45,10 +45,16 @@ export const useMountState = <S = undefined>(value: S, mounted: MutableRefObject
  */
 export const useSafeState = <S = undefined>(value: S) => {
   const [state, setStateOrigin] = useState<S>(value);
-  const { mounted } = useIsMounted();
+  const unmounted = useRef(false);
+
+  useEffect(() => {
+    return () => {
+      unmounted.current = true;
+    };
+  }, []);
 
   const setCurrentState = useCallback((next: SetStateAction<S>) => {
-    if (!mounted.current) return void 0;
+    if (unmounted.current) return void 0;
     setStateOrigin(next);
   }, []);
 
@@ -60,12 +66,10 @@ export const useSafeState = <S = undefined>(value: S) => {
  * @param value 状态
  */
 export const useStateRef = <S = undefined>(value: S) => {
-  const [state, setStateOrigin] = useState<S>(value);
-  const { mounted } = useIsMounted();
+  const [state, setStateOrigin] = useSafeState<S>(value);
   const ref = useRef(state);
 
   const setState = useCallback((next: S) => {
-    if (!mounted.current) return void 0;
     ref.current = next;
     setStateOrigin(next);
   }, []);
@@ -151,7 +155,7 @@ export const useIsFirstRender = () => {
 
   return {
     firstRender: isFirst,
-    isFirstRender: () => isFirst.current,
+    isFirstRender: useCallback(() => isFirst.current, []),
   };
 };
 

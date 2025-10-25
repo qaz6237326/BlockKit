@@ -46,3 +46,26 @@ npm install -g pnpm
 pnpm add -E @block-kit/core @block-kit/delta @block-kit/utils # 控制器 / 数据结构 / 工具库 
 pnpm add -E @block-kit/react @block-kit/plugin # React 适配器 / 插件集合
 ```
+
+# 注意
+可能提示需要添加 -w 参数
+```bash
+npm install -g pnpm   
+pnpm add -E @block-kit/core @block-kit/delta @block-kit/utils -w
+pnpm add -E @block-kit/react @block-kit/plugin -w
+
+pnpm run dev
+```
+## 运行可能报错
+
+/examples/website/rspack.config.ts
+该文件可能会提示__dirname is undefined
+
+添加代码
+```javascript
+import path, { dirname } from 'path'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+```
+再次 pnpm run dev
